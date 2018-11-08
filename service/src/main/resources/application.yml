@@ -1,0 +1,33 @@
+#https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+server:
+  port: ${SERVICE_PORT}
+management:
+  endpoint:
+    health:
+      show-details: "ALWAYS"
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+      base-path: /admin
+      path-mapping:
+        health: health-check
+info:
+  app:
+    name: Certificate
+    version: ${API_VERSION}
+spring:
+  security:
+    user:
+      name: ${SERVICE_USER}
+      password: ${SERVICE_PASSWORD}
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    url: "jdbc:sqlserver://${DB_HOST}:${DB_PORT};databaseName=${DB_NAME};hostNameInCertificate=*.database.windows.net;"
+    continueOnError: true
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServer2008Dialect
