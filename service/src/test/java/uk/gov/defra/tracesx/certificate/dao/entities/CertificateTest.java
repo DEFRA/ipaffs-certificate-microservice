@@ -7,35 +7,27 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class CertificateTest {
-  
-  @Before
-  public void setUp() {
-  }
-  
-  @Test
-  public void verifyIdProperty() {
-    //Given
-    Certificate instance = new Certificate();
-    UUID id = UUID.randomUUID();
-    
-    //When
-    instance.setId(id);
 
-    //Then
-    assertEquals(id, instance.getId());
+  @Before
+  public void setUp() {}
+
+  @Test
+  public void verifyReferenceProperty() {
+    Certificate instance = new Certificate();
+    String referenceNumber = UUID.randomUUID().toString();
+
+    instance.setReferenceNumber(referenceNumber);
+
+    assertEquals(referenceNumber, instance.getReferenceNumber());
   }
 
   @Test
   public void verifyDocumentProperty() {
-    //Given
     Certificate instance = new Certificate();
-    String jsonDocument = "{\"test\": 123}";
-    
-    //When
-    instance.setDocument(jsonDocument);
+    byte[] document = "Some data to be stored as binary".getBytes();
 
-    //Then
-    assertEquals(jsonDocument, instance.getDocument());
-    
+    instance.setDocument(document);
+
+    assertEquals(document, instance.getDocument());
   }
 }
