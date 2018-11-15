@@ -1,42 +1,54 @@
 package uk.gov.defra.tracesx.certificate.dao.entities;
 
-import java.util.UUID;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.Arrays;
+import java.util.Objects;
 
-@Entity
-@Table(name = "certificate")
 public class Certificate {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private UUID id;
+  private String referenceNumber;
 
-  private String document;
+  private byte[] document;
 
   public Certificate() {}
 
-  public Certificate(UUID id, String document) {
-    this.id = id;
-    this.document = document;
+  public String getReferenceNumber() {
+    return referenceNumber;
   }
 
-  public UUID getId() {
-    return id;
+  public void setReferenceNumber(String referenceNumber) {
+    this.referenceNumber = referenceNumber;
   }
 
-  public void setId(UUID id) {
-    this.id = id;
-  }
-
-  public String getDocument() {
+  public byte[] getDocument() {
     return document;
   }
 
-  public void setDocument(String document) {
+  public void setDocument(byte[] document) {
+    this.document = document;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Certificate that = (Certificate) o;
+    return Objects.equals(referenceNumber, that.referenceNumber)
+        && Arrays.equals(document, that.document);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = Objects.hash(referenceNumber);
+    result = 31 * result + Arrays.hashCode(document);
+    return result;
+  }
+
+  public Certificate(String referenceNumber, byte[] document) {
+    this.referenceNumber = referenceNumber;
     this.document = document;
   }
 }
