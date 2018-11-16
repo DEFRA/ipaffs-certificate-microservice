@@ -23,7 +23,10 @@ public class BlobStorage implements Storage {
 
   @Override
   public Optional<Certificate> getCertificate(BlobStorageIdentifier key) {
-    return Optional.ofNullable(blobStorageHashMap.get(key));
+    // return Optional.ofNullable(blobStorageHashMap.get(key));
+    // returning an empty so certificate can be generated on each request as per latest comments
+    // from stu on IMTA-2478
+    return Optional.empty();
   }
 
   @Override
