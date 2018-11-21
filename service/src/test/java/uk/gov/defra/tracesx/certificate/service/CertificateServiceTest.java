@@ -1,60 +1,48 @@
 package uk.gov.defra.tracesx.certificate.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
-import java.util.Random;
-import java.util.UUID;
-import org.junit.Before;
+import java.net.URI;
+import java.util.function.Supplier;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.defra.tracesx.certificate.dao.entities.Certificate;
-import uk.gov.defra.tracesx.certificate.service.blobstorage.BlobStorage;
 import uk.gov.defra.tracesx.certificate.utillities.CertificatePDFGenerator;
+import uk.gov.defra.tracesx.certificate.utillities.UriParser;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CertificateServiceTest {
 
-  @Mock CertificatePDFGenerator pdfGenerator;
-  @Mock BlobStorage blobStorage;
+  private static final String REFERENCE_NUMBER = "CED.GB.2018.1010007";
+  private static final URI CERT_LOCATION = java.net.URI.create("http://ins.gov/certificate/001");
+  private static final URI BASE_URI = URI.create("http://ins.gov");
+  private static final String CERT_HTML_CONTENT = "<html lang='en'>cert content</html>";
 
+  @Mock
+  private CertificatePDFGenerator pdfGenerator;
+  private Supplier<String> stringSupplier = () -> CERT_HTML_CONTENT;
+  private UriParser uriParser = new UriParser();
   private CertificateService certificateService;
-
-  @Before
-  public void setUp() {
-    initMocks(this);
-    certificateService = new CertificateService(pdfGenerator, blobStorage);
-  }
+  private byte[] pdfBytes = new byte[200];
 
   @Test
-  public void downloadCertificateReturnsExpectedByteArray() {
-    String referenceNumber = UUID.randomUUID().toString();
-    String etag = UUID.randomUUID().toString();
+  public void shouldCreateCertificateWithHtmlContent() {
+    givenService();
 
-    byte[] document = new byte[20];
-    new Random().nextBytes(document);
+    when(pdfGenerator.createPdf(CERT_HTML_CONTENT, BASE_URI)).thenReturn(pdfBytes);
 
-    Certificate expectedCertificate = new Certificate(referenceNumber, document);
+    final Certificate pdf = certificateService.getPdf(REFERENCE_NUMBER, stringSupplier, CERT_LOCATION);
 
-    when(pdfGenerator.generate(any())).thenReturn(document);
-    Certificate actualCertificate = certificateService.getCertificate(referenceNumber, etag);
-
-    assertEquals(expectedCertificate, actualCertificate);
-    assertEquals(actualCertificate.getDocument(), document);
+    assertThat(pdf.getReferenceNumber()).isEqualTo(REFERENCE_NUMBER);
+    assertThat(pdf.getDocument()).isEqualTo(pdfBytes);
+    verify(pdfGenerator).createPdf(CERT_HTML_CONTENT, BASE_URI);
   }
 
-  @Test
-  public void downloadCertificateCallsPdfGeneratorOnce() {
-    String referenceNumber = UUID.randomUUID().toString();
-    String etag = UUID.randomUUID().toString();
-
-    when(pdfGenerator.generate(any())).thenReturn("Some Binary Data".getBytes());
-
-    certificateService.getCertificate(referenceNumber, etag);
-
-    verify(pdfGenerator, times(1)).generate(any());
+  private void givenService() {
+    certificateService = new CertificateService(pdfGenerator, uriParser);
   }
 }

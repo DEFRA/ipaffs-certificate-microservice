@@ -1,47 +1,52 @@
 package uk.gov.defra.tracesx.certificate.resource;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
+import java.net.URI;
 import java.util.Random;
-import java.util.UUID;
-import org.junit.Before;
+import java.util.function.Supplier;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.springframework.http.HttpStatus;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 import uk.gov.defra.tracesx.certificate.dao.entities.Certificate;
 import uk.gov.defra.tracesx.certificate.service.CertificateService;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CertificateResourceTest {
 
-  @Mock CertificateService certificateService;
+  private static final String REFERENCE = "CED.GB.2018.1010007";
+  private static final String URL = "http://ins.com/certificate/001";
+  private static final URI URI = java.net.URI.create(URL);
 
-  @Before
-  public void setUp() {
-    initMocks(this);
-  }
+  @Mock
+  private CertificateService certificateService;
+  private CertificateResource resource;
+  private byte[] expectedBinaryData = new byte[20];
+  private Certificate certificate = new Certificate(REFERENCE, expectedBinaryData);
 
   @Test
-  public void downloadCertificateReturnsExpectedResponse() {
-    CertificateResource resource = new CertificateResource(certificateService);
-    String referenceNumber = UUID.randomUUID().toString();
-    String etag = UUID.randomUUID().toString();
+  public void shouldCreateCertificateWithHtmlContent() {
+    givenResource();
+    when(certificateService.getPdf(eq(REFERENCE), any(Supplier.class), eq(URI))).thenReturn(certificate);
 
-    byte[] expectedBinaryData = new byte[20];
+    final ResponseEntity<byte[]> response = resource.getCertificateFromContent(REFERENCE, "<htmlContent>", URL);
+
+    assertThat(response.getBody()).isEqualTo(expectedBinaryData);
+    ArgumentCaptor<Supplier<String>> argCaptor = ArgumentCaptor.forClass(Supplier.class);
+    verify(certificateService).getPdf(eq(REFERENCE), argCaptor.capture(), eq(URI));
+    assertThat(argCaptor.getValue().get()).isEqualTo("<htmlContent>");
+  }
+
+  private void givenResource() {
     new Random().nextBytes(expectedBinaryData);
-    Certificate expectedCertificate = new Certificate(referenceNumber, expectedBinaryData);
-
-    when(certificateService.getCertificate(any(), any())).thenReturn(expectedCertificate);
-
-
-    ResponseEntity response = resource.getCertificate(referenceNumber, etag);
-
-    assertThat(HttpStatus.OK, equalTo(response.getStatusCode()));
-    assertEquals((byte[]) response.getBody(), expectedBinaryData);
+    certificate = new Certificate(REFERENCE, expectedBinaryData);
+    resource = new CertificateResource(certificateService);
   }
 }
