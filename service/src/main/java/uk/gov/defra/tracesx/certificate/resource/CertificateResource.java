@@ -1,15 +1,19 @@
 package uk.gov.defra.tracesx.certificate.resource;
 
+import java.net.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.defra.tracesx.certificate.dao.entities.Certificate;
 import uk.gov.defra.tracesx.certificate.service.CertificateService;
 
 @RestController
@@ -25,14 +29,17 @@ public class CertificateResource {
     this.certificateService = certificateService;
   }
 
-  @GetMapping(value = "/{referenceNumber}/{etag}")
-  public ResponseEntity<byte[]> getCertificate(
-      @PathVariable("referenceNumber") String referenceNumber, @PathVariable("etag") String etag) {
-    LOGGER.info("GET referenceNumber: {}, etag: {}", referenceNumber, etag);
+  @PostMapping(value = "/{reference}")
+  public ResponseEntity<byte[]> getCertificateFromContent(
+      @PathVariable String reference,
+      @RequestBody String htmlContent,
+      @RequestParam String url) {
+    LOGGER.info("POST reference: {}", reference);
+    Certificate certificate = certificateService.getPdf(reference, () -> htmlContent, URI.create(url));
     return ResponseEntity.ok()
         .contentType(MediaType.APPLICATION_PDF)
-        .header(
-            HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + referenceNumber + ".pdf\"")
-        .body(certificateService.getCertificate(referenceNumber, etag).getDocument());
+        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + reference + ".pdf\"")
+        .body(certificate.getDocument());
   }
+
 }

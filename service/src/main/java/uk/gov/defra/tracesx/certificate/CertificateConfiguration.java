@@ -1,18 +1,23 @@
 package uk.gov.defra.tracesx.certificate;
 
+import java.io.FileNotFoundException;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import uk.gov.defra.tracesx.certificate.service.blobstorage.BlobStorage;
-import uk.gov.defra.tracesx.certificate.service.blobstorage.Storage;
+import org.springframework.web.client.RestTemplate;
+import uk.gov.defra.tracesx.certificate.utillities.FontFile;
 
 @Configuration
 @EnableConfigurationProperties
 public class CertificateConfiguration {
-  // Custom Configuration properties can be loaded here
 
   @Bean
-  public Storage getBlobStorage() {
-    return new BlobStorage();
+  public RestTemplate restTemplate() {
+    return new RestTemplate();
+  }
+
+  @Bean
+  public FontFile fontFile() throws FileNotFoundException {
+    return new FontFile("Arial", "Arial Unicode.ttf");
   }
 }

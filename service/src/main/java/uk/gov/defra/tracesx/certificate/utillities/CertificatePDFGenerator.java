@@ -1,36 +1,45 @@
 package uk.gov.defra.tracesx.certificate.utillities;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
+import static org.springframework.util.Assert.notNull;
+
+import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+import java.io.ByteArrayOutputStream;
+import java.net.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.NestedExceptionUtils;
 import org.springframework.stereotype.Component;
+import org.xml.sax.SAXParseException;
 
 @Component("pdfGenerator")
 public class CertificatePDFGenerator {
-  private static final Logger LOGGER = LoggerFactory.getLogger(CertificatePDFGenerator.class);
 
-  public byte[] generate(String referenceNumber) {
-    String filePath = "tempCertificate-" + referenceNumber + ".pdf";
+  private static final Logger LOGGER = LoggerFactory.getLogger(CertificatePDFGenerator.class);
+  private final FontFile fontFile;
+
+  public CertificatePDFGenerator(FontFile fontFile) {
+    notNull(fontFile, "fontFile is required");
+    this.fontFile = fontFile;
+  }
+
+  public byte[] createPdf(String htmlContent, URI baseUri) {
     try {
-      Document document = new Document();
-      PdfWriter.getInstance(document, new FileOutputStream(filePath));
-      document.open();
-      document.add(new Paragraph(referenceNumber));
-      document.close();
-      File pdf = new File(filePath);
-      byte[] file = Files.readAllBytes(pdf.toPath());
-      Files.delete(pdf.toPath());
-      return file;
-    } catch (IOException | DocumentException e) {
-      LOGGER.error(String.format("Exception occurred while generating PDF: %s", e.getMessage()));
-      return null;
+      long start = System.currentTimeMillis();
+      try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+        PdfRendererBuilder builder = new PdfRendererBuilder();
+        builder.withHtmlContent(htmlContent, baseUri.toString());
+        builder.useFont(fontFile.getInputStreamSupplier(), fontFile.getName());
+        builder.toStream(os);
+        builder.run();
+        LOGGER.info("conversion took: " + (System.currentTimeMillis() - start));
+        return os.toByteArray();
+      }
+    } catch (Exception ex) {
+      Throwable rootCause = NestedExceptionUtils.getRootCause(ex);
+      if(rootCause instanceof SAXParseException) {
+        throw new InvalidHtmlException("exception parsing html", ex);
+      }
+      throw new PdfGenerationException("exception creating pdf", ex);
     }
   }
 }
