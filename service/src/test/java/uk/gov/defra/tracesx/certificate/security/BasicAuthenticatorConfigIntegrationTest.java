@@ -39,6 +39,9 @@ public class BasicAuthenticatorConfigIntegrationTest {
   @Autowired
   FilterChainProxy springSecurityFilterChain;
 
+  @Autowired
+  CustomAuthenticationManager customAuthenticationManager;
+
   @Before
   public void setup() {
     this.request = new MockHttpServletRequest("GET", "");
@@ -57,20 +60,20 @@ public class BasicAuthenticatorConfigIntegrationTest {
   @Test
   public void testRequestRequiresAuthorization() throws IOException, ServletException {
     //Given
-    loadConfig(BasicAuthenticatorConfig.class);
+    loadConfig(CustomAuthenticationManager.class, CustomBasicAuthenticationFilter.class, BasicAuthenticatorConfig.class);
     this.request.setServletPath("/");
 
     //When
     this.springSecurityFilterChain.doFilter(this.request, this.response, this.chain);
 
     //Then
-    assertEquals(HttpServletResponse.SC_UNAUTHORIZED, this.response.getStatus());
+    assertEquals(HttpServletResponse.SC_FORBIDDEN, this.response.getStatus());
   }
 
   @Test
   public void verifyBasicAuthFilterCoversAllPaths() throws Exception {
     //Given
-    loadConfig(BasicAuthenticatorConfig.class);
+    loadConfig(CustomAuthenticationManager.class, CustomBasicAuthenticationFilter.class, BasicAuthenticatorConfig.class);
     
     //When
     List<SecurityFilterChain> filterChain = this.springSecurityFilterChain.getFilterChains();
@@ -82,8 +85,8 @@ public class BasicAuthenticatorConfigIntegrationTest {
     FilterSecurityInterceptor filterSecurityInterceptor = null;
     List<Filter> filters = filterChain.get(0).getFilters();
     for(Filter currentFilter: filters){
-      if (currentFilter.getClass() == BasicAuthenticationFilter.class)
-        basicAuthenticationFilter = (BasicAuthenticationFilter) currentFilter;
+      if (currentFilter.getClass() == CustomBasicAuthenticationFilter.class)
+        basicAuthenticationFilter = (CustomBasicAuthenticationFilter) currentFilter;
       if (currentFilter.getClass() == FilterSecurityInterceptor.class)
         filterSecurityInterceptor = (FilterSecurityInterceptor) currentFilter;
     }
@@ -106,7 +109,7 @@ public class BasicAuthenticatorConfigIntegrationTest {
   @Test
   public void csrfIsDisabled() throws IOException, ServletException {
     //Given
-    loadConfig(BasicAuthenticatorConfig.class);
+    loadConfig(CustomAuthenticationManager.class, CustomBasicAuthenticationFilter.class, BasicAuthenticatorConfig.class);
 
     //When
     List<SecurityFilterChain> filterChain = this.springSecurityFilterChain.getFilterChains();
