@@ -15,11 +15,15 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.GlobalAuthenticationConfigurerAdapter;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.DefaultFilterInvocationSecurityMetadataSource;
@@ -57,20 +61,20 @@ public class BasicAuthenticatorConfigIntegrationTest {
   @Test
   public void testRequestRequiresAuthorization() throws IOException, ServletException {
     //Given
-    loadConfig(BasicAuthenticatorConfig.class);
+    loadConfig(AuthenticationManagerCustomizer.class, BasicAuthenticatorConfig.class);
     this.request.setServletPath("/");
 
     //When
     this.springSecurityFilterChain.doFilter(this.request, this.response, this.chain);
 
     //Then
-    assertEquals(HttpServletResponse.SC_UNAUTHORIZED, this.response.getStatus());
+    assertEquals(HttpServletResponse.SC_FORBIDDEN, this.response.getStatus());
   }
 
   @Test
   public void verifyBasicAuthFilterCoversAllPaths() throws Exception {
     //Given
-    loadConfig(BasicAuthenticatorConfig.class);
+    loadConfig(AuthenticationManagerCustomizer.class, BasicAuthenticatorConfig.class);
     
     //When
     List<SecurityFilterChain> filterChain = this.springSecurityFilterChain.getFilterChains();
@@ -82,8 +86,8 @@ public class BasicAuthenticatorConfigIntegrationTest {
     FilterSecurityInterceptor filterSecurityInterceptor = null;
     List<Filter> filters = filterChain.get(0).getFilters();
     for(Filter currentFilter: filters){
-      if (currentFilter.getClass() == BasicAuthenticationFilter.class)
-        basicAuthenticationFilter = (BasicAuthenticationFilter) currentFilter;
+      if (currentFilter.getClass() == CustomBasicAuthenticationFilter.class)
+        basicAuthenticationFilter = (CustomBasicAuthenticationFilter) currentFilter;
       if (currentFilter.getClass() == FilterSecurityInterceptor.class)
         filterSecurityInterceptor = (FilterSecurityInterceptor) currentFilter;
     }
@@ -106,7 +110,7 @@ public class BasicAuthenticatorConfigIntegrationTest {
   @Test
   public void csrfIsDisabled() throws IOException, ServletException {
     //Given
-    loadConfig(BasicAuthenticatorConfig.class);
+    loadConfig(AuthenticationManagerCustomizer.class, BasicAuthenticatorConfig.class);
 
     //When
     List<SecurityFilterChain> filterChain = this.springSecurityFilterChain.getFilterChains();
@@ -129,4 +133,16 @@ public class BasicAuthenticatorConfigIntegrationTest {
 		this.context.refresh();
 		this.context.getAutowireCapableBeanFactory().autowireBean(this);
 	}
+
+    @Configuration
+    @Order(-1)
+    protected static class AuthenticationManagerCustomizer
+            extends GlobalAuthenticationConfigurerAdapter {
+
+        @Override
+        public void init(AuthenticationManagerBuilder auth) throws Exception {
+            auth.inMemoryAuthentication().withUser("username").password("password").roles("USER");
+        }
+    }
+
 }
