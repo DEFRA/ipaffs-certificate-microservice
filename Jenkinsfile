@@ -6,5 +6,5 @@ javaPipeline {
     SERVICE_VERSION = "1.0"
     ENVIRONMENT = "Sandpit"
     SELENIUM_BRANCH = "master"
-    WAIT_FOR_VERSION = "true"
+    WAIT_FOR_VERSION = "false"
 }
