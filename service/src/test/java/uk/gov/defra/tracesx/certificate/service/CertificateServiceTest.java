@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.function.Supplier;
 import org.junit.Test;
@@ -30,7 +31,7 @@ public class CertificateServiceTest {
   private byte[] pdfBytes = new byte[200];
 
   @Test
-  public void shouldCreateCertificateWithHtmlContent() {
+  public void shouldCreateCertificateWithHtmlContent() throws UnsupportedEncodingException {
     givenService();
 
     when(pdfGenerator.createPdf(CERT_HTML_CONTENT, BASE_URI)).thenReturn(pdfBytes);

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.UnsupportedEncodingException;
+
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = CertificateTestConfig.class)
 public class CertificateServiceTest {
@@ -18,7 +20,7 @@ public class CertificateServiceTest {
   private CertificateApi certificateApi;
 
   @Test
-  public void shouldCreateCertificateFromHtml() {
+  public void shouldCreateCertificateFromHtml() throws UnsupportedEncodingException {
 
     String htmlContent = "<p>hello world</p>";
     String callBackUrl = "";
@@ -28,7 +30,7 @@ public class CertificateServiceTest {
   }
 
   @Test
-  public void shouldReturnBadRequestIfHtmlIsInvalid() {
+  public void shouldReturnBadRequestIfHtmlIsInvalid() throws UnsupportedEncodingException {
     String htmlContent = "<p>hello world</p";
     String callBackUrl = "";
     Response response = certificateApi.getPdf(htmlContent, "any-ref", callBackUrl);
@@ -37,7 +39,7 @@ public class CertificateServiceTest {
   }
 
   @Test
-  public void shouldCreateCertificateWithFont() {
+  public void shouldCreateCertificateWithFont() throws UnsupportedEncodingException {
     String htmlContent = "<p style='font-family: Arial Unicode MS;'>hello world</p>";
     String callBackUrl = "";
     Response response = certificateApi.getPdf(htmlContent, "any-ref", callBackUrl);

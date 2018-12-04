@@ -16,8 +16,7 @@ public class BasicAuthenticatorConfig extends WebSecurityConfigurerAdapter {
             .anyRequest()
             .authenticated()
             .and()
-            .httpBasic()
-            .and()
+            .addFilter(new CustomBasicAuthenticationFilter(authenticationManager()))
             .csrf()
             .disable();
   }
