@@ -2,20 +2,26 @@ package uk.gov.defra.tracesx.certificate.dao.entities;
 
 import java.util.Arrays;
 import java.util.Objects;
+import uk.gov.defra.tracesx.certificate.resource.ReferenceNumber;
 
 public class Certificate {
 
-  private String referenceNumber;
+  private ReferenceNumber referenceNumber;
 
   private byte[] document;
 
+  public Certificate(ReferenceNumber referenceNumber, byte[] document) {
+    this.referenceNumber = referenceNumber;
+    this.document = document;
+  }
+
   public Certificate() {}
 
-  public String getReferenceNumber() {
+  public ReferenceNumber getReferenceNumber() {
     return referenceNumber;
   }
 
-  public void setReferenceNumber(String referenceNumber) {
+  public void setReferenceNumber(ReferenceNumber referenceNumber) {
     this.referenceNumber = referenceNumber;
   }
 
@@ -45,10 +51,5 @@ public class Certificate {
     int result = Objects.hash(referenceNumber);
     result = 31 * result + Arrays.hashCode(document);
     return result;
-  }
-
-  public Certificate(String referenceNumber, byte[] document) {
-    this.referenceNumber = referenceNumber;
-    this.document = document;
   }
 }

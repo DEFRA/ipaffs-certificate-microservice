@@ -3,6 +3,7 @@ package uk.gov.defra.tracesx.certificate.resource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -21,7 +22,7 @@ import uk.gov.defra.tracesx.certificate.service.CertificateService;
 @RunWith(MockitoJUnitRunner.class)
 public class CertificateResourceTest {
 
-  private static final String REFERENCE = "CED.GB.2018.1010007";
+  private static final ReferenceNumber REFERENCE = new ReferenceNumber("CED.GB.2018.1010007");
   private static final String URL = "http://ins.com/certificate/001";
   private static final URI URI = java.net.URI.create(URL);
 
@@ -32,21 +33,23 @@ public class CertificateResourceTest {
   private Certificate certificate = new Certificate(REFERENCE, expectedBinaryData);
 
   @Test
-  public void shouldCreateCertificateWithHtmlContent() {
-    givenResource();
+  public void shouldCreateCertificateWithHtmlContent() throws Exception {
+    givenValidResource();
     when(certificateService.getPdf(eq(REFERENCE), any(Supplier.class), eq(URI))).thenReturn(certificate);
 
-    final ResponseEntity<byte[]> response = resource.getCertificateFromContent(REFERENCE, "<htmlContent>", URL);
+    final ResponseEntity<byte[]> response = resource.getCertificateFromContent(
+        REFERENCE, "<html></html>", URL);
 
     assertThat(response.getBody()).isEqualTo(expectedBinaryData);
     ArgumentCaptor<Supplier<String>> argCaptor = ArgumentCaptor.forClass(Supplier.class);
     verify(certificateService).getPdf(eq(REFERENCE), argCaptor.capture(), eq(URI));
-    assertThat(argCaptor.getValue().get()).isEqualTo("<htmlContent>");
+    assertThat(argCaptor.getValue().get()).isEqualTo("<html></html>");
   }
 
-  private void givenResource() {
+  private void givenValidResource() {
     new Random().nextBytes(expectedBinaryData);
     certificate = new Certificate(REFERENCE, expectedBinaryData);
+    certificateService = mock(CertificateService.class);
     resource = new CertificateResource(certificateService);
   }
 }
