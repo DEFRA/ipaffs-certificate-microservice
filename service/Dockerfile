@@ -1,4 +1,4 @@
-FROM baseimagesrepo/java:1.8.0
+FROM baseimagesrepo/java:alpine3.8-java8.181
 
 RUN mkdir -p /usr/src/certificate-service
 WORKDIR /usr/src/certificate-service

@@ -1,4 +1,4 @@
-FROM baseimagesrepo/java:1.8.0
+FROM baseimagesrepo/java:alpine3.8-java8.181
 
 # Copy and unpack Liquibase
 ADD database/lib/liquibase-3.6.2-bin.tar.gz /opt/liquibase
