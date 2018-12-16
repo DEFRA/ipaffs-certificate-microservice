@@ -13,8 +13,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.defra.tracesx.certificate.dao.entities.Certificate;
 import uk.gov.defra.tracesx.certificate.resource.ReferenceNumber;
-import uk.gov.defra.tracesx.certificate.utillities.CertificatePDFGenerator;
-import uk.gov.defra.tracesx.certificate.utillities.UriParser;
+import uk.gov.defra.tracesx.certificate.utilities.CertificatePDFGenerator;
+import uk.gov.defra.tracesx.certificate.utilities.UriParser;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CertificateServiceTest {

@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import org.junit.Test;
-import uk.gov.defra.tracesx.certificate.utillities.InvalidReferenceNumberException;
+import uk.gov.defra.tracesx.certificate.utilities.exception.InvalidReferenceNumberException;
 
 public class ReferenceNumberTest {
 

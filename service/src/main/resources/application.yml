@@ -22,6 +22,10 @@ spring:
     user:
       name: ${SERVICE_USER}
       password: ${SERVICE_PASSWORD}
+    jwt:
+      jwks: ${SECURITY_JWT_JWKS}
+      iss: ${SECURITY_JWT_ISS}
+      aud: ${SECURITY_JWT_AUD}
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
     url: jdbc:sqlserver://${DB_HOST}:${DB_PORT};databaseName=${DB_NAME};user=${DB_USER};password=${DB_PASSWORD};trustServerCertificate=${TRUST_SERVER_CERTIFICATE};hostNameInCertificate=*.database.windows.net;encrypt=true;
@@ -30,10 +34,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.SQLServer2008Dialect
-service:
-  security:
-      token-feature-switch: false
-      default-roles: inspector, importer
 permissions:
   service:
    scheme: ${PERMISSIONS_SERVICE_SCHEME}
@@ -43,3 +43,7 @@ permissions:
    password: ${PERMISSIONS_SERVICE_PASSWORD}
    connectionTimeout: ${PERMISSIONS_SERVICE_CONNECTION_TIMEOUT}
    readTimeout: ${PERMISSIONS_SERVICE_CONNECTION_TIMEOUT}
+service:
+  security:
+    token-feature-switch: false
+    default-roles: inspector, importer

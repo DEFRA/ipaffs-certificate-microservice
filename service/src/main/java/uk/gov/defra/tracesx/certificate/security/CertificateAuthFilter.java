@@ -37,24 +37,25 @@ public class CertificateAuthFilter extends OncePerRequestFilter {
   @Value("${service.security.default-roles}")
   private String[] defaultRoles;
 
-  @Autowired
-  private AuthenticationFacade authenticationFacade;
-  @Autowired
-  private PermissionsService permissionsService;
+  @Autowired private AuthenticationFacade authenticationFacade;
+
+  @Autowired private PermissionsService permissionsService;
 
   private static final Logger EVENT_LOGGER = LoggerFactory.getLogger(CertificateAuthFilter.class);
 
   @Override
-  public void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain)
-          throws IOException, ServletException {
+  public void doFilterInternal(
+      final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain)
+      throws IOException, ServletException {
     List<String> roles = EMPTY_LIST;
     if (!securityTokenFeatureSwitch) {
       roles = asList(defaultRoles);
     } else {
       final Authentication authentication = authenticationFacade.getAuthentication();
-      final UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+      final UserDetails userDetails = (UserDetails) authentication.getPrincipal();
       if (userDetails != null) {
-        roles = userDetails
+        roles =
+            userDetails
                 .getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
@@ -69,13 +70,13 @@ public class CertificateAuthFilter extends OncePerRequestFilter {
     try {
       final String authorisationToken = request.getHeader(AUTHORIZATION);
       final List<SimpleGrantedAuthority> perms =
-              roles
-                      .stream()
-                      .map(role -> permissionsService.permissionsList(role, authorisationToken))
-                      .flatMap(List::stream)
-                      .distinct()
-                      .map(SimpleGrantedAuthority::new)
-                      .collect(toList());
+          roles
+              .stream()
+              .map(role -> permissionsService.permissionsList(role, authorisationToken))
+              .flatMap(List::stream)
+              .distinct()
+              .map(SimpleGrantedAuthority::new)
+              .collect(toList());
 
       if (perms.isEmpty()) {
         EVENT_LOGGER.error(PERMISSIONS_ARE_EMPTY);
@@ -85,12 +86,13 @@ public class CertificateAuthFilter extends OncePerRequestFilter {
       authenticationFacade.replaceAuthorities(perms);
       chain.doFilter(request, response);
     } catch (JSONException e) {
-      EVENT_LOGGER.error("Error in CertificateAuthFilter ", e);
+      EVENT_LOGGER.error("Error in Certificate Service Authorisation ", e);
       sendUnauthorisedResponse(response, e.getMessage());
     }
   }
 
-  private void sendUnauthorisedResponse(HttpServletResponse httpResponse, String errorMessage) throws IOException {
+  private void sendUnauthorisedResponse(HttpServletResponse httpResponse, String errorMessage)
+      throws IOException {
     EVENT_LOGGER.info("Unauthorised request.");
     httpResponse.sendError(SC_UNAUTHORIZED, errorMessage);
   }

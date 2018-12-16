@@ -49,6 +49,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         request);
   }
 
+  @ExceptionHandler(value = {UnauthorizedException.class})
+  protected ResponseEntity<Object> handleUnauthorizedException(UnauthorizedException ex, WebRequest request) {
+    return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
+  }
+
   private String getSchemaErrors(ValidationException e) {
     String errorsOutput;
     if (e.getCausingExceptions().size() > 0) {

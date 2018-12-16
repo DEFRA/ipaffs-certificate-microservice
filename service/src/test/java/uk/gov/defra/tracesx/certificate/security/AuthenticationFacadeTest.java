@@ -14,42 +14,41 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextImpl;
+
 @RunWith(MockitoJUnitRunner.class)
 public class AuthenticationFacadeTest {
 
-    private final SecurityContextImpl securityContext = new SecurityContextImpl();
-    private static final String CERTIFICATE_CREATE = "certificate.create";
+  private final SecurityContextImpl securityContext = new SecurityContextImpl();
+  private static final String CERTIFICATE_CREATE = "certificate.create";
 
-    @Mock
-    private Authentication authentication;
+  @Mock private Authentication authentication;
 
-    @InjectMocks
-    private AuthenticationFacade authenticationFacade;
+  @InjectMocks private AuthenticationFacade authenticationFacade;
 
-    @Before
-    public void setup() {
-        securityContext.setAuthentication(authentication);
-        setContext(securityContext);
-    }
+  @Before
+  public void setup() {
+    securityContext.setAuthentication(authentication);
+    setContext(securityContext);
+  }
 
-    @Test
-    public void testWhenGetAuthenticationThenReturnsAuthentication() {
+  @Test
+  public void testWhenGetAuthenticationThenReturnsAuthentication() {
 
-        final Authentication facadeAuthentication = authenticationFacade.getAuthentication();
-        assertThat(facadeAuthentication).isNotNull();
-        assertThat(facadeAuthentication).isEqualTo(authentication);
-    }
+    final Authentication facadeAuthentication = authenticationFacade.getAuthentication();
+    assertThat(facadeAuthentication).isNotNull();
+    assertThat(facadeAuthentication).isEqualTo(authentication);
+  }
 
-    @Test
-    public void testWhenReplaceAuthoritiesThenGetAuthorityReturnsNewPermissions() {
-        final List<SimpleGrantedAuthority> grantedAuthoritiesList =
-                new ArrayList<>();
-        final SimpleGrantedAuthority authority = new SimpleGrantedAuthority(CERTIFICATE_CREATE);
-        grantedAuthoritiesList.add(authority);
+  @Test
+  public void testWhenReplaceAuthoritiesThenGetAuthorityReturnsNewPermissions() {
+    final List<SimpleGrantedAuthority> grantedAuthoritiesList = new ArrayList<>();
+    final SimpleGrantedAuthority authority = new SimpleGrantedAuthority(CERTIFICATE_CREATE);
+    grantedAuthoritiesList.add(authority);
 
-        authenticationFacade.replaceAuthorities(grantedAuthoritiesList);
+    authenticationFacade.replaceAuthorities(grantedAuthoritiesList);
 
-        assertThat(securityContext.getAuthentication().getAuthorities().iterator().next().getAuthority()).isEqualTo(
-            CERTIFICATE_CREATE);
-    }
+    assertThat(
+            securityContext.getAuthentication().getAuthorities().iterator().next().getAuthority())
+        .isEqualTo(CERTIFICATE_CREATE);
+  }
 }
