@@ -16,6 +16,8 @@ import java.io.UnsupportedEncodingException;
 @ContextConfiguration(classes = CertificateTestConfig.class)
 public class CertificateServiceTest {
 
+  private final String REFERENCE = "CVEDA.GB.2018.1234567";
+
   @Autowired
   private CertificateApi certificateApi;
 
@@ -24,16 +26,16 @@ public class CertificateServiceTest {
 
     String htmlContent = "<p>hello world</p>";
     String callBackUrl = "";
-    Response response = certificateApi.getPdf(htmlContent, "any-ref", callBackUrl);
+    Response response = certificateApi.getPdf(htmlContent, REFERENCE, callBackUrl);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.SC_OK);
   }
 
   @Test
   public void shouldReturnBadRequestIfHtmlIsInvalid() throws UnsupportedEncodingException {
-    String htmlContent = "<p>hello world</p";
+    String htmlContent = "<p hello world";
     String callBackUrl = "";
-    Response response = certificateApi.getPdf(htmlContent, "any-ref", callBackUrl);
+    Response response = certificateApi.getPdf(htmlContent, REFERENCE, callBackUrl);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.SC_BAD_REQUEST);
   }
@@ -42,7 +44,7 @@ public class CertificateServiceTest {
   public void shouldCreateCertificateWithFont() throws UnsupportedEncodingException {
     String htmlContent = "<p style='font-family: Arial Unicode MS;'>hello world</p>";
     String callBackUrl = "";
-    Response response = certificateApi.getPdf(htmlContent, "any-ref", callBackUrl);
+    Response response = certificateApi.getPdf(htmlContent, REFERENCE, callBackUrl);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.SC_OK);
   }

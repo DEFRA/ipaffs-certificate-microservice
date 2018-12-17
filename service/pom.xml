@@ -58,6 +58,11 @@
       </exclusions>
     </dependency>
     <dependency>
+      <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+      <artifactId>owasp-java-html-sanitizer</artifactId>
+      <version>20181114.1</version>
+    </dependency>
+    <dependency>
       <groupId>com.microsoft.sqlserver</groupId>
       <artifactId>mssql-jdbc</artifactId>
       <version>${mssql.jdbc.version}</version>
@@ -122,19 +127,16 @@
       <artifactId>openhtmltopdf-core</artifactId>
       <version>${openhtml.version}</version>
     </dependency>
-
     <dependency>
       <groupId>com.openhtmltopdf</groupId>
       <artifactId>openhtmltopdf-pdfbox</artifactId>
       <version>${openhtml.version}</version>
     </dependency>
-
     <dependency>
       <groupId>com.openhtmltopdf</groupId>
       <artifactId>openhtmltopdf-java2d</artifactId>
       <version>${openhtml.version}</version>
     </dependency>
-
     <dependency>
       <groupId>com.openhtmltopdf</groupId>
       <artifactId>openhtmltopdf-jsoup-dom-converter</artifactId>

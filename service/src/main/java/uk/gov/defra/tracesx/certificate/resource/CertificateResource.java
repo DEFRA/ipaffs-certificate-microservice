@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.defra.tracesx.certificate.dao.entities.Certificate;
 import uk.gov.defra.tracesx.certificate.service.CertificateService;
+import uk.gov.defra.tracesx.certificate.utillities.HtmlValidator;
 
 @RestController
 @RequestMapping("/certificate")
@@ -33,15 +34,17 @@ public class CertificateResource {
   @PostMapping(value = "/{reference}")
   @PreAuthorize("hasAuthority('certificate.create')")
   public ResponseEntity<byte[]> getCertificateFromContent(
-      @PathVariable String reference,
-      @RequestBody String htmlContent,
-      @RequestParam String url) {
+      @PathVariable ReferenceNumber reference,
+      @RequestBody String unsafeHtmlContent,
+      @RequestParam String url) throws Exception {
+
     LOGGER.info("POST reference: {}", reference);
-    Certificate certificate = certificateService.getPdf(reference, () -> htmlContent, URI.create(url));
+    HtmlValidator.validate(unsafeHtmlContent);
+    Certificate certificate = certificateService.getPdf(reference, () -> Sanitizer.sanitize(unsafeHtmlContent), URI.create(url));
+
     return ResponseEntity.ok()
         .contentType(MediaType.APPLICATION_PDF)
-        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + reference + ".pdf\"")
+        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + reference.valueOf() + ".pdf\"")
         .body(certificate.getDocument());
   }
-
 }
