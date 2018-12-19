@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @EqualsAndHashCode
 public class IdTokenUserDetails implements UserDetails {
 
-  private List<SimpleGrantedAuthority> authorities;
+  private List<GrantedAuthority> authorities;
   private String username; // upn
   private String idToken;
   private String displayName; // name

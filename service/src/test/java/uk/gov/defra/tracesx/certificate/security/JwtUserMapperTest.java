@@ -15,6 +15,7 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import uk.gov.defra.tracesx.certificate.exceptions.InsSecurityException;
 import uk.gov.defra.tracesx.certificate.security.jwt.JwtUserMapper;
@@ -23,14 +24,15 @@ import uk.gov.defra.tracesx.certificate.security.jwt.JwtUserMapper;
 public class JwtUserMapperTest {
 
   private Map<String, Object> decoded;
-  private JwtUserMapper jwtUserMapper = new JwtUserMapper();
+  private RoleToAuthorityMapper roleToAuthorityMapper = new RoleToAuthorityMapper();
+  private JwtUserMapper jwtUserMapper = new JwtUserMapper(roleToAuthorityMapper);
 
   private static final String ID_TOKEN = "adfgsdf.dfgsdrgerg.dfgdfgd";
   private static final String USER_OBJECT_ID = "e9f6447d-2979-4322-8e52-307dafdef649";
   private static final String DISPLAY_NAME = "Joseph William Token";
   private static final String USERNAME = "jtoken@tenant.com";
   private static final List<String> ROLES = Arrays.asList("ROLE1", "ROLE2");
-  private static final List<SimpleGrantedAuthority> AUTHORITIES =
+  private static final List<GrantedAuthority> AUTHORITIES =
       Collections.unmodifiableList(
           ROLES.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
 
@@ -55,6 +57,13 @@ public class JwtUserMapperTest {
             .username(USERNAME)
             .build();
     assertThat(user).isEqualTo(expected);
+  }
+
+  @Test
+  public void createUser_rolesIsNotAList_isFullyPopulated() {
+    decoded.put("roles", "NotAList");
+    assertThatExceptionOfType(InsSecurityException.class)
+        .isThrownBy(() -> jwtUserMapper.createUser(decoded, ID_TOKEN));
   }
 
   @DataPoints("API Methods")
