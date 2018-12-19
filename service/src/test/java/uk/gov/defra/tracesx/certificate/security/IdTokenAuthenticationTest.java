@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.Test;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 public class IdTokenAuthenticationTest {
@@ -14,7 +15,7 @@ public class IdTokenAuthenticationTest {
   private static final String ID_TOKEN = "adfgsdf.dfgsdrgerg.dfgdfgd";
   private static final String USER_OBJECT_ID = "e9f6447d-2979-4322-8e52-307dafdef649";
   private static final List<String> ROLES = Arrays.asList("ROLE1", "ROLE2");
-  private static final List<SimpleGrantedAuthority> AUTHORITIES =
+  private static final List<GrantedAuthority> AUTHORITIES =
       Collections.unmodifiableList(
           ROLES.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
 
