@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.defra.tracesx.certificate.dao.entities.Certificate;
 import uk.gov.defra.tracesx.certificate.service.CertificateService;
-import uk.gov.defra.tracesx.certificate.utillities.HtmlValidator;
+import uk.gov.defra.tracesx.certificate.utilities.HtmlValidator;
 
 @RestController
 @RequestMapping("/certificate")

@@ -10,15 +10,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthenticationFacade {
 
-     Authentication getAuthentication() {
-        return SecurityContextHolder.getContext().getAuthentication();
-    }
+  Authentication getAuthentication() {
+    return SecurityContextHolder.getContext().getAuthentication();
+  }
 
-     void replaceAuthorities(List<SimpleGrantedAuthority> permissions) {
-        SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken(
-                        getAuthentication().getPrincipal(),
-                        getAuthentication().getCredentials(),
-                        permissions));
-    }
+  void replaceAuthorities(List<SimpleGrantedAuthority> permissions) {
+    SecurityContextHolder.getContext().setAuthentication(
+            new UsernamePasswordAuthenticationToken(
+                getAuthentication().getPrincipal(),
+                getAuthentication().getCredentials(),
+                permissions));
+  }
 }

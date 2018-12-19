@@ -7,5 +7,5 @@ export BASE_SERVICE_DB_PASSWORD=baseServicePassword1!
 export BASE_SERVICE_TABLE_NAME=importnotification
 
 export SERVICE_PORT=4861
-export SERVICE_USER=baseapi
+export SERVICE_USER=importer
 export SERVICE_PASSWORD=password123

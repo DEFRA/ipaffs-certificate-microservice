@@ -3,7 +3,7 @@ package uk.gov.defra.tracesx.certificate.resource;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
-import uk.gov.defra.tracesx.certificate.utillities.InvalidReferenceNumberException;
+import uk.gov.defra.tracesx.certificate.utilities.exception.InvalidReferenceNumberException;
 
 public class ReferenceNumber {
 
@@ -16,7 +16,7 @@ public class ReferenceNumber {
   }
 
   public ReferenceNumber(String referenceNumber) {
-    if(StringUtils.isBlank(referenceNumber) || !PATTERN.matcher(referenceNumber).matches()) {
+    if (StringUtils.isBlank(referenceNumber) || !PATTERN.matcher(referenceNumber).matches()) {
       throw new InvalidReferenceNumberException(referenceNumber);
     }
     this.referenceNumber = referenceNumber;

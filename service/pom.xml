@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>uk.gov.defra.tracesx</groupId>
   <artifactId>TracesX-Certificate</artifactId>
@@ -52,8 +54,8 @@
       <scope>test</scope>
       <exclusions>
         <exclusion>
-            <groupId>com.vaadin.external.google</groupId>
-            <artifactId>android-json</artifactId>
+          <groupId>com.vaadin.external.google</groupId>
+          <artifactId>android-json</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -142,6 +144,56 @@
       <artifactId>openhtmltopdf-jsoup-dom-converter</artifactId>
       <version>${openhtml.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.9.7</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.16.20</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>${assertj.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- used to decode and validate jwt tokens -->
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-jwt</artifactId>
+      <version>1.0.9.RELEASE</version>
+    </dependency>
+    <!-- used to fetch public signing keys from jwks urls -->
+    <dependency>
+      <groupId>com.auth0</groupId>
+      <artifactId>jwks-rsa</artifactId>
+      <version>0.3.0</version>
+    </dependency>
+    <!-- jjwt is only needed in the test scope to creating tokens used by unit tests -->
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-api</artifactId>
+      <version>${jjwt.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-impl</artifactId>
+      <version>${jjwt.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-jackson</artifactId>
+      <version>${jjwt.version}</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <properties>
@@ -163,6 +215,8 @@
     <owasp.version>3.3.2</owasp.version>
     <org.antlr.version>3.2</org.antlr.version>
     <mssql.jdbc.version>7.0.0.jre8</mssql.jdbc.version>
+    <jjwt.version>0.10.5</jjwt.version>
+    <assertj.version>3.11.1</assertj.version>
   </properties>
   <build>
     <resources>
@@ -174,7 +228,7 @@
     <!-- Keep filename static to avoid updating the Dockerfile -->
     <finalName>TracesX_Certificate</finalName>
     <plugins>
-     <plugin>
+      <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>${springboot.version}</version>
@@ -268,11 +322,6 @@
           </execution>
         </executions>
         <dependencies>
-          <dependency>
-            <groupId>org.owasp</groupId>
-            <artifactId>dependency-check-maven</artifactId>
-            <version>${owasp.version}</version>
-          </dependency>
         </dependencies>
       </plugin>
       <plugin>

@@ -14,40 +14,39 @@ import org.springframework.web.method.HandlerMethod;
 
 public class PreAuthorizeCheckerTest {
 
-    @Mock
-    private HttpServletRequest requestMock;
-    @Mock
-    private HttpServletResponse responseMock;
+  private static final String PRE_AUTHORIZE_CHECKER_METHOD = "preAuthorizeCheckerMethod";
+  private static final String PRE_AUTHORIZE_CHECKER_METHOD_WITH_ANNOTATION =
+      "preAuthorizeCheckerMethodWithAnnotation";
 
-    @InjectMocks
-    PreAuthorizeChecker testee;
+  @Mock private HttpServletRequest requestMock;
+  @Mock private HttpServletResponse responseMock;
 
-    @Before
-    public void setUp() {
-        initMocks(this);
-    }
+  @InjectMocks PreAuthorizeChecker testee;
 
-    public void preAuthorizeCheckerMethod() {
+  @Before
+  public void setUp() {
+    initMocks(this);
+  }
 
-    }
-    @PreAuthorize("hasAuthority('certificate.create')")
-    public void preAuthorizeCheckerMethodWithAnnotation() {
+  public void preAuthorizeCheckerMethod() {}
 
-    }
+  @PreAuthorize("hasAuthority('certificate.create')")
+  public void preAuthorizeCheckerMethodWithAnnotation() {}
 
-    @Test(expected = RuntimeException.class)
-    public void whenPreAuthorizeIsNotDefinedThenThrowError() throws Exception {
+  @Test(expected = RuntimeException.class)
+  public void whenPreAuthorizeIsNotDefinedThenThrowError() throws Exception {
 
-        HandlerMethod handlerMethod = new HandlerMethod(this, this.getClass().getMethod(
-                "preAuthorizeCheckerMethod"));
-        testee.preHandle(requestMock, responseMock, handlerMethod);
-    }
+    HandlerMethod handlerMethod =
+        new HandlerMethod(this, this.getClass().getMethod(PRE_AUTHORIZE_CHECKER_METHOD));
+    testee.preHandle(requestMock, responseMock, handlerMethod);
+  }
 
-    @Test
-    public void whenPreAuthorizeIsDefinedThenReturnTrue() throws Exception {
+  @Test
+  public void whenPreAuthorizeIsDefinedThenReturnTrue() throws Exception {
 
-        HandlerMethod handlerMethod = new HandlerMethod(this, this.getClass().getMethod(
-                "preAuthorizeCheckerMethodWithAnnotation"));
-        assertThat(testee.preHandle(requestMock, responseMock, handlerMethod)).isTrue();
-    }
+    HandlerMethod handlerMethod =
+        new HandlerMethod(
+            this, this.getClass().getMethod(PRE_AUTHORIZE_CHECKER_METHOD_WITH_ANNOTATION));
+    assertThat(testee.preHandle(requestMock, responseMock, handlerMethod)).isTrue();
+  }
 }

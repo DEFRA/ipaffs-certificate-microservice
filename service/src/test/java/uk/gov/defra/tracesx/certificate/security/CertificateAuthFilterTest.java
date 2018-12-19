@@ -29,64 +29,56 @@ import uk.gov.defra.tracesx.certificate.service.PermissionsService;
 @RunWith(MockitoJUnitRunner.class)
 public class CertificateAuthFilterTest {
 
-    private static final String READ = "read";
-    private static final String PERMISSIONS_ARE_EMPTY = "Permissions are empty";
-    private static final String SECURITY_TOKEN_FEATURE_SWITCH = "securityTokenFeatureSwitch";
-    private static final String CERTIFICATE_CREATE = "certificate.create";
+  private static final String READ = "read";
+  private static final String PERMISSIONS_ARE_EMPTY = "Permissions are empty";
+  private static final String SECURITY_TOKEN_FEATURE_SWITCH = "securityTokenFeatureSwitch";
+  private static final String CERTIFICATE_CREATE = "certificate.create";
 
-    @Mock
-    private HttpServletRequest request;
-    @Mock
-    private HttpServletResponse response;
-    @Mock
-    private FilterChain filterChain;
-    @Mock
-    private Authentication authentication;
+  @Mock private HttpServletRequest request;
+  @Mock private HttpServletResponse response;
+  @Mock private FilterChain filterChain;
+  @Mock private Authentication authentication;
 
-    @Mock
-    private UserDetails userDetails;
-    @Mock
-    private PermissionsService permissionsService;
+  @Mock private UserDetails userDetails;
+  @Mock private PermissionsService permissionsService;
 
-    @Mock
-    private AuthenticationFacade authenticationFacade;
+  @Mock private AuthenticationFacade authenticationFacade;
 
-    @InjectMocks
-    private CertificateAuthFilter certificateAuthFilter;
+  @InjectMocks private CertificateAuthFilter certificateAuthFilter;
 
-    private List<String> perms = singletonList(READ);
-    private  List<SimpleGrantedAuthority> grantedAuthoritiesList = new ArrayList<>();
-    private  Collection grantedAuthorities = singletonList(new SimpleGrantedAuthority(READ));
+  private List<String> perms = singletonList(READ);
+  private List<SimpleGrantedAuthority> grantedAuthoritiesList = new ArrayList<>();
+  private Collection grantedAuthorities = singletonList(new SimpleGrantedAuthority(READ));
 
-    @Before
-    public void setup() {
-        ReflectionTestUtils.setField(certificateAuthFilter, SECURITY_TOKEN_FEATURE_SWITCH, TRUE);
+  @Before
+  public void setup() {
+    ReflectionTestUtils.setField(certificateAuthFilter, SECURITY_TOKEN_FEATURE_SWITCH, TRUE);
 
-        grantedAuthoritiesList.add(new SimpleGrantedAuthority(CERTIFICATE_CREATE));
+    grantedAuthoritiesList.add(new SimpleGrantedAuthority(CERTIFICATE_CREATE));
 
-        when(permissionsService.permissionsList(any(), any())).thenReturn(perms);
-        when(authenticationFacade.getAuthentication()).thenReturn(authentication);
-        when(authentication.getPrincipal()).thenReturn(userDetails);
-        when(userDetails.getAuthorities()).thenReturn(grantedAuthorities);
-    }
+    when(permissionsService.permissionsList(any(), any())).thenReturn(perms);
+    when(authenticationFacade.getAuthentication()).thenReturn(authentication);
+    when(authentication.getPrincipal()).thenReturn(userDetails);
+    when(userDetails.getAuthorities()).thenReturn(grantedAuthorities);
+  }
 
-    @Test
-    public void filterAddsAuthoritiesToCurrentSecurityContext() throws Exception {
+  @Test
+  public void filterAddsAuthoritiesToCurrentSecurityContext() throws Exception {
 
-        when(permissionsService.permissionsList(any(), any())).thenReturn(singletonList(
-            CERTIFICATE_CREATE));
-        certificateAuthFilter.doFilterInternal(request, response, filterChain);
+    when(permissionsService.permissionsList(any(), any()))
+        .thenReturn(singletonList(CERTIFICATE_CREATE));
+    certificateAuthFilter.doFilterInternal(request, response, filterChain);
 
-        verify(authenticationFacade).replaceAuthorities(grantedAuthoritiesList);
-    }
+    verify(authenticationFacade).replaceAuthorities(grantedAuthoritiesList);
+  }
 
-    @Test
-    public void filterReturnsUnauthorisedResponseWhenUserHasNoPermissions() throws Exception {
+  @Test
+  public void filterReturnsUnauthorisedResponseWhenUserHasNoPermissions() throws Exception {
 
-        when(permissionsService.permissionsList(any(), any())).thenReturn(EMPTY_LIST);
+    when(permissionsService.permissionsList(any(), any())).thenReturn(EMPTY_LIST);
 
-        certificateAuthFilter.doFilterInternal(request, response, filterChain);
+    certificateAuthFilter.doFilterInternal(request, response, filterChain);
 
-        verify(response).sendError(SC_UNAUTHORIZED, PERMISSIONS_ARE_EMPTY);
-    }
+    verify(response).sendError(SC_UNAUTHORIZED, PERMISSIONS_ARE_EMPTY);
+  }
 }

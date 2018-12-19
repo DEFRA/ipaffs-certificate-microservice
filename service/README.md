@@ -24,18 +24,33 @@ The following environment variables must set before running the service
 ```
 SERVICE_PORT=4862
 SERVICE_USER=certificateServiceUser
-SERVICE_PASSWORD=password123
-DB_USER=ms_economicoperators
-DB_PASSWORD=baseServicePassword1!
+SERVICE_PASSWORD=${SERVICE_PASSWORD}
+DB_USER=SA
+DB_PASSWORD=dockerPassword1!
 DB_HOST=localhost
 DB_PORT=1401
 DB_NAME=importnotification
+PERMISSIONS_SERVICE_SCHEME=http
+PERMISSIONS_SERVICE_HOST=localhost
+PERMISSIONS_SERVICE_PORT=5660
+PERMISSIONS_SERVICE_USERNAME=importer
+PERMISSIONS_SERVICE_PASSWORD=${SERVICE_PASSWORD}
+PERMISSIONS_SERVICE_CONNECTION_TIMEOUT=3000
+PERMISSIONS_SERVICE_READ_TIMEOUT=3000
 ```
+
+### Id (JWT) token validation environment
+
+* `SECURITY_JWT_JWKS`: A comma-separated list of jwks urls (the urls where the authentication providers publish their public signing keys)
+* `SECURITY_JWT_ISS`: A comma-separated list of issuers. The token must contain an `iss` claim that matches one of these values.
+* `SECURITY_JWT_AUD`: A comma-separated list of audiences. The token must contain an `aud` claim that matches one of these values.
+
+Each of these comma-separated values must have the same number of elements. 
 
 ## How to run
 
 ### Intellij setup
-
+``
 - Open the root of the repository
 - import service as a maven project.  Open `Maven projects` from side tab, then click the `+` icon.  
 Next select the `pom.xml` file from the service in the finder window.  Finally click the refresh icon
@@ -43,7 +58,7 @@ Next select the `pom.xml` file from the service in the finder window.  Finally c
 Then select `1.8` in the dropdown of the project SDK section
 - Select Edit Configurations and click the `+` icon.  Next select a new SpringBoot Application
 - Give the configuration a name
-- The main class should be: `uk.gov.defra.tracesx.economicoperators.EconomicOperatorsApplication`
+- The main class should be: `uk.gov.defra.tracesx.certificate.CertificateApplication`
 - In the `use classpath of module` select the service from the dropdown 
 - Add the environment variables as stated above
 - Select `apply` and then `ok`
