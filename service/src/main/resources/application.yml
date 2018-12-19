@@ -43,6 +43,13 @@ permissions:
    password: ${PERMISSIONS_SERVICE_PASSWORD}
    connectionTimeout: ${PERMISSIONS_SERVICE_CONNECTION_TIMEOUT}
    readTimeout: ${PERMISSIONS_SERVICE_CONNECTION_TIMEOUT}
+frontendNotification:
+  service:
+    scheme: ${FRONTEND_NOTIFICATION_SERVICE_SCHEME}
+    host: ${FRONTEND_NOTIFICATION_SERVICE_HOST}
+    port: ${FRONTEND_NOTIFICATION_SERVICE_PORT}
+    user: ${FRONTEND_NOTIFICATION_SERVICE_USERNAME}
+    password: ${FRONTEND_NOTIFICATION_SERVICE_PASSWORD}
 service:
   security:
     token-feature-switch: false

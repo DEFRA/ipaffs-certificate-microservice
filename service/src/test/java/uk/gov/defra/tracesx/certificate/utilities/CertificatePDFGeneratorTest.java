@@ -7,23 +7,29 @@ import java.net.URI;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.defra.tracesx.certificate.utilities.exception.InvalidHtmlException;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CertificatePDFGeneratorTest {
 
   public static final URI BASE_URI = URI.create("");
   private CertificatePDFGenerator pdfGenerator;
   private FontFile fontFile;
+  @Mock
+  private PdfHttpProvider httpProvider;
 
   @Before
   public void setUp() throws Exception {
     fontFile = new FontFile("Arial", "Arial Unicode.ttf");
-    pdfGenerator = new CertificatePDFGenerator(fontFile);
+    pdfGenerator = new CertificatePDFGenerator(fontFile, httpProvider);
   }
 
   @Test
   public void shouldThrowExceptionIfFontFileIsMissing() throws Exception {
-    assertThatThrownBy(() -> new CertificatePDFGenerator(null))
+    assertThatThrownBy(() -> new CertificatePDFGenerator(null, httpProvider))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
