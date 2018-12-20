@@ -17,9 +17,12 @@ import uk.gov.defra.tracesx.certificate.utilities.exception.PdfGenerationExcepti
 public class CertificatePDFGenerator {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CertificatePDFGenerator.class);
-  private final FontFile fontFile;
 
-  public CertificatePDFGenerator(FontFile fontFile) {
+  private final FontFile fontFile;
+  private final PdfHttpProvider httpProvider;
+
+  public CertificatePDFGenerator(FontFile fontFile, PdfHttpProvider httpProvider) {
+    this.httpProvider = httpProvider;
     notNull(fontFile, "fontFile is required");
     this.fontFile = fontFile;
   }
@@ -31,6 +34,7 @@ public class CertificatePDFGenerator {
         PdfRendererBuilder builder = new PdfRendererBuilder();
         builder.withHtmlContent(htmlContent, baseUri.toString());
         builder.useFont(fontFile.getInputStreamSupplier(), fontFile.getName());
+        builder.useHttpStreamImplementation(httpProvider);
         builder.toStream(os);
         builder.run();
         LOGGER.info("conversion took: " + (System.currentTimeMillis() - start));
@@ -38,10 +42,11 @@ public class CertificatePDFGenerator {
       }
     } catch (Exception ex) {
       Throwable rootCause = NestedExceptionUtils.getRootCause(ex);
-      if(rootCause instanceof SAXParseException) {
+      if (rootCause instanceof SAXParseException) {
         throw new InvalidHtmlException("exception parsing html", ex);
       }
       throw new PdfGenerationException("exception creating pdf", ex);
     }
   }
+
 }
