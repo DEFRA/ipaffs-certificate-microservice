@@ -53,9 +53,7 @@ public class TokenHelper {
     long exp = LocalDateTime.now().plusDays(1).toInstant(ZoneOffset.UTC).toEpochMilli() / 1000L;
     Map<String, Object> body = new HashMap<>(getClaims());
     body.put(EXP, exp);
-    body.put(NAME, "Test User");
-    body.put(UPN, "test.user@test-openid.com");
-    body.put(OID, "e48bb725-5fb2-4748-a858-9fabcc454092");
+    body.put(SUB, "e48bb725-5fb2-4748-a858-9fabcc454092");
     body.putAll(additionalClaims);
     try {
       return objectMapper.writeValueAsString(body);
@@ -69,9 +67,7 @@ public class TokenHelper {
     Map<String, Object> body = new HashMap<>(getClaims());
     body.put(ROLES, Collections.emptyList());
     body.put(EXP, exp);
-    body.put(NAME, "Test User");
-    body.put(UPN, "test.user@test-openid.com");
-    body.put(OID, "e48bb725-5fb2-4748-a858-9fabcc454092");
+    body.put(SUB, "e48bb725-5fb2-4748-a858-9fabcc454092");
     try {
       return objectMapper.writeValueAsString(body);
     } catch (JsonProcessingException e) {

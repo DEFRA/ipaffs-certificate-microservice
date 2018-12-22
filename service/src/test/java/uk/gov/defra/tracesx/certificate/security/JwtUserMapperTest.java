@@ -28,9 +28,7 @@ public class JwtUserMapperTest {
   private JwtUserMapper jwtUserMapper = new JwtUserMapper(roleToAuthorityMapper);
 
   private static final String ID_TOKEN = "adfgsdf.dfgsdrgerg.dfgdfgd";
-  private static final String USER_OBJECT_ID = "e9f6447d-2979-4322-8e52-307dafdef649";
-  private static final String DISPLAY_NAME = "Joseph William Token";
-  private static final String USERNAME = "jtoken@tenant.com";
+  private static final String SUB = "e9f6447d-2979-4322-8e52-307dafdef649";
   private static final List<String> ROLES = Arrays.asList("ROLE1", "ROLE2");
   private static final List<GrantedAuthority> AUTHORITIES =
       Collections.unmodifiableList(
@@ -39,9 +37,7 @@ public class JwtUserMapperTest {
   @Before
   public void before() {
     decoded = new HashMap<>();
-    decoded.put("oid", USER_OBJECT_ID);
-    decoded.put("name", DISPLAY_NAME);
-    decoded.put("upn", USERNAME);
+    decoded.put("sub", SUB);
     decoded.put("roles", ROLES);
   }
 
@@ -52,9 +48,9 @@ public class JwtUserMapperTest {
         IdTokenUserDetails.builder()
             .idToken(ID_TOKEN)
             .authorities(AUTHORITIES)
-            .userObjectId(USER_OBJECT_ID)
-            .displayName(DISPLAY_NAME)
-            .username(USERNAME)
+            .userObjectId(SUB)
+            .displayName(SUB)
+            .username(SUB)
             .build();
     assertThat(user).isEqualTo(expected);
   }
@@ -67,7 +63,7 @@ public class JwtUserMapperTest {
   }
 
   @DataPoints("API Methods")
-  public static final String[] missingClaims = new String[] {"oid", "name", "upn", "roles"};
+  public static final String[] missingClaims = new String[] {"sub", "roles"};
 
   @Theory
   public void createUser_fromIncompleteClaims_throwsException(String missingClaim) {
