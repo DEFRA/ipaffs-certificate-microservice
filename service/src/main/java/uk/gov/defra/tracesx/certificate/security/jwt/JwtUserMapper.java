@@ -18,9 +18,7 @@ import uk.gov.defra.tracesx.certificate.security.RoleToAuthorityMapper;
 public class JwtUserMapper {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(JwtUserMapper.class);
-  public static final String NAME = "name";
-  public static final String UPN = "upn";
-  public static final String OID = "oid";
+  public static final String SUB = "sub";
 
   private final RoleToAuthorityMapper roleToAuthorityMapper;
 
@@ -29,12 +27,14 @@ public class JwtUserMapper {
     this.roleToAuthorityMapper = roleToAuthorityMapper;
   }
 
+  //FIXME: at the moment ad jwt and b2c jwt have only one common field which is sub.
+  // It was decided for now sub will be used to poulate following data.
   public IdTokenUserDetails createUser(Map<String, Object> decoded, String idToken) {
     return IdTokenUserDetails.builder()
         .idToken(idToken)
-        .displayName(getRequiredClaim(NAME, decoded))
-        .username(getRequiredClaim(UPN, decoded))
-        .userObjectId(getRequiredClaim(OID, decoded))
+        .displayName(getRequiredClaim(SUB, decoded))
+        .username(getRequiredClaim(SUB, decoded))
+        .userObjectId(getRequiredClaim(SUB, decoded))
         .authorities(getAuthorities(decoded))
         .build();
   }
