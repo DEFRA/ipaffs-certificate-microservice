@@ -5,19 +5,21 @@ import static uk.gov.defra.tracesx.integration.certificate.helpers.CertificateSe
 import static uk.gov.defra.tracesx.integration.certificate.helpers.JwtConstants.AUD;
 import static uk.gov.defra.tracesx.integration.certificate.helpers.JwtConstants.BEARER;
 import static uk.gov.defra.tracesx.integration.certificate.helpers.JwtConstants.ISS;
+import static uk.gov.defra.tracesx.integration.certificate.helpers.SelfSignedTokenClient.TokenType.AD;
+import static uk.gov.defra.tracesx.integration.certificate.helpers.SelfSignedTokenClient.TokenType.B2C;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import java.util.Collections;
-import java.util.HashMap;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import uk.gov.defra.tracesx.integration.certificate.helpers.CertificateServiceHelper;
-import uk.gov.defra.tracesx.integration.certificate.helpers.TokenHelper;
+import uk.gov.defra.tracesx.integration.certificate.helpers.SelfSignedTokenClient;
+import uk.gov.defra.tracesx.integration.certificate.helpers.SelfSignedTokenClient.TokenType;
 import uk.gov.defra.tracesx.integration.certificate.models.certificate.Certificate;
 
 @RunWith(Theories.class)
@@ -28,6 +30,8 @@ public class TestApiAuthentication {
   private static final String TOKEN_INVALID_SIGNATURE = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
   public static final String AUTHORIZATION = "Authorization";
 
+  private final SelfSignedTokenClient tokenClient = new SelfSignedTokenClient();
+
   interface ApiMethod {
     Response call(RequestSpecification requestSpecification);
   }
@@ -37,6 +41,9 @@ public class TestApiAuthentication {
       new ApiMethod[]{
           spec -> spec.body(eoBody()).post(helper.createUrl())
       };
+
+  @DataPoints("Token Types")
+  public static TokenType[] tokenTypes = new TokenType[]{AD, B2C};
 
   @Theory
   public void callApi_withoutBasicAuth_respondsWith400Error(
@@ -87,12 +94,14 @@ public class TestApiAuthentication {
   }
 
   @Theory
-  public void callApi_withExpiredToken_respondsWith401Error(@FromDataPoints("API Methods") ApiMethod apiMethod) {
+  public void callApi_withExpiredToken_respondsWith401Error(
+      @FromDataPoints("API Methods") ApiMethod apiMethod,
+      @FromDataPoints("Token Types") TokenType tokenType) {
     RequestSpecification spec =
         given()
             .contentType(ContentType.JSON)
             .header(X_AUTH_BASIC, helper.getBasicAuthHeader())
-            .header(AUTHORIZATION, BEARER + TokenHelper.getExpiredToken());
+            .header(AUTHORIZATION, BEARER + tokenClient.getExpiredToken(tokenType));
     apiMethod.call(spec)
         .then()
         .statusCode(401);
@@ -100,7 +109,8 @@ public class TestApiAuthentication {
 
   @Theory
   public void callApi_withIncorrectAudience_respondsWith401Error(
-      @FromDataPoints("API Methods") ApiMethod apiMethod) {
+      @FromDataPoints("API Methods") ApiMethod apiMethod,
+      @FromDataPoints("Token Types") TokenType tokenType) {
     RequestSpecification spec =
         given()
             .contentType(ContentType.JSON)
@@ -108,13 +118,14 @@ public class TestApiAuthentication {
             .header(
                 AUTHORIZATION,
                 BEARER
-                    + TokenHelper.getTokenWithClaims(
-                        Collections.singletonMap(AUD, "invalid-audience")));
+                    + tokenClient.getTokenWithClaim(tokenType, AUD, "invalid-audience"));
     apiMethod.call(spec).then().statusCode(401);
   }
 
   @Theory
-  public void callApi_withIncorrectIssuer_respondsWith401Error(@FromDataPoints("API Methods") ApiMethod apiMethod) {
+  public void callApi_withIncorrectIssuer_respondsWith401Error(
+      @FromDataPoints("API Methods") ApiMethod apiMethod,
+      @FromDataPoints("Token Types") TokenType tokenType) {
     RequestSpecification spec =
         given()
             .contentType(ContentType.JSON)
@@ -122,8 +133,7 @@ public class TestApiAuthentication {
             .header(
                 AUTHORIZATION,
                 BEARER
-                    + TokenHelper.getTokenWithClaims(
-                    Collections.singletonMap(ISS, "invalid-issuer")));
+                    + tokenClient.getTokenWithClaim(tokenType, ISS, "invalid-issuer"));
     apiMethod.call(spec).then().statusCode(401);
   }
 

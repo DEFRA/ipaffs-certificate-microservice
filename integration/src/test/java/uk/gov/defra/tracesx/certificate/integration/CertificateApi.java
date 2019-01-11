@@ -1,14 +1,15 @@
 package uk.gov.defra.tracesx.certificate.integration;
+
 import static io.restassured.RestAssured.given;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static uk.gov.defra.tracesx.certificate.integration.TestApiAuthentication.AUTHORIZATION;
 import static uk.gov.defra.tracesx.integration.certificate.helpers.JwtConstants.BEARER;
-import static uk.gov.defra.tracesx.integration.certificate.helpers.JwtConstants.ROLES;
 
 import io.restassured.response.Response;
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
-import uk.gov.defra.tracesx.integration.certificate.helpers.TokenHelper;
+import uk.gov.defra.tracesx.integration.certificate.helpers.SelfSignedTokenClient;
+import uk.gov.defra.tracesx.integration.certificate.helpers.SelfSignedTokenClient.TokenType;
 
 public class CertificateApi {
 
@@ -18,9 +19,11 @@ public class CertificateApi {
   public static final String BASIC = "Basic ";
   private String encodedBasicAuth;
 
+  private final SelfSignedTokenClient tokenClient;
+
   public CertificateApi(TestEnvironment testEnvironment) {
     this.testEnvironment = testEnvironment;
-
+    tokenClient = new SelfSignedTokenClient();
   }
 
   public Response getPdf(String htmlContent, String reference, String url) throws UnsupportedEncodingException {
@@ -29,8 +32,9 @@ public class CertificateApi {
             new StringBuffer().append(testEnvironment.getUsername()).append(COLON).append(testEnvironment.getPassword()).toString().getBytes(
                     UTF_8.name()));
 
-    Response response = given().header("x-auth-basic",encodedBasicAuth).header(AUTHORIZATION, BEARER + TokenHelper
-        .getValidToken(ROLES))
+    Response response = given().header("x-auth-basic", encodedBasicAuth)
+        .header(AUTHORIZATION, BEARER + tokenClient.getToken(
+            TokenType.AD))
         .body(htmlContent)
         .when()
         .post(getUrl("/certificate/", reference, url))
