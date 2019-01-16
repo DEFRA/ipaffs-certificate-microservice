@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import com.auth0.jwk.InvalidPublicKeyException;
 import com.auth0.jwk.Jwk;
 import com.auth0.jwk.JwkException;
 import java.security.PublicKey;
@@ -51,7 +52,7 @@ public class JwksCacheTest {
   private JwksCache jwksCache;
 
   @Before
-  public void before() {
+  public void setUp() {
     when(jwkProvider1.getAudience()).thenReturn(AUD1);
     when(jwkProvider2.getAudience()).thenReturn(AUD2);
     when(jwkProvider1.getIssuer()).thenReturn(ISS1);
@@ -63,7 +64,7 @@ public class JwksCacheTest {
   }
 
   @After
-  public void after() {
+  public void tearDown() {
     verify(jwkProviderFactory, times(2)).newInstance(any());
     verifyNoMoreInteractions(jwkProvider1, jwkProvider2);
   }
@@ -73,10 +74,11 @@ public class JwksCacheTest {
     when(jwkProvider1.get(anyString())).thenThrow(new JwkException("not found"));
     when(jwk.getPublicKey()).thenReturn(publicKey);
     when(jwkProvider2.get(anyString())).thenReturn(jwk);
-    KeyAndClaims keyAndClaims = jwksCache.getPublicKey(KID2);
-    assertThat(keyAndClaims.getKey()).isEqualTo(publicKey);
-    assertThat(keyAndClaims.getAud()).isEqualTo(AUD2);
-    assertThat(keyAndClaims.getIss()).isEqualTo(ISS2);
+    List<KeyAndClaims> keyAndClaims = jwksCache.getPublicKeys(KID2);
+    KeyAndClaims keyAndClaim = keyAndClaims.get(0);
+    assertThat(keyAndClaim.getKey()).isEqualTo(publicKey);
+    assertThat(keyAndClaim.getAud()).isEqualTo(AUD2);
+    assertThat(keyAndClaim.getIss()).isEqualTo(ISS2);
     verify(jwkProvider1).get(KID2);
     verify(jwkProvider1).getIssuer(); // logging
     verify(jwkProvider2, times(2)).get(KID2);
@@ -88,20 +90,50 @@ public class JwksCacheTest {
   public void getPublicKey_keyFoundInCachedProvider_returnsKeyAndClaims() throws Exception {
     when(jwk.getPublicKey()).thenReturn(publicKey);
     when(jwkProvider1.get(anyString())).thenReturn(jwk);
-    KeyAndClaims keyAndClaims = jwksCache.getPublicKey(KID1);
-    assertThat(keyAndClaims.getKey()).isEqualTo(publicKey);
-    assertThat(keyAndClaims.getAud()).isEqualTo(AUD1);
-    assertThat(keyAndClaims.getIss()).isEqualTo(ISS1);
+    when(jwkProvider2.get(anyString())).thenReturn(jwk);
+    List<KeyAndClaims> keyAndClaims = jwksCache.getPublicKeys(KID1);
+    KeyAndClaims keyAndClaim = keyAndClaims.get(0);
+    assertThat(keyAndClaim.getKey()).isEqualTo(publicKey);
+    assertThat(keyAndClaim.getAud()).isEqualTo(AUD1);
+    assertThat(keyAndClaim.getIss()).isEqualTo(ISS1);
     verify(jwkProvider1, times(2)).get(KID1);
+    verify(jwkProvider2, times(2)).get(KID1);
 
     // on second invocation the provider is only called one more time (no scan)
-    keyAndClaims = jwksCache.getPublicKey(KID1);
-    assertThat(keyAndClaims.getKey()).isEqualTo(publicKey);
-    assertThat(keyAndClaims.getAud()).isEqualTo(AUD1);
-    assertThat(keyAndClaims.getIss()).isEqualTo(ISS1);
+    keyAndClaim = jwksCache.getPublicKeys(KID1).get(0);
+    assertThat(keyAndClaim.getKey()).isEqualTo(publicKey);
+    assertThat(keyAndClaim.getAud()).isEqualTo(AUD1);
+    assertThat(keyAndClaim.getIss()).isEqualTo(ISS1);
     verify(jwkProvider1, times(3)).get(KID1);
     verify(jwkProvider1, times(2)).getAudience();
     verify(jwkProvider1, times(2)).getIssuer();
+
+    verify(jwkProvider2, times(3)).get(KID1);
+    verify(jwkProvider2, times(2)).getAudience();
+    verify(jwkProvider2, times(2)).getIssuer();
+  }
+
+  @Test
+  public void getPublicKey__keyFoundAfterProviderScan_sameKidDifferentAUDs() throws JwkException {
+    when(jwkProvider1.get(anyString())).thenReturn(jwk);
+    when(jwkProvider2.get(anyString())).thenReturn(jwk);
+    when(jwk.getPublicKey()).thenReturn(publicKey);
+    List<KeyAndClaims> keyAndClaims = jwksCache.getPublicKeys(KID1);
+    KeyAndClaims keyAndClaim = keyAndClaims.get(0);
+    assertThat(keyAndClaim.getKey()).isEqualTo(publicKey);
+    assertThat(keyAndClaim.getAud()).isEqualTo(AUD1);
+    assertThat(keyAndClaim.getIss()).isEqualTo(ISS2);
+    keyAndClaim = keyAndClaims.get(1);
+    assertThat(keyAndClaim.getKey()).isEqualTo(publicKey);
+    assertThat(keyAndClaim.getAud()).isEqualTo(AUD2);
+    assertThat(keyAndClaim.getIss()).isEqualTo(ISS2);
+    verify(jwkProvider1, times(2)).get(KID1);
+    verify(jwkProvider2, times(2)).get(KID1);
+
+    verify(jwkProvider1).getIssuer(); // logging
+    verify(jwkProvider2).getIssuer();
+    verify(jwkProvider1).getAudience();
+    verify(jwkProvider2).getAudience();
   }
 
   @Test
@@ -109,10 +141,23 @@ public class JwksCacheTest {
     when(jwkProvider1.get(anyString())).thenThrow(new JwkException("not found"));
     when(jwkProvider2.get(anyString())).thenThrow(new JwkException("not found"));
     assertThatExceptionOfType(InsSecurityException.class)
-        .isThrownBy(() -> jwksCache.getPublicKey(KID2));
+        .isThrownBy(() -> jwksCache.getPublicKeys(KID2));
     verify(jwkProvider1).get(KID2);
     verify(jwkProvider2).get(KID2);
     verify(jwkProvider1).getIssuer(); // logging
     verify(jwkProvider2).getIssuer(); // logging
+  }
+
+  @Test
+  public void getPublicKey_invalidSecurityException() throws JwkException {
+    when(jwk.getPublicKey()).thenThrow(new InvalidPublicKeyException("Exception from unit test", new Throwable()));
+    when(jwkProvider1.get(anyString())).thenReturn(jwk);
+    assertThatExceptionOfType(InsSecurityException.class)
+        .isThrownBy(() -> jwksCache.getPublicKeys(KID1));
+
+    verify(jwkProvider1, times(2)).get(KID1);
+    verify(jwkProvider2).get(KID1);
+    verify(jwkProvider1, times(1)).getAudience();
+    verify(jwkProvider1, times(1)).getIssuer();
   }
 }

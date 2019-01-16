@@ -15,4 +15,6 @@ docker/vault/config/sys
 /integration/target/
 /database/target/
 **/.idea
+**/dependency-reduced-pom.xml
+**/application.properties
 
