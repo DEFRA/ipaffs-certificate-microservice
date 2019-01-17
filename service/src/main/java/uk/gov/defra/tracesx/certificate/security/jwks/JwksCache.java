@@ -3,6 +3,7 @@ package uk.gov.defra.tracesx.certificate.security.jwks;
 import com.auth0.jwk.Jwk;
 import com.auth0.jwk.JwkException;
 import java.security.Key;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,7 @@ public class JwksCache {
   private static final Logger LOGGER = LoggerFactory.getLogger(JwksCache.class);
 
   private final List<ClaimsAwareJwkProvider> allJwkProviders;
-  private final Map<String, ClaimsAwareJwkProvider> jwkProviderMap;
+  private final List<Map<String, ClaimsAwareJwkProvider>> cachedJwkProviders;
 
   public JwksCache(
       @Qualifier("jwksConfiguration") List<JwksConfiguration> jwksConfiguration,
@@ -35,45 +36,55 @@ public class JwksCache {
                 .stream()
                 .map(jwkProviderFactory::newInstance)
                 .collect(Collectors.toList()));
-    jwkProviderMap = new HashMap<>();
+    cachedJwkProviders = new ArrayList<>();
   }
 
-  public KeyAndClaims getPublicKey(String kid) {
+  public List<KeyAndClaims> getPublicKeys(String kid) {
     try {
-      ClaimsAwareJwkProvider jwkProvider = getJwkFromProvider(kid);
-      Jwk jwk = jwkProvider.get(kid);
-      return KeyAndClaims.builder()
-          .aud(jwkProvider.getAudience())
-          .iss(jwkProvider.getIssuer())
-          .key(jwk.getPublicKey())
-          .build();
+      ArrayList<KeyAndClaims> keyAndClaims = new ArrayList<>();
+      List<ClaimsAwareJwkProvider> jwkProviders = getJwkFromProviders(kid);
+
+      for (ClaimsAwareJwkProvider jwkProvider : jwkProviders) {
+        Jwk jwk = jwkProvider.get(kid);
+        keyAndClaims.add(KeyAndClaims.builder()
+            .aud(jwkProvider.getAudience())
+            .iss(jwkProvider.getIssuer())
+            .key(jwk.getPublicKey())
+            .build());
+      }
+      return keyAndClaims;
     } catch (JwkException e) {
       LOGGER.error("Unable to get a public signing certificate for the id token", e);
       throw new InsSecurityException("Invalid security configuration");
     }
   }
 
-  private ClaimsAwareJwkProvider getJwkFromProvider(String kid) {
-    if (jwkProviderMap.containsKey(kid)) {
-      return jwkProviderMap.get(kid);
-    } else {
-      return scanProviders(kid);
-    }
+  private List<ClaimsAwareJwkProvider> getJwkFromProviders(String kid) {
+    List<ClaimsAwareJwkProvider> claimsAwareJwkProviders = cachedJwkProviders.stream()
+        .filter(j -> j.containsKey(kid)).map(j -> j.get(kid)).collect(Collectors.toList());
+
+    return claimsAwareJwkProviders.isEmpty() ? scanProviders(kid) : claimsAwareJwkProviders;
   }
 
-  private ClaimsAwareJwkProvider scanProviders(String kid) {
+  private List<ClaimsAwareJwkProvider> scanProviders(String kid) {
+    List<ClaimsAwareJwkProvider> claimsAwareJwkProviders = new ArrayList<>();
     for (ClaimsAwareJwkProvider jwkProvider : allJwkProviders) {
       try {
         jwkProvider.get(kid);
-        jwkProviderMap.put(kid, jwkProvider);
-        return jwkProvider;
+        HashMap<String, ClaimsAwareJwkProvider> claimsAwareJwkProviderMap = new HashMap<>();
+        claimsAwareJwkProviderMap.put(kid, jwkProvider);
+        cachedJwkProviders.add(claimsAwareJwkProviderMap);
+        claimsAwareJwkProviders.add(jwkProvider);
       } catch (JwkException e) {
         LOGGER.debug("Provider {} does not contain key {}", jwkProvider.getIssuer(), kid);
         LOGGER.debug("JwkProvider throw exception", e);
       }
     }
-    LOGGER.error("Unable to find any provider for key {}", kid);
-    throw new InsSecurityException("Invalid security configuration");
+    if (claimsAwareJwkProviders.isEmpty()) {
+      LOGGER.error("Unable to find any provider for key {}", kid);
+      throw new InsSecurityException("Invalid security configuration");
+    }
+    return claimsAwareJwkProviders;
   }
 
   @Data

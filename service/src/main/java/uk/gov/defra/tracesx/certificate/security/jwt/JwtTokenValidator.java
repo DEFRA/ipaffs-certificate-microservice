@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -51,18 +52,23 @@ public class JwtTokenValidator {
       throw unauthorizedException();
     }
 
-    KeyAndClaims keyAndClaims = jwksCache.getPublicKey(kid);
-    SignatureVerifier signatureVerifier = new RsaVerifier((RSAPublicKey) keyAndClaims.getKey());
-    try {
-      Jwt jwt = JwtHelper.decodeAndVerify(idToken, signatureVerifier);
-      Map<String, Object> claims = parseClaims(jwt);
-      verifyExpiry(claims);
-      verifyClaims(claims, keyAndClaims);
-      return claims;
-    } catch (InvalidSignatureException e) {
-      LOGGER.error("Could not verify signature of id token", e);
-      throw unauthorizedException();
+    List<KeyAndClaims> keyAndClaims = jwksCache.getPublicKeys(kid);
+    for (KeyAndClaims keyAndClaim : keyAndClaims) {
+      SignatureVerifier signatureVerifier = new RsaVerifier((RSAPublicKey) keyAndClaim.getKey());
+      try {
+        Jwt jwt = JwtHelper.decodeAndVerify(idToken, signatureVerifier);
+        Map<String, Object> claims = parseClaims(jwt);
+        verifyExpiry(claims);
+
+        if (validClaims(claims, keyAndClaim)) {
+          return claims;
+        }
+      } catch (InvalidSignatureException e) {
+        LOGGER.error("Could not verify signature of id token", e);
+      }
     }
+    LOGGER.error("The iss and/or aud claims do not match the required claims.");
+    throw unauthorizedException();
   }
 
   private Map<String, Object> parseClaims(Jwt jwt) throws UnauthorizedException {
@@ -95,14 +101,11 @@ public class JwtTokenValidator {
     }
   }
 
-  private void verifyClaims(Map<String, Object> claims, KeyAndClaims keyAndClaims)
-      throws UnauthorizedException {
-    if (!(keyAndClaims.getIss().equals(claims.get(ISS))
-        && keyAndClaims.getAud().equals(claims.get(AUD)))) {
-      LOGGER.error("The iss and/or aud claims do not match the required claims.");
-      throw unauthorizedException();
-    }
+  private boolean validClaims(Map<String, Object> claims, KeyAndClaims keyAndClaims) {
+    return keyAndClaims.getIss().equals(claims.get(ISS))
+        && keyAndClaims.getAud().equals(claims.get(AUD));
   }
+
 
   private UnauthorizedException unauthorizedException() {
     return new UnauthorizedException("Unable to validate credentials");
