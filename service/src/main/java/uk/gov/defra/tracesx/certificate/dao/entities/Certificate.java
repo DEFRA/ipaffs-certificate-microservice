@@ -2,8 +2,13 @@ package uk.gov.defra.tracesx.certificate.dao.entities;
 
 import java.util.Arrays;
 import java.util.Objects;
+
+import lombok.Getter;
+import lombok.Setter;
 import uk.gov.defra.tracesx.certificate.resource.ReferenceNumber;
 
+@Getter
+@Setter
 public class Certificate {
 
   private ReferenceNumber referenceNumber;
@@ -13,37 +18,6 @@ public class Certificate {
   public Certificate(ReferenceNumber referenceNumber, byte[] document) {
     this.referenceNumber = referenceNumber;
     this.document = document;
-  }
-
-  public Certificate() {}
-
-  public ReferenceNumber getReferenceNumber() {
-    return referenceNumber;
-  }
-
-  public void setReferenceNumber(ReferenceNumber referenceNumber) {
-    this.referenceNumber = referenceNumber;
-  }
-
-  public byte[] getDocument() {
-    return document;
-  }
-
-  public void setDocument(byte[] document) {
-    this.document = document;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    Certificate that = (Certificate) o;
-    return Objects.equals(referenceNumber, that.referenceNumber)
-        && Arrays.equals(document, that.document);
   }
 
   @Override
