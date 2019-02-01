@@ -12,8 +12,6 @@ This project is a standalone maven project for running automated integration tes
 
 ## CI installation
 
-(Cent OS)
-
 - If there is no existing JDK, download and install 
   [Java 8 JDK](http://www.oracle.com/technetwork/java/javase/install-linux-64-rpm-138254.html)
 
@@ -23,13 +21,10 @@ This project is a standalone maven project for running automated integration tes
 
 There are multiple VM options that need specifying to run the tests:
 
-- `service.base.url` - base url for the service
-- `auth.username` - auth user name
-- `auth.password` - password for the user
-- `environment.name` - name of environment the service is deployed in
-- `branch.prefix` - name (prefix) of current branch
-
-Passwords can be set from environment variables. For example, `source database/local_vars.sh`
+- `service.base.url` is the url (including scheme and port) for the service
+- `auth.username` is basic auth username for the service
+- `auth.password` is basic auth password for the service
+- `skip.integration.tests` should be `false` to run the tests. See notes in the Maven section below.
 
 The following properties / env variables are related to id token authentication.
  Property `test.openid.service.url` (or alternative env `TEST_OPENID_TOKEN_SERVICE_URL`)
@@ -42,43 +37,16 @@ You can find these values in Keybase in the file `openid-token-microservice.txt`
 
 See VM options section (above) for more details on VM options
 
-- Right click on @Test or on test class, click run test.
-- This should fail because of missing VM options
-- Select the following:
-  - Run / Edit Configurations
-  - Under 'Name' - enter 'Integration Tests'
-  - Add the 'VM Options'. See the sample below or the definitions above.
-  - Click OK
+- The test classes are located at `src/test/java/uk/gov/defra/tracesx/integration`
+- Run the test as a standard Java App (e.g. right click on the source file, Run TestAdminAuthentication)
+- This should fail because the required runtime arguments have not been specified.
+- Go to Run / Edit Configurations
+- Paste VM Options available in `Running integration tests` directory on Keybase (you must be part of the `defra_devops` group)
+to run tests against test environment
 - Re-run the test and it should now pass
-
-Example VM Options for IntelliJ
-
-    -Dskip.integration.tests=false
-    -Dit.test=WIPTestRunner
-    -Dservice.base.url=http://localhost:<SERVICE_PORT>
-    -Dauth.username=<SERVICE_USER> 
-    -Dauth.password=<SERVICE_PASSWORD>
-    -Denvironment.name=local
-    -Dbranch.prefix=imta-3494
-
-Fill in the passwords from `docker-local/local_vars.sh` or your own configuration for these services.
-
-### Running individual tests
-
-Right click on @Test or on test class, click run test.
+  - If tests are still not running, go to `integration` directory and run `mvn clean install`
 
 ### Maven
 
-VM options can be passed into maven using `-D<PARAM>=<VALUE>`
-
-#### Maven Example - run for entire project
-
-> **Tip**: run `$ source docker-local/local_vars.sh` to export environment variables that work with the
-Docker images. You will need to run this for every terminal in which you want to use these variables.
-
-    mvn test -f integration/pom.xml 
-        -Dservice.base.url=<CERTIFICATE_OPERATOR_URL>
-        -Dauth.username=<CERTIFICATE_USER_NAME>
-        -Dauth.password=<CERTIFICATE_PASSWORD>
-        -Denvironment.name=local
-        -Dbranch.prefix=imta-3494
+To run tests using maven, go to integration directory and run command available in
+`Running integration tests` directory on Keybase (you must be part of the `defra_devops` group)
