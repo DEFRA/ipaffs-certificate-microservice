@@ -1,10 +1,9 @@
 package uk.gov.defra.tracesx.certificate.utilities;
 
-import static org.springframework.util.Assert.notNull;
-
+import com.openhtmltopdf.pdfboxout.PdfBoxRenderer;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
-import java.io.ByteArrayOutputStream;
-import java.net.URI;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.NestedExceptionUtils;
@@ -13,10 +12,16 @@ import org.xml.sax.SAXParseException;
 import uk.gov.defra.tracesx.certificate.utilities.exception.InvalidHtmlException;
 import uk.gov.defra.tracesx.certificate.utilities.exception.PdfGenerationException;
 
+import java.io.ByteArrayOutputStream;
+import java.net.URI;
+
+import static org.springframework.util.Assert.notNull;
+
 @Component("pdfGenerator")
 public class CertificatePDFGenerator {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CertificatePDFGenerator.class);
+  final static String ENGLISH = "en";
 
   private final FontFile fontFile;
   private final PdfHttpProvider httpProvider;
@@ -36,6 +41,10 @@ public class CertificatePDFGenerator {
         builder.useFont(fontFile.getInputStreamSupplier(), fontFile.getName());
         builder.useHttpStreamImplementation(httpProvider);
         builder.toStream(os);
+        PdfBoxRenderer pdfBoxRenderer = builder.buildPdfRenderer();
+        PDDocument pdDocument = pdfBoxRenderer.getPdfDocument();
+        setLanguage(pdDocument, ENGLISH);
+        builder.usePDDocument(pdDocument);
         builder.run();
         LOGGER.info("conversion took: " + (System.currentTimeMillis() - start));
         return os.toByteArray();
@@ -48,5 +57,11 @@ public class CertificatePDFGenerator {
       throw new PdfGenerationException("exception creating pdf", ex);
     }
   }
+
+  private void setLanguage(PDDocument pdDocument, String language) {
+    PDDocumentCatalog catalog = pdDocument.getDocumentCatalog();
+    catalog.setLanguage(language);
+  }
+
 
 }

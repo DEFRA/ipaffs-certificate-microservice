@@ -1,12 +1,19 @@
 package uk.gov.defra.tracesx.certificate.utilities;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.File;
+import java.io.StringReader;
 import java.net.URI;
+
+import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import org.apache.commons.io.FileUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.assertj.core.internal.ByteArrays;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.platform.commons.util.StringUtils;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -36,7 +43,10 @@ public class CertificatePDFGeneratorTest {
   @Test
   public void shouldGeneratePdf() throws Exception {
     final byte[] bytes = pdfGenerator.createPdf("<p>hello</p>", BASE_URI);
-    FileUtils.writeByteArrayToFile(new File("target/hello-test.pdf"), bytes);
+    File file = new File("target/hello-test.pdf");
+    FileUtils.writeByteArrayToFile(file, bytes);
+    PDDocument document = PDDocument.load(file);
+    assertThat(document.getDocumentCatalog().getLanguage()).isEqualTo(CertificatePDFGenerator.ENGLISH);
   }
 
   @Test
