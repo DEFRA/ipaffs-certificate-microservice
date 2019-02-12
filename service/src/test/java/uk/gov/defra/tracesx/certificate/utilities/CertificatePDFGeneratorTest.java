@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.io.File;
 import java.io.StringReader;
 import java.net.URI;
+import java.util.Locale;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import org.apache.commons.io.FileUtils;
@@ -46,7 +47,7 @@ public class CertificatePDFGeneratorTest {
     File file = new File("target/hello-test.pdf");
     FileUtils.writeByteArrayToFile(file, bytes);
     PDDocument document = PDDocument.load(file);
-    assertThat(document.getDocumentCatalog().getLanguage()).isEqualTo(CertificatePDFGenerator.ENGLISH);
+    assertThat(document.getDocumentCatalog().getLanguage()).isEqualTo(Locale.UK.getLanguage());
   }
 
   @Test

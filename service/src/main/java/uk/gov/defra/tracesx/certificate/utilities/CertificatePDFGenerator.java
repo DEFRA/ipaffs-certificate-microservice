@@ -14,6 +14,7 @@ import uk.gov.defra.tracesx.certificate.utilities.exception.PdfGenerationExcepti
 
 import java.io.ByteArrayOutputStream;
 import java.net.URI;
+import java.util.Locale;
 
 import static org.springframework.util.Assert.notNull;
 
@@ -21,7 +22,6 @@ import static org.springframework.util.Assert.notNull;
 public class CertificatePDFGenerator {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CertificatePDFGenerator.class);
-  final static String ENGLISH = "en";
 
   private final FontFile fontFile;
   private final PdfHttpProvider httpProvider;
@@ -43,7 +43,7 @@ public class CertificatePDFGenerator {
         builder.toStream(os);
         PdfBoxRenderer pdfBoxRenderer = builder.buildPdfRenderer();
         PDDocument pdDocument = pdfBoxRenderer.getPdfDocument();
-        setLanguage(pdDocument, ENGLISH);
+        setLanguage(pdDocument, Locale.UK.getLanguage());
         builder.usePDDocument(pdDocument);
         builder.run();
         LOGGER.info("conversion took: " + (System.currentTimeMillis() - start));
@@ -62,6 +62,4 @@ public class CertificatePDFGenerator {
     PDDocumentCatalog catalog = pdDocument.getDocumentCatalog();
     catalog.setLanguage(language);
   }
-
-
 }
