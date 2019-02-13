@@ -1,10 +1,9 @@
 package uk.gov.defra.tracesx.certificate.utilities;
 
-import static org.springframework.util.Assert.notNull;
-
+import com.openhtmltopdf.pdfboxout.PdfBoxRenderer;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
-import java.io.ByteArrayOutputStream;
-import java.net.URI;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.NestedExceptionUtils;
@@ -12,6 +11,12 @@ import org.springframework.stereotype.Component;
 import org.xml.sax.SAXParseException;
 import uk.gov.defra.tracesx.certificate.utilities.exception.InvalidHtmlException;
 import uk.gov.defra.tracesx.certificate.utilities.exception.PdfGenerationException;
+
+import java.io.ByteArrayOutputStream;
+import java.net.URI;
+import java.util.Locale;
+
+import static org.springframework.util.Assert.notNull;
 
 @Component("pdfGenerator")
 public class CertificatePDFGenerator {
@@ -36,6 +41,10 @@ public class CertificatePDFGenerator {
         builder.useFont(fontFile.getInputStreamSupplier(), fontFile.getName());
         builder.useHttpStreamImplementation(httpProvider);
         builder.toStream(os);
+        PdfBoxRenderer pdfBoxRenderer = builder.buildPdfRenderer();
+        PDDocument pdDocument = pdfBoxRenderer.getPdfDocument();
+        setLanguage(pdDocument, Locale.UK.getLanguage());
+        builder.usePDDocument(pdDocument);
         builder.run();
         LOGGER.info("conversion took: " + (System.currentTimeMillis() - start));
         return os.toByteArray();
@@ -49,4 +58,8 @@ public class CertificatePDFGenerator {
     }
   }
 
+  private void setLanguage(PDDocument pdDocument, String language) {
+    PDDocumentCatalog catalog = pdDocument.getDocumentCatalog();
+    catalog.setLanguage(language);
+  }
 }
