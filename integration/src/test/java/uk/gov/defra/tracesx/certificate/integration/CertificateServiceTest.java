@@ -22,7 +22,7 @@ public class CertificateServiceTest {
   private CertificateApi certificateApi;
 
   @Test
-  public void shouldCreateCertificateFromHtml() throws UnsupportedEncodingException {
+  public void shouldCreateCertificateFromHtml() {
 
     String htmlContent = "<p>hello world</p>";
     String callBackUrl = "";
@@ -32,7 +32,7 @@ public class CertificateServiceTest {
   }
 
   @Test
-  public void shouldReturnBadRequestIfHtmlIsInvalid() throws UnsupportedEncodingException {
+  public void shouldReturnBadRequestIfHtmlIsInvalid() {
     String htmlContent = "<p hello world";
     String callBackUrl = "";
     Response response = certificateApi.getPdf(htmlContent, REFERENCE, callBackUrl);
@@ -41,7 +41,7 @@ public class CertificateServiceTest {
   }
 
   @Test
-  public void shouldCreateCertificateWithFont() throws UnsupportedEncodingException {
+  public void shouldCreateCertificateWithFont() {
     String htmlContent = "<p style='font-family: Arial Unicode MS;'>hello world</p>";
     String callBackUrl = "";
     Response response = certificateApi.getPdf(htmlContent, REFERENCE, callBackUrl);

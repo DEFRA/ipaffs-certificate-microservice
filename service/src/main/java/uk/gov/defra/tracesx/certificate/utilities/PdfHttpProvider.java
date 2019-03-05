@@ -13,6 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -49,7 +50,7 @@ public class PdfHttpProvider implements FSStreamFactory {
   @Value("${frontendNotification.service.password}")
   private String basicAuthPassword;
 
-  public PdfHttpProvider(RestTemplate restTemplate) {
+  public PdfHttpProvider(@Qualifier("httpClient") RestTemplate restTemplate) {
     this.restTemplate = restTemplate;
   }
 

@@ -19,13 +19,12 @@ info:
 spring:
   profiles: default
   security:
-    user:
-      name: ${SERVICE_USER}
-      password: ${SERVICE_PASSWORD}
     jwt:
       jwks: ${SECURITY_JWT_JWKS}
       iss: ${SECURITY_JWT_ISS}
       aud: ${SECURITY_JWT_AUD}
+    autoconfigure:
+      exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
     url: jdbc:sqlserver://${DB_HOST}:${DB_PORT};databaseName=${DB_NAME};user=${DB_USER};password=${DB_PASSWORD};trustServerCertificate=${TRUST_SERVER_CERTIFICATE};hostNameInCertificate=*.database.windows.net;encrypt=true;
@@ -43,6 +42,9 @@ permissions:
    password: ${PERMISSIONS_SERVICE_PASSWORD}
    connectionTimeout: ${PERMISSIONS_SERVICE_CONNECTION_TIMEOUT}
    readTimeout: ${PERMISSIONS_SERVICE_CONNECTION_TIMEOUT}
+  security:
+    token-feature-switch: false
+    default-roles: inspector, importer
 frontendNotification:
   service:
     scheme: ${FRONTEND_NOTIFICATION_SERVICE_SCHEME}
@@ -50,7 +52,3 @@ frontendNotification:
     port: ${FRONTEND_NOTIFICATION_SERVICE_PORT}
     user: ${FRONTEND_NOTIFICATION_SERVICE_USERNAME}
     password: ${FRONTEND_NOTIFICATION_SERVICE_PASSWORD}
-service:
-  security:
-    token-feature-switch: false
-    default-roles: inspector, importer

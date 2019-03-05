@@ -27,9 +27,9 @@ There are multiple VM options that need specifying to run the tests:
 - `skip.integration.tests` should be `false` to run the tests. See notes in the Maven section below.
 
 The following properties / env variables are related to id token authentication.
- Property `test.openid.service.url` (or alternative env `TEST_OPENID_TOKEN_SERVICE_URL`)
-- Property `test.openid.service.auth.username` (or alternative env `TEST_OPENID_TOKEN_SERVICE_AUTH_USERNAME`)
-- Property `test.openid.service.auth.password` (or alternative env `TEST_OPENID_TOKEN_SERVICE_AUTH_PASSWORD`)
+ Property `test.openid.permissions.url` (or alternative env `TEST_OPENID_TOKEN_SERVICE_URL`)
+- Property `test.openid.permissions.auth.username` (or alternative env `TEST_OPENID_TOKEN_SERVICE_AUTH_USERNAME`)
+- Property `test.openid.permissions.auth.password` (or alternative env `TEST_OPENID_TOKEN_SERVICE_AUTH_PASSWORD`)
 
 You can find these values in Keybase in the file `openid-token-microservice.txt`.
 
