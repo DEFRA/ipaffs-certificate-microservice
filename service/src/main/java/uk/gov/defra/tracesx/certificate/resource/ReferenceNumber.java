@@ -7,7 +7,7 @@ import uk.gov.defra.tracesx.certificate.utilities.exception.InvalidReferenceNumb
 
 public class ReferenceNumber {
 
-  private static final Pattern PATTERN = Pattern.compile("(CVEDA|CED|CVEDP).GB.20\\d{2}.\\d{7}");
+  private static final Pattern PATTERN = Pattern.compile("(CVEDA|CED|CVEDP|DRAFT).GB.20\\d{2}.\\d{7}");
 
   private final String referenceNumber;
 
