@@ -8,17 +8,38 @@ import uk.gov.defra.tracesx.certificate.utilities.exception.InvalidReferenceNumb
 
 public class ReferenceNumberTest {
 
-  private final String VALID_REFERENCE = "CVEDA.GB.2018.1234567";
+  private final String CVEDA_REFERENCE = "CVEDA.GB.2018.1234567";
+  private final String CVEDP_REFERENCE = "CVEDP.GB.2018.1234567";
+  private final String CED_REFERENCE = "CED.GB.2018.1234567";
+  private final String DRAFT_REFERENCE = "DRAFT.GB.2018.1234567";
 
   @Test
-  public void shouldCreateReferenceNumber() {
-    assertThat(ReferenceNumber.valueOf(VALID_REFERENCE).valueOf())
-        .isEqualTo(VALID_REFERENCE);
+  public void shouldCreateReferenceNumberForCVEDA() {
+    assertThat(ReferenceNumber.valueOf(CVEDA_REFERENCE).valueOf())
+        .isEqualTo(CVEDA_REFERENCE);
+  }
+
+  @Test
+  public void shouldCreateReferenceNumberForCVEDP() {
+    assertThat(ReferenceNumber.valueOf(CVEDP_REFERENCE).valueOf())
+        .isEqualTo(CVEDP_REFERENCE);
+  }
+
+  @Test
+  public void shouldCreateReferenceNumberForCED() {
+    assertThat(ReferenceNumber.valueOf(CED_REFERENCE).valueOf())
+        .isEqualTo(CED_REFERENCE);
+  }
+
+  @Test
+  public void shouldCreateReferenceNumberForDraftStatus() {
+    assertThat(ReferenceNumber.valueOf(DRAFT_REFERENCE).valueOf())
+          .isEqualTo(DRAFT_REFERENCE);
   }
 
   @Test
   public void shouldSupportToString() throws Exception {
-    assertThat(ReferenceNumber.valueOf(VALID_REFERENCE).toString())
+    assertThat(ReferenceNumber.valueOf(CVEDA_REFERENCE).toString())
         .isEqualTo("ReferenceNumber(CVEDA.GB.2018.1234567)");
   }
 
