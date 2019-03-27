@@ -15,14 +15,6 @@
     <version>1.0.1</version>
   </parent>
 
-  <repositories>
-    <repository>
-      <id>jitpack.io</id>
-      <url>https://jitpack.io</url>
-    </repository>
-  </repositories>
-
-
   <properties>
     <openhtml.version>0.0.1-RC17</openhtml.version>
     <org.projectlombok.version>1.16.20</org.projectlombok.version>
