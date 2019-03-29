@@ -1,4 +1,4 @@
-@Library('pipeline-library@feature/IMTA-4605-fixes-release-repo-ref') _
+@Library('pipeline-library') _
 
 javaPipeline {
     SERVICE_NAME = "certificate-microservice"
