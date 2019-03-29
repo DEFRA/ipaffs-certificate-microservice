@@ -12,6 +12,10 @@ import uk.gov.defra.tracesx.certificate.utilities.exception.InvalidHtmlException
 
 public class HtmlValidator {
 
+  private HtmlValidator() {
+    // no-arg constructor
+  }
+
   public static final void validate(String html) throws ParserConfigurationException, IOException {
     try {
       DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();

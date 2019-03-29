@@ -21,6 +21,10 @@ public class Sanitizer {
       .and(Sanitizers.TABLES)
       .and(Sanitizers.BLOCKS);
 
+  private Sanitizer() {
+    // no-arg constructor
+  }
+
   public static final String sanitize(String unsafeHtml) {
     LOG.debug(unsafeHtml);
     String safeHtml = POLICY.sanitize(unsafeHtml);

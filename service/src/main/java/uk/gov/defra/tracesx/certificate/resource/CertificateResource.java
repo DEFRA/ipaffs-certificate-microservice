@@ -1,6 +1,8 @@
 package uk.gov.defra.tracesx.certificate.resource;
 
+import java.io.IOException;
 import java.net.URI;
+import javax.xml.parsers.ParserConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +38,7 @@ public class CertificateResource {
   public ResponseEntity<byte[]> getCertificateFromContent(
       @PathVariable ReferenceNumber reference,
       @RequestBody String unsafeHtmlContent,
-      @RequestParam String url) throws Exception {
+      @RequestParam String url) throws ParserConfigurationException, IOException {
 
     LOGGER.info("POST reference: {}", reference);
     HtmlValidator.validate(unsafeHtmlContent);
