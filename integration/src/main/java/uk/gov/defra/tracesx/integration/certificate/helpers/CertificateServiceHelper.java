@@ -1,16 +1,13 @@
 package uk.gov.defra.tracesx.integration.certificate.helpers;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.gov.defra.tracesx.integration.certificate.Properties;
 import uk.gov.defra.tracesx.integration.certificate.entity.Certificate;
 import org.apache.commons.lang3.StringUtils;
 
-
 public class CertificateServiceHelper {
 
-  public static final String X_AUTH_BASIC = "x-auth-basic";
   private final String REFERENCE = "CVEDA.GB.2018.1234567";
 
   public CertificateServiceHelper() {
