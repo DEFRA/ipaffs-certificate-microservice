@@ -57,7 +57,7 @@ public class XAuthBasicFilter extends OncePerRequestFilter {
       byte[] base64Token = header.substring("Basic ".length()).getBytes(StandardCharsets.UTF_8);
       byte[] decoded = Base64.getDecoder().decode(base64Token);
       String token = new String(decoded, StandardCharsets.UTF_8);
-      int delim = token.indexOf(":");
+      int delim = token.indexOf(':');
       if (delim == -1) {
         throw new BadCredentialsException("Invalid basic authentication token");
       }

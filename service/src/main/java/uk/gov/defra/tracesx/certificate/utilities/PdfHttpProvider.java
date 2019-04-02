@@ -61,7 +61,7 @@ public class PdfHttpProvider implements FSStreamFactory {
     HttpHeaders headers = new HttpHeaders();
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     headers.add("Authorization", "Bearer " + authentication.getCredentials());
-    final String encodedBasicAuth = getBasicAuth(uri);
+    final String encodedBasicAuth = getBasicAuth();
     headers.set(X_AUTH_HEADER_BASIC, encodedBasicAuth);
     HttpEntity<?> requestEntity = new HttpEntity<>(headers);
     LOGGER.info("credentials: " + headers);
@@ -87,13 +87,13 @@ public class PdfHttpProvider implements FSStreamFactory {
   }
 
   private void validateUri(String uri) {
-    String host = URI.create(uri).getHost();
-    if(!host.equals(this.host)) {
-      throw new UnsupportedHostException(host);
+    String uriHost = URI.create(uri).getHost();
+    if(!uriHost.equals(this.host)) {
+      throw new UnsupportedHostException(uriHost);
     }
   }
 
-  private String getBasicAuth(String uri) {
+  private String getBasicAuth() {
     String basicAuth = basicAuthUser.concat(":").concat(basicAuthPassword);
     LOGGER.info("encoding basic auth: " + basicAuth);
     return BASIC + getEncoder().encodeToString(basicAuth.getBytes(UTF_8));
