@@ -7,14 +7,9 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.Appender;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +20,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConversationLoggingFilterTest {
@@ -70,7 +70,7 @@ public class ConversationLoggingFilterTest {
     final LoggingEvent loggingEvent = captorLoggingEvent.getValue();
     assertThat(loggingEvent.getLevel(), is(INFO));
     assertThat(loggingEvent.getFormattedMessage(),
-      containsString("Initializing filter"));
+        containsString("Initializing filter"));
   }
 
   @Test
@@ -89,6 +89,6 @@ public class ConversationLoggingFilterTest {
     final LoggingEvent loggingEvent = captorLoggingEvent.getValue();
     assertThat(loggingEvent.getLevel(), is(WARN));
     assertThat(loggingEvent.getFormattedMessage(),
-      containsString("Destroying filter"));
+        containsString("Destroying filter"));
   }
 }

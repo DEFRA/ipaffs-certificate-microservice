@@ -1,8 +1,9 @@
 package uk.gov.defra.tracesx.certificate.security.jwks;
 
 import com.auth0.jwk.UrlJwkProvider;
-import java.util.concurrent.TimeUnit;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class JwkProviderFactory {

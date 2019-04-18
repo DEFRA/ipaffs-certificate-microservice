@@ -6,23 +6,24 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import java.net.URI;
-import java.util.Random;
-import java.util.function.Supplier;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
-import uk.gov.defra.tracesx.certificate.dao.entities.Certificate;
+import uk.gov.defra.tracesx.certificate.model.Certificate;
 import uk.gov.defra.tracesx.certificate.service.CertificateService;
+import uk.gov.defra.tracesx.certificate.utils.ReferenceNumberGenerator;
+
+import java.net.URI;
+import java.util.Random;
+import java.util.function.Supplier;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CertificateResourceTest {
 
-  private static final ReferenceNumber REFERENCE = new ReferenceNumber("CED.GB.2018.1010007");
+  private static final ReferenceNumberGenerator REFERENCE = new ReferenceNumberGenerator("CED.GB.2018.1010007");
   private static final String URL = "http://ins.com/certificate/001";
   private static final URI URI = java.net.URI.create(URL);
 

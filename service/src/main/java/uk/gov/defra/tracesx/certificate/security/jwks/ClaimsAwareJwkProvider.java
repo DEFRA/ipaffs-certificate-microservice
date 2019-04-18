@@ -2,6 +2,7 @@ package uk.gov.defra.tracesx.certificate.security.jwks;
 
 import com.auth0.jwk.GuavaCachedJwkProvider;
 import com.auth0.jwk.JwkProvider;
+
 import java.util.concurrent.TimeUnit;
 
 public class ClaimsAwareJwkProvider extends GuavaCachedJwkProvider {
@@ -11,7 +12,7 @@ public class ClaimsAwareJwkProvider extends GuavaCachedJwkProvider {
   private final String audience;
 
   public ClaimsAwareJwkProvider(JwkProvider provider, long size, long expiresIn,
-      TimeUnit expiresUnit, String issuer, String audience) {
+                                TimeUnit expiresUnit, String issuer, String audience) {
     super(provider, size, expiresIn, expiresUnit);
     this.issuer = issuer;
     this.audience = audience;

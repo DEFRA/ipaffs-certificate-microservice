@@ -6,7 +6,6 @@ import static java.util.Collections.emptyList;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpMethod.GET;
 
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -15,6 +14,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 @Component
 public class PermissionsService {
@@ -58,8 +59,8 @@ public class PermissionsService {
     final String encodedBasicAuth =
         BASIC
             + getEncoder()
-                .encodeToString(
-                    permissionsUser.concat(COLON).concat(permissionsPassword).getBytes(UTF_8));
+            .encodeToString(
+                permissionsUser.concat(COLON).concat(permissionsPassword).getBytes(UTF_8));
 
     final HttpHeaders headers = new HttpHeaders();
     headers.set(X_AUTH_HEADER_BASIC, encodedBasicAuth);
@@ -83,7 +84,8 @@ public class PermissionsService {
             builder.build().encode().toUri(),
             GET,
             entity,
-            new ParameterizedTypeReference<List<String>>() {})
+            new ParameterizedTypeReference<List<String>>() {
+            })
         .getBody();
   }
 

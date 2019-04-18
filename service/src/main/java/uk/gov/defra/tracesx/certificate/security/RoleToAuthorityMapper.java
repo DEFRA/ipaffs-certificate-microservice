@@ -2,11 +2,11 @@ package uk.gov.defra.tracesx.certificate.security;
 
 import static java.util.stream.Collectors.toList;
 
-import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class RoleToAuthorityMapper {
@@ -20,7 +20,7 @@ public class RoleToAuthorityMapper {
   }
 
   private GrantedAuthority mapRole(String role) {
-    String parts[] = role.split(":");
+    String[] parts = role.split(":");
     if (parts.length == 3) {
       return OrganisationGrantedAuthority.builder()
           .organisation(parts[ORG_INDEX])

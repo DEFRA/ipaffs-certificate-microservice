@@ -26,23 +26,15 @@ spring:
       jwks: ${SECURITY_JWT_JWKS}
       iss: ${SECURITY_JWT_ISS}
       aud: ${SECURITY_JWT_AUD}
-  datasource:
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://${DB_HOST}:${DB_PORT};databaseName=${DB_NAME};user=${DB_USER};password=${DB_PASSWORD};trustServerCertificate=${TRUST_SERVER_CERTIFICATE};hostNameInCertificate=*.database.windows.net;encrypt=true;
-    continueOnError: true
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.SQLServer2008Dialect
 permissions:
   service:
-   scheme: ${PERMISSIONS_SERVICE_SCHEME}
-   host: ${PERMISSIONS_SERVICE_HOST}
-   port: ${PERMISSIONS_SERVICE_PORT}
-   user: ${PERMISSIONS_SERVICE_USERNAME}
-   password: ${PERMISSIONS_SERVICE_PASSWORD}
-   connectionTimeout: ${PERMISSIONS_SERVICE_CONNECTION_TIMEOUT}
-   readTimeout: ${PERMISSIONS_SERVICE_CONNECTION_TIMEOUT}
+    scheme: ${PERMISSIONS_SERVICE_SCHEME}
+    host: ${PERMISSIONS_SERVICE_HOST}
+    port: ${PERMISSIONS_SERVICE_PORT}
+    user: ${PERMISSIONS_SERVICE_USERNAME}
+    password: ${PERMISSIONS_SERVICE_PASSWORD}
+    connectionTimeout: ${PERMISSIONS_SERVICE_CONNECTION_TIMEOUT}
+    readTimeout: ${PERMISSIONS_SERVICE_CONNECTION_TIMEOUT}
 frontendNotification:
   service:
     scheme: ${FRONTEND_NOTIFICATION_SERVICE_SCHEME}

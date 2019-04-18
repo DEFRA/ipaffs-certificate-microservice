@@ -9,8 +9,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpStatus.OK;
-
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +20,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PermissionsServiceTest {
@@ -37,8 +37,10 @@ public class PermissionsServiceTest {
   private static final String SECURITY_TOKEN_FEATURE_SWITCH = "securityTokenFeatureSwitch";
   private final List<String> perms = singletonList(READ);
 
-  @Mock private RestTemplate restTemplate;
-  @InjectMocks private PermissionsService permissionsService;
+  @Mock
+  private RestTemplate restTemplate;
+  @InjectMocks
+  private PermissionsService permissionsService;
 
   @Before
   public void setup() {
@@ -48,10 +50,11 @@ public class PermissionsServiceTest {
 
     final ResponseEntity<List<String>> responseEntity = createResponseEntity();
     when(restTemplate.exchange(
-            any(),
-            eq(GET),
-            any(HttpEntity.class),
-            eq(new ParameterizedTypeReference<List<String>>() {})))
+        any(),
+        eq(GET),
+        any(HttpEntity.class),
+        eq(new ParameterizedTypeReference<List<String>>() {
+        })))
         .thenReturn(responseEntity);
   }
 
@@ -68,10 +71,11 @@ public class PermissionsServiceTest {
   public void testWhenPermissionsCalledWithInvalidRoleThenReturnEmptyList() {
 
     when(restTemplate.exchange(
-            any(),
-            eq(GET),
-            any(HttpEntity.class),
-            eq(new ParameterizedTypeReference<List<String>>() {})))
+        any(),
+        eq(GET),
+        any(HttpEntity.class),
+        eq(new ParameterizedTypeReference<List<String>>() {
+        })))
         .thenReturn(new ResponseEntity<>(EMPTY_LIST, OK));
 
     final List<String> permissionsList = permissionsService.permissionsList(INVALID_ROLE, TOKEN);

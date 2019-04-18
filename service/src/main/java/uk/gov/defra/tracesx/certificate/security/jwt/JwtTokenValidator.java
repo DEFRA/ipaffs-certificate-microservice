@@ -3,11 +3,6 @@ package uk.gov.defra.tracesx.certificate.security.jwt;
 import static uk.gov.defra.tracesx.certificate.security.jwt.JwtContants.EXP;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
-import java.security.interfaces.RSAPublicKey;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +16,12 @@ import uk.gov.defra.tracesx.certificate.exceptions.UnauthorizedException;
 import uk.gov.defra.tracesx.certificate.security.IdTokenUserDetails;
 import uk.gov.defra.tracesx.certificate.security.jwks.JwksCache;
 import uk.gov.defra.tracesx.certificate.security.jwks.JwksCache.KeyAndClaims;
+
+import java.io.IOException;
+import java.security.interfaces.RSAPublicKey;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class JwtTokenValidator {
@@ -63,8 +64,8 @@ public class JwtTokenValidator {
         if (validClaims(claims, keyAndClaim)) {
           return claims;
         }
-      } catch (InvalidSignatureException e) {
-        LOGGER.error("Could not verify signature of id token", e);
+      } catch (InvalidSignatureException exception) {
+        LOGGER.error("Could not verify signature of id token", exception);
       }
     }
     LOGGER.error("The iss and/or aud claims do not match the required claims.");
@@ -74,8 +75,8 @@ public class JwtTokenValidator {
   private Map<String, Object> parseClaims(Jwt jwt) throws UnauthorizedException {
     try {
       return objectMapper.readValue(jwt.getClaims(), Map.class);
-    } catch (IOException e) {
-      LOGGER.error("Unable to read the id token body", e);
+    } catch (IOException exception) {
+      LOGGER.error("Unable to read the id token body", exception);
       throw unauthorizedException();
     }
   }

@@ -1,12 +1,12 @@
 package uk.gov.defra.tracesx.certificate.security;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Arrays;
-import java.util.List;
 import org.junit.Test;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class RoleToAuthorityMapperTest {
 

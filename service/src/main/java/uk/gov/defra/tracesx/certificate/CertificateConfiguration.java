@@ -3,11 +3,6 @@ package uk.gov.defra.tracesx.certificate;
 import static java.util.Arrays.asList;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +16,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import uk.gov.defra.tracesx.certificate.security.CertificateAuthFilter;
 import uk.gov.defra.tracesx.certificate.security.PreAuthorizeChecker;
 import uk.gov.defra.tracesx.certificate.security.jwks.JwksConfiguration;
-import uk.gov.defra.tracesx.certificate.utilities.FontFile;
+import uk.gov.defra.tracesx.certificate.utils.FontFile;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @EnableConfigurationProperties
@@ -40,7 +41,8 @@ public class CertificateConfiguration implements WebMvcConfigurer {
   @Value("${spring.security.jwt.aud}")
   private String aud;
 
-  @Autowired private CertificateAuthFilter certificateAuthFilter;
+  @Autowired
+  private CertificateAuthFilter certificateAuthFilter;
 
   @Bean
   public FontFile fontFile() {
@@ -76,7 +78,8 @@ public class CertificateConfiguration implements WebMvcConfigurer {
       return Collections.unmodifiableList(jwksConfigurations);
     } else {
       throw new IllegalArgumentException(
-          "The comma-separated properties spring.security.jwt.[jwks, iss, aud] must all have the same number of elements.");
+          "The comma-separated properties spring.security.jwt.[jwks, iss, aud] "
+              + "must all have the same number of elements.");
     }
   }
 

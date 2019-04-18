@@ -2,11 +2,6 @@ package uk.gov.defra.tracesx.certificate.security;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -20,6 +15,11 @@ import org.springframework.security.config.annotation.web.configurers.Expression
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.defra.tracesx.certificate.security.jwt.JwtTokenFilter;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @RunWith(MockitoJUnitRunner.class)
 public class WebSecurityConfigurationTest {
 
@@ -29,11 +29,16 @@ public class WebSecurityConfigurationTest {
 
   private final WebSecurityConfiguration testee = new WebSecurityConfiguration();
 
-  @Mock private ObjectPostProcessor<Object> opp;
-  @Mock private AuthenticationManager parent;
-  @Mock private AuthenticationManagerBuilder builder;
-  @Mock private JwtTokenFilter jwtTokenFilter;
-  @Mock private AuthenticationConfiguration authenticationConfigurationMock;
+  @Mock
+  private ObjectPostProcessor<Object> opp;
+  @Mock
+  private AuthenticationManager parent;
+  @Mock
+  private AuthenticationManagerBuilder builder;
+  @Mock
+  private JwtTokenFilter jwtTokenFilter;
+  @Mock
+  private AuthenticationConfiguration authenticationConfigurationMock;
 
   @Test
   public void whenBasicAuthConfigIsCalledReturnsValidConfiguration() throws Exception {
@@ -59,9 +64,9 @@ public class WebSecurityConfigurationTest {
 
     assertThat(urlMappings.size()).isEqualTo(1);
     assertThat(
-            ReflectionTestUtils.getField(
-                ReflectionTestUtils.getField(urlMappings.iterator().next(), "requestMatcher"),
-                "pattern"))
+        ReflectionTestUtils.getField(
+            ReflectionTestUtils.getField(urlMappings.iterator().next(), "requestMatcher"),
+            "pattern"))
         .isEqualTo(BASE_URL_MATCHER);
   }
 }

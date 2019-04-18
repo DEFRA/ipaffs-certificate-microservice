@@ -4,7 +4,9 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
-/** Identity roles are formatted organisation:role:status */
+/**
+ * Identity roles are formatted organisation:role:status.
+ */
 @Data
 @Builder
 public class OrganisationGrantedAuthority implements GrantedAuthority {

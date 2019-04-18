@@ -6,12 +6,6 @@ import static java.util.stream.Collectors.toList;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
-import java.io.IOException;
-import java.util.List;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +19,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import uk.gov.defra.tracesx.certificate.service.PermissionsService;
 
+import java.io.IOException;
+import java.util.List;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @Component
 public class CertificateAuthFilter extends OncePerRequestFilter {
 
@@ -37,9 +38,11 @@ public class CertificateAuthFilter extends OncePerRequestFilter {
   @Value("${service.security.default-roles}")
   private String[] defaultRoles;
 
-  @Autowired private AuthenticationFacade authenticationFacade;
+  @Autowired
+  private AuthenticationFacade authenticationFacade;
 
-  @Autowired private PermissionsService permissionsService;
+  @Autowired
+  private PermissionsService permissionsService;
 
   private static final Logger EVENT_LOGGER = LoggerFactory.getLogger(CertificateAuthFilter.class);
 
@@ -85,9 +88,9 @@ public class CertificateAuthFilter extends OncePerRequestFilter {
       }
       authenticationFacade.replaceAuthorities(perms);
       chain.doFilter(request, response);
-    } catch (JSONException e) {
-      EVENT_LOGGER.error("Error in Certificate Service Authorisation ", e);
-      sendUnauthorisedResponse(response, e.getMessage());
+    } catch (JSONException exception) {
+      EVENT_LOGGER.error("Error in Certificate Service Authorisation ", exception);
+      sendUnauthorisedResponse(response, exception.getMessage());
     }
   }
 

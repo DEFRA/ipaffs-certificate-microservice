@@ -8,13 +8,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-
 import com.auth0.jwk.InvalidPublicKeyException;
 import com.auth0.jwk.Jwk;
 import com.auth0.jwk.JwkException;
-import java.security.PublicKey;
-import java.util.Arrays;
-import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +24,10 @@ import uk.gov.defra.tracesx.certificate.security.jwks.JwksCache;
 import uk.gov.defra.tracesx.certificate.security.jwks.JwksCache.KeyAndClaims;
 import uk.gov.defra.tracesx.certificate.security.jwks.JwksConfiguration;
 
+import java.security.PublicKey;
+import java.util.Arrays;
+import java.util.List;
+
 @RunWith(MockitoJUnitRunner.class)
 public class JwksCacheTest {
 
@@ -39,15 +39,20 @@ public class JwksCacheTest {
   private static final String AUD2 = "d75ab74a-4751-4e8c-8ed0-2c54dd40bf4a";
   private static final String ISS2 = "http://first-cert-issuer.com";
 
-  @Mock private JwkProviderFactory jwkProviderFactory;
+  @Mock
+  private JwkProviderFactory jwkProviderFactory;
 
-  @Mock private Jwk jwk;
+  @Mock
+  private Jwk jwk;
 
-  @Mock private PublicKey publicKey;
+  @Mock
+  private PublicKey publicKey;
 
-  @Mock private ClaimsAwareJwkProvider jwkProvider1;
+  @Mock
+  private ClaimsAwareJwkProvider jwkProvider1;
 
-  @Mock private ClaimsAwareJwkProvider jwkProvider2;
+  @Mock
+  private ClaimsAwareJwkProvider jwkProvider2;
 
   private JwksCache jwksCache;
 
