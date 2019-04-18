@@ -1,6 +1,5 @@
 package uk.gov.defra.tracesx.certificate.security;
 
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,17 +12,20 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import uk.gov.defra.tracesx.certificate.security.jwt.JwtTokenFilter;
 
+import javax.servlet.http.HttpServletResponse;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-  @Autowired private JwtTokenFilter jwtTokenFilter;
+  @Autowired
+  private JwtTokenFilter jwtTokenFilter;
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.addFilterAfter(
-            new XAuthBasicFilter(authenticationManager()), SecurityContextPersistenceFilter.class)
+        new XAuthBasicFilter(authenticationManager()), SecurityContextPersistenceFilter.class)
         .authorizeRequests()
         .antMatchers("/certificate/*")
         .authenticated()

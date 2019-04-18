@@ -7,19 +7,10 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import java.security.KeyPair;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,6 +23,14 @@ import uk.gov.defra.tracesx.certificate.security.jwks.JwksCache.KeyAndClaims;
 import uk.gov.defra.tracesx.certificate.security.jwt.JwtTokenValidator;
 import uk.gov.defra.tracesx.certificate.security.jwt.JwtUserMapper;
 
+import java.security.KeyPair;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 @RunWith(MockitoJUnitRunner.class)
 public class JwtTokenValidatorTest {
 
@@ -42,11 +41,14 @@ public class JwtTokenValidatorTest {
   private static final String AUD = "279fb646-b442-4ac0-b42a-1912a4ec5e65";
   private static final KeyAndClaims KEY_AND_CLAIMS =
       KeyAndClaims.builder().key(KEY_PAIR.getPublic()).aud(AUD).iss(ISS).build();
-  @Mock private JwtUserMapper jwtUserMapper;
+  @Mock
+  private JwtUserMapper jwtUserMapper;
 
-  @Mock private JwksCache jwksCache;
+  @Mock
+  private JwksCache jwksCache;
 
-  @Mock private IdTokenUserDetails expectedUserDetails;
+  @Mock
+  private IdTokenUserDetails expectedUserDetails;
 
   private JwtTokenValidator jwtTokenValidator;
 

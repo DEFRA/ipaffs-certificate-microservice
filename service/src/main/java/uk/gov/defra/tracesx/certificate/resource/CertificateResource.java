@@ -1,8 +1,5 @@
 package uk.gov.defra.tracesx.certificate.resource;
 
-import java.io.IOException;
-import java.net.URI;
-import javax.xml.parsers.ParserConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +13,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.defra.tracesx.certificate.dao.entities.Certificate;
+import uk.gov.defra.tracesx.certificate.model.Certificate;
 import uk.gov.defra.tracesx.certificate.service.CertificateService;
-import uk.gov.defra.tracesx.certificate.utilities.HtmlValidator;
+import uk.gov.defra.tracesx.certificate.utils.HtmlValidator;
+import uk.gov.defra.tracesx.certificate.utils.ReferenceNumberGenerator;
+import uk.gov.defra.tracesx.certificate.utils.Sanitizer;
+
+import java.io.IOException;
+import java.net.URI;
+import javax.xml.parsers.ParserConfigurationException;
 
 @RestController
 @RequestMapping("/certificate")
@@ -36,17 +39,19 @@ public class CertificateResource {
   @PostMapping(value = "/{reference}")
   @PreAuthorize("hasAuthority('certificate.create')")
   public ResponseEntity<byte[]> getCertificateFromContent(
-      @PathVariable ReferenceNumber reference,
+      @PathVariable ReferenceNumberGenerator reference,
       @RequestBody String unsafeHtmlContent,
       @RequestParam String url) throws ParserConfigurationException, IOException {
 
     LOGGER.info("POST reference: {}", reference);
     HtmlValidator.validate(unsafeHtmlContent);
-    Certificate certificate = certificateService.getPdf(reference, () -> Sanitizer.sanitize(unsafeHtmlContent), URI.create(url));
+    Certificate certificate = certificateService.getPdf(reference,
+        () -> Sanitizer.sanitize(unsafeHtmlContent), URI.create(url));
 
     return ResponseEntity.ok()
         .contentType(MediaType.APPLICATION_PDF)
-        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + reference.valueOf() + ".pdf\"")
+        .header(HttpHeaders.CONTENT_DISPOSITION,
+            "attachment; filename=\"" + reference.valueOf() + ".pdf\"")
         .body(certificate.getDocument());
   }
 }

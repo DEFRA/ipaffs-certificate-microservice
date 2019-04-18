@@ -1,9 +1,6 @@
 package uk.gov.defra.tracesx.certificate.exceptions;
 
 import com.github.fge.jsonpatch.JsonPatchException;
-import java.io.IOException;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 import org.everit.json.schema.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,13 +12,20 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.io.IOException;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-  private static final Logger EXCEPTION_LOGGER = LoggerFactory.getLogger(RestResponseEntityExceptionHandler.class);
+  private static final Logger EXCEPTION_LOGGER =
+      LoggerFactory.getLogger(RestResponseEntityExceptionHandler.class);
 
   @ExceptionHandler(value = {NotImplementedException.class})
-  protected ResponseEntity<java.lang.Object> handleMethodNotImplemented(Exception ex, WebRequest request) {
+  protected ResponseEntity<java.lang.Object> handleMethodNotImplemented(
+      Exception ex,
+      WebRequest request) {
     EXCEPTION_LOGGER.info("Method Not Implemented");
     return handleExceptionInternal(ex, "", new HttpHeaders(), HttpStatus.NOT_IMPLEMENTED, request);
   }
@@ -49,16 +53,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         request);
   }
 
-  @ExceptionHandler(value = {UnauthorizedException.class})
-  protected ResponseEntity<Object> handleUnauthorizedException(UnauthorizedException ex, WebRequest request) {
-    return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
-  }
-
-  private String getSchemaErrors(ValidationException e) {
+  private String getSchemaErrors(ValidationException exception) {
     String errorsOutput;
-    if (e.getCausingExceptions().size() > 0) {
+    if (!exception.getCausingExceptions().isEmpty()) {
       String errors =
-          e.getCausingExceptions()
+          exception.getCausingExceptions()
               .stream()
               .map(i -> (i.getPointerToViolation() + " : " + i.getErrorMessage()))
               .collect(Collectors.joining(System.lineSeparator()));
@@ -67,7 +66,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     } else {
       errorsOutput =
           String.format(
-              "Schema or model error: %s : %s", e.getErrorMessage(), e.getPointerToViolation());
+              "Schema or model error: %s : %s",
+              exception.getErrorMessage(),
+              exception.getPointerToViolation());
     }
     return errorsOutput;
   }

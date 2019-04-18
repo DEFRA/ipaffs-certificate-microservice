@@ -7,10 +7,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.defra.tracesx.certificate.security.XAuthBasicFilter.BASIC_AUTH_HEADER_KEY;
-
-import javax.servlet.FilterChain;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,18 +16,26 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 
+import javax.servlet.FilterChain;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @RunWith(MockitoJUnitRunner.class)
 public class XAuthBasicFilterTest {
 
   private static final String BASIC_HEADER = "Basic dXNlcm5hbWU6cGFzc3dvcmQ=";
 
-  @Mock private AuthenticationManager authenticationManager;
+  @Mock
+  private AuthenticationManager authenticationManager;
 
-  @Mock private HttpServletRequest request;
+  @Mock
+  private HttpServletRequest request;
 
-  @Mock private HttpServletResponse response;
+  @Mock
+  private HttpServletResponse response;
 
-  @Mock private FilterChain chain;
+  @Mock
+  private FilterChain chain;
 
   private XAuthBasicFilter filter;
 

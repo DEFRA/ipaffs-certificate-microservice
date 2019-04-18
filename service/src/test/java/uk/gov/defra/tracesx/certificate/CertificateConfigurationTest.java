@@ -1,10 +1,6 @@
 package uk.gov.defra.tracesx.certificate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,12 +12,17 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.handler.MappedInterceptor;
 import uk.gov.defra.tracesx.certificate.security.CertificateAuthFilter;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
+
 @RunWith(MockitoJUnitRunner.class)
 public class CertificateConfigurationTest {
 
   private static final String BASE_URL_MATCHER = "/certificate/*";
 
-  @Mock private CertificateAuthFilter certificateAuthFilter;
+  @Mock
+  private CertificateAuthFilter certificateAuthFilter;
 
   private final CertificateConfiguration testee = new CertificateConfiguration();
 

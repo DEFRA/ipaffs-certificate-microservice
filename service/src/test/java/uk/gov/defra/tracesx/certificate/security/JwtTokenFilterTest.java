@@ -3,10 +3,6 @@ package uk.gov.defra.tracesx.certificate.security;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import javax.servlet.FilterChain;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +11,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.context.SecurityContextHolder;
 import uk.gov.defra.tracesx.certificate.security.jwt.JwtTokenFilter;
 import uk.gov.defra.tracesx.certificate.security.jwt.JwtTokenValidator;
+
+import javax.servlet.FilterChain;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JwtTokenFilterTest {

@@ -1,12 +1,13 @@
 package uk.gov.defra.tracesx.certificate.resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import org.apache.commons.io.FileUtils;
+import org.junit.Test;
+import uk.gov.defra.tracesx.certificate.utils.Sanitizer;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import org.apache.commons.io.FileUtils;
-import org.junit.Test;
 
 public class SanitizerTest {
 
@@ -44,11 +45,11 @@ public class SanitizerTest {
   public void shouldAllowColspanOnRows() {
     String html = ""
         + "<table>"
-          + "<tbody>"
-          + "<tr>"
-            + "<th colspan=\"2\">y</th>"
-          + "</tr>"
-          + "</tbody>"
+        + "<tbody>"
+        + "<tr>"
+        + "<th colspan=\"2\">y</th>"
+        + "</tr>"
+        + "</tbody>"
         + "</table>";
     validateUnchanged(html);
   }
@@ -68,7 +69,7 @@ public class SanitizerTest {
     String html = ""
         + "<html>"
         + "<head>"
-          + "<link href=\"/public/stylesheets/certificate.css\" rel=\"stylesheet\" />"
+        + "<link href=\"/public/stylesheets/certificate.css\" rel=\"stylesheet\" />"
         + "</head>"
         + "</html>";
     validateUnchanged(html);
@@ -292,7 +293,7 @@ public class SanitizerTest {
     assertThat(safeHtml).doesNotContain("background=\"javascript:alert('XSS')");
   }
 
-  private String getHtmlContentFromFile(String htmlContent) throws IOException{
+  private String getHtmlContentFromFile(String htmlContent) throws IOException {
     URL fileUrl = Sanitizer.class.getClassLoader().getResource(htmlContent);
     File file = new File(fileUrl.getFile());
     return FileUtils.readFileToString(file, "UTF-8");
