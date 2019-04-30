@@ -7,6 +7,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpMethod.GET;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -48,7 +49,7 @@ public class PermissionsService {
   private final RestTemplate permissionsRestTemplate;
 
   @Autowired
-  PermissionsService(final RestTemplate permissionsRestTemplate) {
+  PermissionsService(@Qualifier("certificateRestTemplate") final RestTemplate permissionsRestTemplate) {
     this.permissionsRestTemplate = permissionsRestTemplate;
   }
 

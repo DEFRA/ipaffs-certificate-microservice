@@ -10,6 +10,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <common.health.test.version>1.0.3</common.health.test.version>
   </properties>
   <build>
     <plugins>
@@ -62,6 +63,12 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>uk.gov.defra.tracesx</groupId>
+      <artifactId>TracesX-SpringBoot-Common-Health-Tests</artifactId>
+      <version>${common.health.test.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>

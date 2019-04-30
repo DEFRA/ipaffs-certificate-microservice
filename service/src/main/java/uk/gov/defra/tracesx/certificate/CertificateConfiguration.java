@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -26,6 +27,7 @@ import java.util.List;
 
 @Configuration
 @EnableConfigurationProperties
+@ComponentScan("uk.gov.defra.tracesx.common.health")
 public class CertificateConfiguration implements WebMvcConfigurer {
 
   private static final String BASE_URL_MATCHER = "/certificate/*";
@@ -50,7 +52,7 @@ public class CertificateConfiguration implements WebMvcConfigurer {
   }
 
   @Bean
-  public RestTemplate httpClient() {
+  public RestTemplate certificateRestTemplate() {
     return new RestTemplate();
   }
 
