@@ -4,7 +4,7 @@ server:
 management:
   endpoint:
     health:
-      show-details: "ALWAYS"
+      show-details: "NEVER"
   endpoints:
     web:
       exposure:
@@ -12,6 +12,9 @@ management:
       base-path: /admin
       path-mapping:
         health: health-check
+  health:
+    defaults:
+      enabled: false
 info:
   app:
     name: Certificate
