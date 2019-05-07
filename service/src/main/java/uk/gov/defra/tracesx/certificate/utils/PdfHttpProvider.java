@@ -51,8 +51,8 @@ public class PdfHttpProvider implements FSStreamFactory {
   @Value("${frontendNotification.service.password}")
   private String basicAuthPassword;
 
-  public PdfHttpProvider(@Qualifier("certificateRestTemplate") RestTemplate restTemplate) {
-    this.restTemplate = restTemplate;
+  public PdfHttpProvider(RestTemplate httpClient) {
+    this.restTemplate = httpClient;
   }
 
   @Override
@@ -67,8 +67,7 @@ public class PdfHttpProvider implements FSStreamFactory {
     headers.set(X_AUTH_HEADER_BASIC, encodedBasicAuth);
     HttpEntity<?> requestEntity = new HttpEntity<>(headers);
     LOGGER.info("credentials: {}", headers);
-    ResponseEntity<byte[]> exchange =
-        restTemplate.exchange(uri, HttpMethod.GET, requestEntity, byte[].class);
+    ResponseEntity<byte[]> exchange = restTemplate.exchange(uri, HttpMethod.GET, requestEntity, byte[].class);
     return new FSStream() {
 
       @Override
