@@ -69,3 +69,23 @@ Then select `1.8` in the dropdown of the project SDK section
 - From the service directory run `mvn clean install`
 - Next expose the environment variables stated above
 - Next run `java -jar target/TracesX_Certificate.jar` 
+
+### Logging into Azure for building Docker images
+
+We've now moved to using the sandpit Docker ACR in Azure for our Docker base images. In order to build Docker images you'll now need to login to Azure and the ACR as follows.
+
+You need to install the `az` cli tools. This can be done following the simple instructions here: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-macos?view=azure-cli-latest or indeed by just running
+```
+brew install azure-cli
+```
+Now login to Azure with the following command:
+```
+az login
+```
+This will prompt open a new tab in your browser and ask you to login. Login with your usual username and password for the VPN, the one ending in `@Defra.onmicrosoft.com`. After successfully logging in run the following command:
+```
+az acr login --name sndeuxfesacr001 --subscription AZR-SND
+```
+You should receive a message saying `Login Succeeded`. You should be able to build the Docker images as normal now.
+
+You should only need to do this for the first time you pull the base image. In case of problems try removing `~/.azure` in your home directory and retry.
