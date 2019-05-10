@@ -7,7 +7,6 @@ import com.openhtmltopdf.extend.FSStream;
 import com.openhtmltopdf.extend.FSStreamFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -67,7 +66,8 @@ public class PdfHttpProvider implements FSStreamFactory {
     headers.set(X_AUTH_HEADER_BASIC, encodedBasicAuth);
     HttpEntity<?> requestEntity = new HttpEntity<>(headers);
     LOGGER.info("credentials: {}", headers);
-    ResponseEntity<byte[]> exchange = restTemplate.exchange(uri, HttpMethod.GET, requestEntity, byte[].class);
+    ResponseEntity<byte[]> exchange =
+        restTemplate.exchange(uri, HttpMethod.GET, requestEntity, byte[].class);
     return new FSStream() {
 
       @Override
