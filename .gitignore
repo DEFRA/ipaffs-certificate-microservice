@@ -16,5 +16,5 @@ docker/vault/config/sys
 /database/target/
 **/.idea
 **/dependency-reduced-pom.xml
-**/application.properties
+.env
 

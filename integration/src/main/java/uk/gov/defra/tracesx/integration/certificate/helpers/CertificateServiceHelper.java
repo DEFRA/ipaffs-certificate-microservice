@@ -8,8 +8,6 @@ public class CertificateServiceHelper {
   private final String REFERENCE = "CVEDA.GB.2018.1234567";
 
   public CertificateServiceHelper() {
-    assertNotNullOrEmpty(Properties.SERVICE_USERNAME, "Username is empty");
-    assertNotNullOrEmpty("Password is empty", Properties.SERVICE_PASSWORD);
     assertNotNullOrEmpty("Url is empty", Properties.SERVICE_BASE_URL);
   }
 
