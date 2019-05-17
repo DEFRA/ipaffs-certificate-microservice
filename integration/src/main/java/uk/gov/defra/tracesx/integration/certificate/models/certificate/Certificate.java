@@ -2,15 +2,11 @@ package uk.gov.defra.tracesx.integration.certificate.models.certificate;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.javafaker.Faker;
+import lombok.Data;
 import uk.gov.defra.tracesx.integration.certificate.helpers.CertificateServiceHelper;
-import io.restassured.response.Response;
-import java.io.IOException;
+
 import java.util.UUID;
 import java.util.logging.Logger;
-
-import lombok.Data;
 
 @Data
 @JsonInclude(Include.NON_NULL)

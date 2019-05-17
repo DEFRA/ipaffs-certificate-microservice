@@ -1,52 +1,38 @@
-# Integration
+# Certificate Integration Tests
 
 ## Introduction
 
 This project is a standalone maven project for running automated integration tests.
 
-## Pre-requisites
+## How To Run
 
-- JRE / JDK 8
-- Maven v3
-- [Lombok Plugin](https://plugins.jetbrains.com/plugin/6317-lombok-plugin) (only required for development)
+Before running the tests start up the service as per the root README
 
-## CI installation
+## How To Test
 
-- If there is no existing JDK, download and install 
-  [Java 8 JDK](http://www.oracle.com/technetwork/java/javase/install-linux-64-rpm-138254.html)
+You will find the appropriate value for _TEST_OPENID_TOKEN_SERVICE_AUTH_PASSWORD_ in /keybase/team/defra_devops/.env 
+to use in the following command:
 
-## Running
+```
+mvn clean verify \
+  -Dtest.openid.service.url=https://openid-token-microservice.azurewebsites.net/ \
+  -Dtest.openid.service.auth.username=poc \
+  -Dtest.openid.service.auth.password=XXXX
+  -Dservice.base.url=http://localhost:6060
+```
 
-### VM options
+You can also run: ```cd ../ && ./runIntegration.sh```which is picking up needed values from .env
 
-There are multiple VM options that need specifying to run the tests:
+## Debugging 
+Use IntelliJ to debug whichever tests you wish, with the following env variables (values found in the .env file):
 
-- `service.base.url` is the url (including scheme and port) for the service
-- `auth.username` is basic auth username for the service
-- `auth.password` is basic auth password for the service
-- `skip.integration.tests` should be `false` to run the tests. See notes in the Maven section below.
+```
+TEST_OPENID_TOKEN_SERVICE_URL
+TEST_OPENID_TOKEN_SERVICE_AUTH_USERNAME
+TEST_OPENID_TOKEN_SERVICE_AUTH_PASSWORD
+SERVICE_USERNAME=username
+SERVICE_PASSWORD=password1
+```
 
-The following properties / env variables are related to id token authentication.
- Property `test.openid.service.url` (or alternative env `TEST_OPENID_TOKEN_SERVICE_URL`)
-- Property `test.openid.service.auth.username` (or alternative env `TEST_OPENID_TOKEN_SERVICE_AUTH_USERNAME`)
-- Property `test.openid.service.auth.password` (or alternative env `TEST_OPENID_TOKEN_SERVICE_AUTH_PASSWORD`)
-
-You can find these values in Keybase in the file `openid-token-microservice.txt`.
-
-### Run the tests from Intellij
-
-See VM options section (above) for more details on VM options
-
-- The test classes are located at `src/test/java/uk/gov/defra/tracesx/integration`
-- Run the test as a standard Java App (e.g. right click on the source file, Run TestAdminAuthentication)
-- This should fail because the required runtime arguments have not been specified.
-- Go to Run / Edit Configurations
-- Paste VM Options available in `Running integration tests` directory on Keybase (you must be part of the `defra_devops` group)
-to run tests against test environment
-- Re-run the test and it should now pass
-  - If tests are still not running, go to `integration` directory and run `mvn clean install`
-
-### Maven
-
-To run tests using maven, go to integration directory and run command available in
-`Running integration tests` directory on Keybase (you must be part of the `defra_devops` group)
+and this parameter:
+`-Dservice.base.url=http://localhost:6060`

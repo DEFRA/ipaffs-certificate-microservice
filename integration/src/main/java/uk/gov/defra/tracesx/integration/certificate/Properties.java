@@ -1,19 +1,8 @@
 package uk.gov.defra.tracesx.integration.certificate;
 
-import org.apache.commons.lang3.StringUtils;
-
 public class Properties {
 
-  public static final String SERVICE_USERNAME = getPropertyOrEnv("auth.username", "SERVICE_USERNAME");
-  public static final String SERVICE_PASSWORD = getPropertyOrEnv("auth.password", "SERVICE_PASSWORD");
-  public static final String SERVICE_BASE_URL = System.getProperty("service.base.url", "http://localhost:4000");
-
-  private static String getPropertyOrEnv(String property, String envKey) {
-    String value = System.getProperty(property);
-    if( StringUtils.isEmpty(value)) {
-      value = System.getenv(envKey);
-    }
-    return value;
-  }
+  public static final String SERVICE_BASE_URL = System
+      .getProperty("service.base.url", "http://localhost:6060");
 
 }
