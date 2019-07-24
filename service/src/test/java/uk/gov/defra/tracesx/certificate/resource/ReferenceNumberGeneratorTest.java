@@ -8,10 +8,12 @@ import uk.gov.defra.tracesx.certificate.utils.exception.InvalidReferenceNumberEx
 
 public class ReferenceNumberGeneratorTest {
 
-  private final String CVEDA_REFERENCE = "CVEDA.GB.2018.1234567";
+  private final String CVEDA_REFERENCE = "CVEDA.GB.2018.12345678";
   private final String CVEDP_REFERENCE = "CVEDP.GB.2018.1234567";
   private final String CED_REFERENCE = "CED.GB.2018.1234567";
   private final String DRAFT_REFERENCE = "DRAFT.GB.2018.1234567";
+  private final String INVALID_REFERENCE_REF_NUM_BREACH_TOO_LONG = "CVEDA.GB.2018.12345678213123";
+  private final String INVALID_REFERENCE_REF_NUM_BREACH_TOO_SHORT = "CVEDP.GB.2018.123";
 
   @Test
   public void shouldCreateReferenceNumberForCVEDA() {
@@ -40,7 +42,7 @@ public class ReferenceNumberGeneratorTest {
   @Test
   public void shouldSupportToString() throws Exception {
     assertThat(ReferenceNumberGenerator.valueOf(CVEDA_REFERENCE).toString())
-        .isEqualTo("ReferenceNumberGenerator(CVEDA.GB.2018.1234567)");
+        .isEqualTo("ReferenceNumberGenerator(CVEDA.GB.2018.12345678)");
   }
 
   @Test
@@ -67,5 +69,14 @@ public class ReferenceNumberGeneratorTest {
     assertThatThrownBy(() -> ReferenceNumberGenerator.valueOf("   "))
         .isInstanceOf(InvalidReferenceNumberException.class);
 
+  }
+
+  @Test
+  public void shouldThrowExceptionIfRangeBreached() throws Exception {
+    assertThatThrownBy(() -> ReferenceNumberGenerator.valueOf(INVALID_REFERENCE_REF_NUM_BREACH_TOO_LONG))
+        .isInstanceOf(InvalidReferenceNumberException.class);
+
+    assertThatThrownBy(() -> ReferenceNumberGenerator.valueOf(INVALID_REFERENCE_REF_NUM_BREACH_TOO_SHORT))
+        .isInstanceOf(InvalidReferenceNumberException.class);
   }
 }
