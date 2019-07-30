@@ -1,8 +1,5 @@
 package uk.gov.defra.tracesx.certificate.utils;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.util.Base64.getEncoder;
-
 import com.openhtmltopdf.extend.FSStream;
 import com.openhtmltopdf.extend.FSStreamFactory;
 import org.slf4j.Logger;
@@ -29,10 +26,6 @@ public class PdfHttpProvider implements FSStreamFactory {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(PdfHttpProvider.class);
 
-  private static final String BASIC = "Basic ";
-  private static final String X_AUTH_HEADER_BASIC = "x-auth-basic";
-
-
   private final RestTemplate restTemplate;
 
   @Value("${frontendNotification.service.scheme}")
@@ -43,12 +36,6 @@ public class PdfHttpProvider implements FSStreamFactory {
 
   @Value("${frontendNotification.service.port}")
   private String port;
-
-  @Value("${frontendNotification.service.user}")
-  private String basicAuthUser;
-
-  @Value("${frontendNotification.service.password}")
-  private String basicAuthPassword;
 
   public PdfHttpProvider(RestTemplate httpClient) {
     this.restTemplate = httpClient;
@@ -62,8 +49,6 @@ public class PdfHttpProvider implements FSStreamFactory {
     HttpHeaders headers = new HttpHeaders();
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     headers.add("Authorization", "Bearer " + authentication.getCredentials());
-    final String encodedBasicAuth = getBasicAuth();
-    headers.set(X_AUTH_HEADER_BASIC, encodedBasicAuth);
     HttpEntity<?> requestEntity = new HttpEntity<>(headers);
     LOGGER.info("credentials: {}", headers);
     ResponseEntity<byte[]> exchange =
@@ -93,12 +78,6 @@ public class PdfHttpProvider implements FSStreamFactory {
     if (!uriHost.equals(this.host)) {
       throw new UnsupportedHostException(uriHost);
     }
-  }
-
-  private String getBasicAuth() {
-    String basicAuth = basicAuthUser.concat(":").concat(basicAuthPassword);
-    LOGGER.info("encoding basic auth: {}", basicAuth);
-    return BASIC + getEncoder().encodeToString(basicAuth.getBytes(UTF_8));
   }
 
   private class UnsupportedHostException extends IllegalArgumentException {

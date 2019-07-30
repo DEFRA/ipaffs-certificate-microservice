@@ -1,6 +1,6 @@
 #https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 server:
-  port: ${SERVICE_PORT}
+  port: ${SERVICE_PORT:6060}
 azure:
   application-insights:
     instrumentation-key: ${APPLICATION_INSIGHTS_IKEY}
@@ -35,23 +35,18 @@ spring:
       - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
 permissions:
   service:
-   scheme: ${PERMISSIONS_SERVICE_SCHEME}
-   host: ${PERMISSIONS_SERVICE_HOST}
-   port: ${PERMISSIONS_SERVICE_PORT}
-   user: ${PERMISSIONS_SERVICE_USERNAME}
-   password: ${PERMISSIONS_SERVICE_PASSWORD}
-   connectionTimeout: ${PERMISSIONS_SERVICE_CONNECTION_TIMEOUT}
-   readTimeout: ${PERMISSIONS_SERVICE_CONNECTION_TIMEOUT}
+    url: https://permissions${ENV_DOMAIN}
+    user: importer
+    password: ${PERMISSIONS_SERVICE_PASSWORD}
+    connectionTimeout: 3000
+    readTimeout: 3000
   security:
-     token-feature-switch: false
+    token-feature-switch: false
 frontendNotification:
   service:
     scheme: ${FRONTEND_NOTIFICATION_SERVICE_SCHEME}
     host: ${FRONTEND_NOTIFICATION_SERVICE_HOST}
     port: ${FRONTEND_NOTIFICATION_SERVICE_PORT}
-    user: ${FRONTEND_NOTIFICATION_SERVICE_USERNAME}
-    password: ${FRONTEND_NOTIFICATION_SERVICE_PASSWORD}
 service:
   security:
     token-feature-switch: false
-    default-roles: inspector, importer
