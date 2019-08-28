@@ -1,4 +1,4 @@
-FROM sndeuxfesacr001.azurecr.io/java:alpine3.9-java8.212.04-r0
+FROM sndeuxfesacr001.azurecr.io/java:alpine3.10.2-java8.212.04-r1
 
 RUN mkdir -p /usr/src/certificate-service
 WORKDIR /usr/src/certificate-service
