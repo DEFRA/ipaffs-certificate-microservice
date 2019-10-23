@@ -14,11 +14,6 @@ public class CertificateConfigurationTest {
   private final CertificateConfiguration certificateConfiguration = new CertificateConfiguration();
 
   @Test
-  public void getObjectMapperReturnsObjectMapper(){
-    assertThat(certificateConfiguration.getObjectMapper()).isInstanceOf(ObjectMapper.class);
-  }
-
-  @Test
   public void httpClientReturnsRestTemplate(){
     assertThat(certificateConfiguration.httpClient()).isInstanceOf(RestTemplate.class);
   }
