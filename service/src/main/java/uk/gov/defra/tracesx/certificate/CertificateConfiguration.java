@@ -23,16 +23,4 @@ public class CertificateConfiguration implements WebMvcConfigurer {
   public RestTemplate httpClient() {
     return new RestTemplate();
   }
-
-  @Bean
-  public ObjectMapper getObjectMapper() {
-    return new ObjectMapper();
-  }
-
-  @Bean
-  public TelemetryClient createTelemetryClient() {
-    TelemetryConfiguration configuration = TelemetryConfiguration.getActive();
-    return new TelemetryClient(configuration);
-  }
-
 }

@@ -23,6 +23,8 @@ info:
     name: Certificate
     version: ${API_VERSION}
 spring:
+  main:
+    allow-bean-definition-overriding: true
   security:
     jwt:
       jwks: ${SECURITY_JWT_JWKS}
