@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ContextConfiguration(classes = CertificateTestConfig.class)
 public class CertificateServiceTest {
 
-  private final String REFERENCE = "CVEDA.GB.2018.1234567";
+  private final String REFERENCE = "CHEDA.GB.2018.1234567";
 
   @Autowired
   private CertificateApi certificateApi;

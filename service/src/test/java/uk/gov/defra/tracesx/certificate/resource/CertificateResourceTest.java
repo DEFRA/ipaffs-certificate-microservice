@@ -23,7 +23,7 @@ import java.util.function.Supplier;
 @RunWith(MockitoJUnitRunner.class)
 public class CertificateResourceTest {
 
-  private static final ReferenceNumberGenerator REFERENCE = new ReferenceNumberGenerator("CED.GB.2018.1010007");
+  private static final ReferenceNumberGenerator REFERENCE = new ReferenceNumberGenerator("CHEDD.GB.2018.1010007");
   private static final String URL = "http://ins.com/certificate/001";
   private static final URI URI = java.net.URI.create(URL);
 

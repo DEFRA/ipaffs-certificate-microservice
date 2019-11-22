@@ -8,15 +8,15 @@ import uk.gov.defra.tracesx.certificate.utils.exception.InvalidReferenceNumberEx
 
 public class ReferenceNumberGeneratorTest {
 
-  private final String CVEDA_BLANK_REFERENCE = "CVEDA";
-  private final String CVEDP_BLANK_REFERENCE = "CVEDP";
-  private final String CED_BLANK_REFERENCE = "CED";
-  private final String CVEDA_REFERENCE = "CVEDA.GB.2018.12345678";
-  private final String CVEDP_REFERENCE = "CVEDP.GB.2018.1234567";
-  private final String CED_REFERENCE = "CED.GB.2018.1234567";
+  private final String CVEDA_BLANK_REFERENCE = "CHEDA";
+  private final String CVEDP_BLANK_REFERENCE = "CHEDP";
+  private final String CED_BLANK_REFERENCE = "CHEDD";
+  private final String CVEDA_REFERENCE = "CHEDA.GB.2018.12345678";
+  private final String CVEDP_REFERENCE = "CHEDP.GB.2018.1234567";
+  private final String CED_REFERENCE = "CHEDD.GB.2018.1234567";
   private final String DRAFT_REFERENCE = "DRAFT.GB.2018.1234567";
-  private final String INVALID_REFERENCE_REF_NUM_BREACH_TOO_LONG = "CVEDA.GB.2018.12345678213123";
-  private final String INVALID_REFERENCE_REF_NUM_BREACH_TOO_SHORT = "CVEDP.GB.2018.123";
+  private final String INVALID_REFERENCE_REF_NUM_BREACH_TOO_LONG = "CHEDA.GB.2018.12345678213123";
+  private final String INVALID_REFERENCE_REF_NUM_BREACH_TOO_SHORT = "CHEDP.GB.2018.123";
 
   @Test
   public void shouldCreateReferenceNumberForCVEDA_WhenBlank() {
@@ -63,7 +63,7 @@ public class ReferenceNumberGeneratorTest {
   @Test
   public void shouldSupportToString() {
     assertThat(ReferenceNumberGenerator.valueOf(CVEDA_REFERENCE).toString())
-        .isEqualTo("ReferenceNumberGenerator(CVEDA.GB.2018.12345678)");
+        .isEqualTo("ReferenceNumberGenerator(" + CVEDA_REFERENCE + ")");
   }
 
   @Test

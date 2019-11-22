@@ -13,7 +13,7 @@ import java.util.Objects;
 @RunWith(MockitoJUnitRunner.class)
 public class CertificateTest {
 
-  private static final ReferenceNumberGenerator REFERENCE_NUMBER = new ReferenceNumberGenerator("CVEDA.GB.2019.0000000");
+  private static final ReferenceNumberGenerator REFERENCE_NUMBER = new ReferenceNumberGenerator("CHEDA.GB.2019.0000000");
   private static final byte[] DOCUMENT = "string".getBytes();
 
   @Test
