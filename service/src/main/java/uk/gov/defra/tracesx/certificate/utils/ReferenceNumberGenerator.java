@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class ReferenceNumberGenerator {
 
   private static final Pattern PATTERN =
-      Pattern.compile("((CVEDA|CED|CVEDP|DRAFT).GB.20\\d{2}.\\d{7,8})|(CVEDA|CED|CVEDP)");
+      Pattern.compile("((CHEDA|CHEDD|CHEDP|DRAFT).GB.20\\d{2}.\\d{7,8})|(CHEDA|CHEDD|CHEDP)");
 
   private final String referenceNumber;
 

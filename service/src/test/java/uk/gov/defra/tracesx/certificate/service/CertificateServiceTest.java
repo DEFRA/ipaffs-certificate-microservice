@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 @RunWith(MockitoJUnitRunner.class)
 public class CertificateServiceTest {
 
-  private static final ReferenceNumberGenerator REFERENCE = ReferenceNumberGenerator.valueOf("CVEDP.GB.2018.1234567");
+  private static final ReferenceNumberGenerator REFERENCE = ReferenceNumberGenerator.valueOf("CHEDP.GB.2018.1234567");
   private static final URI CERT_LOCATION = java.net.URI.create("http://ins.gov/certificate/001");
   private static final URI BASE_URI = URI.create("http://ins.gov");
   private static final String CERT_HTML_CONTENT = "<html lang='en'>cert content</html>";
