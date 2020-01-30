@@ -1,8 +1,5 @@
 package uk.gov.defra.tracesx.certificate;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.applicationinsights.TelemetryClient;
-import com.microsoft.applicationinsights.TelemetryConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +13,12 @@ public class CertificateConfiguration implements WebMvcConfigurer {
 
   @Bean
   public FontFile fontFile() {
-    return new FontFile("Arial", "Arial Unicode.ttf");
+    return new FontFile("Times New Roman", "Times New Roman.ttf");
+  }
+
+  @Bean
+  public FontFile fontFileBold() {
+    return new FontFile("Times New Roman Bold", "Times New Roman Bold.ttf");
   }
 
   @Bean

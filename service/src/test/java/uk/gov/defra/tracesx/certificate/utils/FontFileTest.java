@@ -14,13 +14,13 @@ public class FontFileTest {
 
   @Test
   void shouldCreateFontFile() throws Exception {
-    arial = new FontFile("Arial", "Arial Unicode.ttf");
-    assertThat(arial.getName()).isEqualTo("Arial");
+    arial = new FontFile("Times New Roman", "Times New Roman.ttf");
+    assertThat(arial.getName()).isEqualTo("Times New Roman");
   }
 
   @Test
   void shouldReturnInputStream() throws Exception {
-    arial = new FontFile("Arial", "Arial Unicode.ttf");
+    arial = new FontFile("Times New Roman", "Times New Roman.ttf");
     FSSupplier<InputStream> supplier = arial.getInputStreamSupplier();
     InputStream inputStream = supplier.supply();
     assertThat(inputStream.available()).isGreaterThan(0);

@@ -17,7 +17,7 @@
   </parent>
 
   <properties>
-    <openhtml.version>0.0.1-RC17</openhtml.version>
+    <openhtml.version>0.0.1-RC18</openhtml.version>
     <owasp-java-html-sanitizer.version>20181114.1</owasp-java-html-sanitizer.version>
   </properties>
 
