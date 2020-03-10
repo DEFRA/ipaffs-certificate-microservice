@@ -7,6 +7,7 @@ import uk.gov.defra.tracesx.certificate.utils.exception.InvalidHtmlException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -20,6 +21,8 @@ public class HtmlValidator {
   public static final void validate(String html) throws ParserConfigurationException, IOException {
     try {
       DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+      dbFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+      dbFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
       DocumentBuilder documentBuilder = dbFactory.newDocumentBuilder();
       InputSource input = new InputSource(new BufferedReader(new StringReader(html)));
       documentBuilder.parse(input);
