@@ -37,7 +37,7 @@ spring:
       - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
 permissions:
   service:
-    url: https://permissions${ENV_DOMAIN}
+    url: ${PROTOCOL}://permissions${ENV_DOMAIN}
     user: importer
     password: ${PERMISSIONS_SERVICE_PASSWORD}
     connectionTimeout: 3000
