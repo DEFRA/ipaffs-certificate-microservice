@@ -1,4 +1,4 @@
-@Library('pipeline-library') _
+@Library('pipeline-library@feature/EUXO-000-Test-Teams-Notifications') _
 
 javaPipeline {
     SERVICE_NAME = "certificate-microservice"
