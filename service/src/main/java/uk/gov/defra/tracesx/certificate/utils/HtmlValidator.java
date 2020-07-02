@@ -21,8 +21,9 @@ public class HtmlValidator {
   public static final void validate(String html) throws ParserConfigurationException, IOException {
     try {
       DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-      dbFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-      dbFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+      dbFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant
+      dbFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+
       DocumentBuilder documentBuilder = dbFactory.newDocumentBuilder();
       InputSource input = new InputSource(new BufferedReader(new StringReader(html)));
       documentBuilder.parse(input);
