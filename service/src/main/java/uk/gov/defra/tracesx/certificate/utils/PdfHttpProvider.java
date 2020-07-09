@@ -13,9 +13,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import uk.gov.defra.tracesx.certificate.utils.exception.InvalidTokenException;
 
 import java.io.ByteArrayInputStream;
 import java.io.CharArrayReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
@@ -48,7 +50,13 @@ public class PdfHttpProvider implements FSStreamFactory {
     validateUri(uri);
     HttpHeaders headers = new HttpHeaders();
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    headers.add("Authorization", "Bearer " + authentication.getCredentials());
+
+    String token = (String) authentication.getCredentials();
+    if (!token.matches("^[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+\\.?[A-Za-z0-9-_.+/=]*$")) {
+      throw new InvalidTokenException("invalid JWT token");
+    }
+
+    headers.add("Authorization", "Bearer " + token);
     HttpEntity<?> requestEntity = new HttpEntity<>(headers);
     LOGGER.info("credentials: {}", headers);
     ResponseEntity<byte[]> exchange =
