@@ -54,7 +54,8 @@ public class CertificatePdfGenerator {
         setLanguage(pdDocument, Locale.UK.getLanguage());
         builder.usePDDocument(pdDocument);
         builder.run();
-        LOGGER.info("conversion took: " + (System.currentTimeMillis() - start));
+        Long conversionDuration = (System.currentTimeMillis() - start);
+        LOGGER.info("conversion took: {}", conversionDuration);
         return os.toByteArray();
       }
     } catch (Exception ex) {

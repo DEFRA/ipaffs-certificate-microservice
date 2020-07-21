@@ -1,5 +1,7 @@
 package uk.gov.defra.tracesx.certificate.resource;
 
+import static uk.gov.defra.tracesx.certificate.utils.LoggerHelper.replaceNewLines;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +44,8 @@ public class CertificateResource {
       @PathVariable ReferenceNumberGenerator reference,
       @RequestBody String unsafeHtmlContent,
       @RequestParam String url) throws ParserConfigurationException, IOException {
-
-    LOGGER.info("POST reference: {}", reference);
+    String replacedReference = replaceNewLines(reference.toString());
+    LOGGER.info("POST reference: {}", replacedReference);
     HtmlValidator.validate(unsafeHtmlContent);
     Certificate certificate = certificateService.getPdf(reference,
         () -> Sanitizer.sanitize(unsafeHtmlContent), URI.create(url));
