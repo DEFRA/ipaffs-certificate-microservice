@@ -20,7 +20,7 @@ public class HtmlValidator {
 
   public static final void validate(String html) throws ParserConfigurationException, IOException {
     try {
-      DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+      DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newDefaultInstance();
       dbFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
       dbFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
       dbFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
