@@ -24,7 +24,6 @@ public class HtmlValidator {
       dbFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
       dbFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
       dbFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
-      dbFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
       dbFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
       dbFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
       dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
