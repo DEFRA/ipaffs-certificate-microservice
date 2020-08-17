@@ -23,6 +23,8 @@ info:
     name: Certificate
     version: ${API_VERSION}
 spring:
+  application:
+    name: certificate-microservice
   main:
     allow-bean-definition-overriding: true
   security:
