@@ -13,8 +13,7 @@ public class ReferenceNumberGenerator {
   private static final Logger LOGGER = LoggerFactory.getLogger(ReferenceNumberGenerator.class);
   private static final Pattern PATTERN =
       Pattern.compile(
-          "((CHEDA|CHEDD|CHEDPP|CHEDP|DRAFT).(GB|XI).20\\d{2}.\\d{7,8})|"
-                  + "(CHEDA|CHEDD|CHEDPP|CHEDP)");
+              "((CHEDA|CHEDD|CHEDPP|CHEDP|DRAFT).GB.20\\d{2}.\\d{7,8})|(CHEDA|CHEDD|CHEDPP|CHEDP)");
 
   private final String referenceNumber;
 

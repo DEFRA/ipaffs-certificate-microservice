@@ -32,13 +32,13 @@ public class CertificateServiceTest {
   }
 
   @Test
-  public void shouldCreateCertificateFromHtmlForXI() {
+  public void shouldReturnBadRequestCreateCertificateFromHtmlForXI() {
 
     String htmlContent = "<p>hello world</p>";
     String callBackUrl = "";
     Response response = certificateApi.getPdf(htmlContent, REFERENCE_XI, callBackUrl);
 
-    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.SC_OK);
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.SC_BAD_REQUEST);
   }
 
   @Test

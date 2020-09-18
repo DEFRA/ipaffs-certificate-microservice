@@ -12,6 +12,7 @@ public class ReferenceNumberGeneratorTest {
   private final String CVEDA_REFERENCE = "CHEDA.GB.2018.12345678";
   private final String INVALID_REFERENCE_REF_NUM_BREACH_TOO_LONG = "CHEDA.GB.2018.12345678213123";
   private final String INVALID_REFERENCE_REF_NUM_BREACH_TOO_SHORT = "CHEDP.GB.2018.123";
+  private final String CVEDP_REFERENCE_XI = "CHEDP.XI.2018.1234567";
 
   @Test
   public void shouldCreateReferenceNumberForCVEDA_WhenBlank() {
@@ -117,9 +118,9 @@ public class ReferenceNumberGeneratorTest {
   }
 
   @Test
-  public void shouldCreateReferenceNumberForXI() {
-    String CVEDP_REFERENCE = "CHEDP.XI.2018.1234567";
-    assertThat(ReferenceNumberGenerator.valueOf(CVEDP_REFERENCE).valueOf())
-            .isEqualTo(CVEDP_REFERENCE);
+  public void shouldThrowExceptionForXI() {
+    assertThatThrownBy(
+            () -> ReferenceNumberGenerator.valueOf(CVEDP_REFERENCE_XI))
+            .isInstanceOf(InvalidReferenceNumberException.class);
   }
 }
