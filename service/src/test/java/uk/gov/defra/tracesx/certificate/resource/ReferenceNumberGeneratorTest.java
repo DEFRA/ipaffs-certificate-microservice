@@ -115,11 +115,4 @@ public class ReferenceNumberGeneratorTest {
             () -> ReferenceNumberGenerator.valueOf(INVALID_REFERENCE_REF_NUM_BREACH_TOO_SHORT))
         .isInstanceOf(InvalidReferenceNumberException.class);
   }
-
-  @Test
-  public void shouldCreateReferenceNumberForXI() {
-    String CVEDP_REFERENCE = "CHEDP.XI.2018.1234567";
-    assertThat(ReferenceNumberGenerator.valueOf(CVEDP_REFERENCE).valueOf())
-            .isEqualTo(CVEDP_REFERENCE);
-  }
 }

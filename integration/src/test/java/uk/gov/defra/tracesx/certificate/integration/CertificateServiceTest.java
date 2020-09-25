@@ -15,7 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class CertificateServiceTest {
 
   private final String REFERENCE = "CHEDA.GB.2018.1234567";
-  private final String REFERENCE_XI = "CHEDA.XI.2018.1234567";
   private final String REFERENCE_INVALID = "CHEDA.INVALID.2018.1234567";
 
   @Autowired
@@ -27,16 +26,6 @@ public class CertificateServiceTest {
     String htmlContent = "<p>hello world</p>";
     String callBackUrl = "";
     Response response = certificateApi.getPdf(htmlContent, REFERENCE, callBackUrl);
-
-    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.SC_OK);
-  }
-
-  @Test
-  public void shouldCreateCertificateFromHtmlForXI() {
-
-    String htmlContent = "<p>hello world</p>";
-    String callBackUrl = "";
-    Response response = certificateApi.getPdf(htmlContent, REFERENCE_XI, callBackUrl);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.SC_OK);
   }
