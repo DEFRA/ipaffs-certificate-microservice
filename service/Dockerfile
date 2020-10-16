@@ -2,8 +2,6 @@ ARG BASE_IMAGE
 
 FROM sndeuxfesacr001.azurecr.io/$BASE_IMAGE
 
-ARG APP_INSIGHTS_AGENT_VERSION
-
 RUN mkdir -p /usr/src/certificate-service
 WORKDIR /usr/src/certificate-service
 
