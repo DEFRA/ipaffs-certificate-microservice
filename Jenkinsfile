@@ -1,4 +1,4 @@
-@Library('pipeline-library') _
+@Library('pipeline-library@feature/EUXO-1706-AppInsights-management-change') _
 
 javaPipeline {
     SERVICE_NAME = "certificate-microservice"
