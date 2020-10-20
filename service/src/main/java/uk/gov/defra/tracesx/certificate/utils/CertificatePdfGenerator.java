@@ -48,10 +48,10 @@ public class CertificatePdfGenerator {
         builder.useFont(fontFileBold.getInputStreamSupplier(), fontFileBold.getName(),
             500, BaseRendererBuilder.FontStyle.NORMAL, true);
         builder.useHttpStreamImplementation(httpProvider);
-        builder.toStream(os);
         PdfBoxRenderer pdfBoxRenderer = builder.buildPdfRenderer();
         PDDocument pdDocument = pdfBoxRenderer.getPdfDocument();
         setLanguage(pdDocument, Locale.UK.getLanguage());
+        builder.toStream(os);
         builder.usePDDocument(pdDocument);
         builder.run();
         Long conversionDuration = (System.currentTimeMillis() - start);
