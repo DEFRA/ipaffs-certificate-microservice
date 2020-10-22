@@ -51,8 +51,8 @@ public class CertificatePdfGenerator {
         PdfBoxRenderer pdfBoxRenderer = builder.buildPdfRenderer();
         PDDocument pdDocument = pdfBoxRenderer.getPdfDocument();
         setLanguage(pdDocument, Locale.UK.getLanguage());
-        builder.toStream(os);
         builder.usePDDocument(pdDocument);
+        builder.toStream(os);
         builder.run();
         Long conversionDuration = (System.currentTimeMillis() - start);
         LOGGER.info("conversion took: {}", conversionDuration);
