@@ -44,6 +44,7 @@ public class CertificatePdfGenerator {
         builder.withHtmlContent(htmlContent, baseUri.toString());
         builder.useFastMode();
         builder.usePdfUaAccessbility(true);
+        builder.usePdfAConformance(PdfRendererBuilder.PdfAConformance.PDFA_1_A);
         builder.useFont(fontFile.getInputStreamSupplier(), fontFile.getName());
         builder.useFont(fontFileBold.getInputStreamSupplier(), fontFileBold.getName(),
             500, BaseRendererBuilder.FontStyle.NORMAL, true);
