@@ -15,6 +15,7 @@ public class Sanitizer {
       .allowAttributes("href", "rel").onElements("link")
       .allowAttributes("colspan").globally()
       .allowAttributes("class").globally()
+      .allowAttributes("lang").onElements("html")
       .toFactory()
       .and(Sanitizers.FORMATTING)
       .and(Sanitizers.IMAGES)
