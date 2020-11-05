@@ -42,6 +42,17 @@ public class SanitizerTest {
   }
 
   @Test
+  public void shouldAllowLanguageAttributeInHtml() {
+    String html = ""
+            + "<html lang=\"en\">"
+            + "<head>"
+            + "<link href=\"/public/stylesheets/certificate.css\" rel=\"stylesheet\" />"
+            + "</head>"
+            + "</html>";
+    validateUnchanged(html);
+  }
+
+  @Test
   public void shouldAllowColspanOnRows() {
     String html = ""
         + "<table>"
