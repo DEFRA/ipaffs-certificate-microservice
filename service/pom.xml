@@ -13,12 +13,13 @@
   <parent>
     <groupId>uk.gov.defra.tracesx</groupId>
     <artifactId>spring-boot-parent</artifactId>
-    <version>2.0.116</version>
+    <version>2.0.153</version>
   </parent>
 
   <properties>
-    <openhtml.version>1.0.1</openhtml.version>
+    <openhtml.version>1.0.8</openhtml.version>
     <owasp-java-html-sanitizer.version>20181114.1</owasp-java-html-sanitizer.version>
+    <commons-io.version>2.10.0</commons-io.version>
   </properties>
 
   <dependencyManagement>
@@ -37,6 +38,11 @@
         <groupId>com.openhtmltopdf</groupId>
         <artifactId>openhtmltopdf-pdfbox</artifactId>
         <version>${openhtml.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>${commons-io.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -61,6 +67,10 @@
     <dependency>
       <groupId>com.openhtmltopdf</groupId>
       <artifactId>openhtmltopdf-pdfbox</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
     </dependency>
   </dependencies>
 
