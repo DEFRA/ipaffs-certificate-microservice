@@ -44,6 +44,11 @@
           </argLine>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.1.2</version>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
@@ -65,10 +70,6 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.github.javafaker</groupId>
-      <artifactId>javafaker</artifactId>
     </dependency>
   </dependencies>
     <name>TracesX-Certificate-Integration</name>
