@@ -7,3 +7,4 @@ mvn test -f integration/pom.xml \
     -Dtest.openid.service.auth.username=$TEST_OPENID_TOKEN_SERVICE_AUTH_USERNAME \
     -Dtest.openid.service.auth.password=$TEST_OPENID_TOKEN_SERVICE_AUTH_PASSWORD \
     -Dservice.base.url=http://localhost:6060
+    -Dfrontend.notification.base.url=http://localhost:8000

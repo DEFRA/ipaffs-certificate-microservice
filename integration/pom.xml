@@ -12,6 +12,10 @@
     <version>2.0.19</version>
   </parent>
 
+  <properties>
+    <commons-io.version>2.10.0</commons-io.version>
+  </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -70,6 +74,11 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>${commons-io.version}</version>
     </dependency>
   </dependencies>
     <name>TracesX-Certificate-Integration</name>
