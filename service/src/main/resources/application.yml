@@ -1,9 +1,6 @@
 #https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 server:
   port: ${SERVICE_PORT:6060}
-azure:
-  application-insights:
-    instrumentation-key: ${APPLICATION_INSIGHTS_IKEY}
 management:
   endpoint:
     health:

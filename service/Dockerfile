@@ -7,7 +7,7 @@ WORKDIR /usr/src/certificate-service
 
 COPY target/TracesX_Certificate.jar /usr/src/certificate-service/
 COPY lib/applicationinsights-agent.jar /usr/src/certificate-service/
-COPY lib/AI-Agent.xml /usr/src/certificate-service/
+COPY lib/applicationinsights.json /usr/src/certificate-service/
 
 RUN chown jreuser /usr/src/certificate-service
 USER jreuser
