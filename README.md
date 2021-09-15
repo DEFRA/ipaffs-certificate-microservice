@@ -15,7 +15,7 @@ In order to run the service you will need the following dependencies
 ## Set up
 Ensure that you have the necessary configuration to resolve dependencies from Artifactory: https://eaflood.atlassian.net/wiki/spaces/IT/pages/1047823027/Artifactory
 
-Copy `.env` file from `/keybase/team/defra_devops/.env` into the root of this project and run the service : 
+Copy `.env` file from `Defra Sharepoint` into the root of this project and run the service : 
 
 From the service directory, run with:
 
@@ -59,18 +59,15 @@ The following properties are used by the application (see required values in the
 
 ```
 SERVICE_PORT
-SERVICE_USER
-SERVICE_PASSWORD
 PERMISSIONS_SERVICE_PASSWORD
 PROTOCOL
 SECURITY_JWT_JWKS
 SECURITY_JWT_ISS
 SECURITY_JWT_AUD
-FRONTEND_NOTIFICATION_SCHEMA
-FRONTEND_NOTIFICATION_HOST
-FRONTEND_NOTIFICATION_PORT
-FRONTEND_NOTIFICATION_SERVICE_USERNAME
-FRONTEND_NOTIFICATION_SERVICE_PASSWORD
+FRONTEND_NOTIFICATION_SERVICE_SCHEME
+FRONTEND_NOTIFICATION_SERVICE_HOST
+FRONTEND_NOTIFICATION_SERVICE_PORT
+ENV_DOMAIN
 ```
 
 ### Id (JWT) token validation environment
@@ -103,22 +100,14 @@ You should only need to do this for the first time you pull the base image. In c
 
 ### Environment variables 
 ```
-export SERVICE_PORT=4862
-export SERVICE_USER=certificateServiceUser
-export SERVICE_PASSWORD=${SERVICE_PASSWORD}
-export DB_USER=SA
-export DB_PASSWORD=dockerPassword1!
-export DB_HOST=localhost
-export DB_PORT=1401
-export DB_NAME=importnotification
+export SERVICE_PORT=6060
 export PERMISSIONS_SERVICE_PASSWORD=${SERVICE_PASSWORD}
 export PROTOCOL=https
 export SECURITY_JWT_JWKS
 export SECURITY_JWT_ISS
 export SECURITY_JWT_AUD
-export FRONTEND_NOTIFICATION_SCHEMA
-export FRONTEND_NOTIFICATION_HOST
-export FRONTEND_NOTIFICATION_PORT
-export FRONTEND_NOTIFICATION_SERVICE_USERNAME
-export FRONTEND_NOTIFICATION_SERVICE_PASSWORD
+export FRONTEND_NOTIFICATION_SERVICE_SCHEME
+export FRONTEND_NOTIFICATION_SERIVCE_HOST
+export FRONTEND_NOTIFICATION_SERVICE_PORT
+export ENV_DOMAIN
    ```
