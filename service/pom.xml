@@ -85,6 +85,39 @@
           <mainClass>uk.gov.defra.tracesx.certificate.CertificateApplication</mainClass>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version>
+        <executions>
+          <execution>
+            <id>setup-pre-push-hook</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <failOnError>true</failOnError>
+              <target>
+                <property name="git.committedHookFileLocation" location="./../pre-push-hook.sh" />
+                <property name="git.prePushHookLocation" location="./../.git/hooks/pre-push" />
+                <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+                <echo message="[INFO] Setting up git hook for secret scanning for pre-push file ${git.prePushHookLocation}"/>
+                <delete file="${git.prePushHookLocation}" failonerror="true"/>
+                <copy file="${git.committedHookFileLocation}" tofile="${git.prePushHookLocation}" failonerror="true"/>
+                <chmod dir="${git.prePushHookLocation}" perm="700" failonerror="true"/>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>ant-contrib</groupId>
+            <artifactId>ant-contrib</artifactId>
+            <version>20020829</version>
+          </dependency>
+        </dependencies>
+      </plugin>
     </plugins>
   </build>
 </project>

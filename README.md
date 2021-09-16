@@ -12,6 +12,18 @@ In order to run the service you will need the following dependencies
 - JDK v11
 - Maven v3
 
+## Secret scanning
+Secret scanning is setup using [truffleHog](https://github.com/trufflesecurity/truffleHog).
+It is used as a pre-push hook and will scan any local commits being pushed
+
+### Pre-push hook setup
+1. Install truffleHog [truffleHog](https://github.com/trufflesecurity/truffleHog)
+   - `pip3 install --trusted-host pypi.org --trusted-host files.pythonhosted.org truffleHog`
+2. Set DEFRA_WORKSPACE env var (`export DEFRA_WORKSPACE=/path/to/workspace`)
+3. Copy the pre-push hook to your .git hooks folder
+- run `cp $DEFRA_WORKSPACE/certificate-microservice/pre-push-hook.sh $DEFRA_WORKSPACE/certificate-microservice/.git/hooks/pre-push` then run `chmod +x $DEFRA_WORKSPACE/certificate-microservice/.git/hooks/pre-push`
+- or run `mvn install` to automatically copy the file for you
+
 ## Set up
 Ensure that you have the necessary configuration to resolve dependencies from Artifactory: https://eaflood.atlassian.net/wiki/spaces/IT/pages/1047823027/Artifactory
 
@@ -106,8 +118,9 @@ export PROTOCOL=https
 export SECURITY_JWT_JWKS
 export SECURITY_JWT_ISS
 export SECURITY_JWT_AUD
-export FRONTEND_NOTIFICATION_SERVICE_SCHEME
-export FRONTEND_NOTIFICATION_SERIVCE_HOST
-export FRONTEND_NOTIFICATION_SERVICE_PORT
-export ENV_DOMAIN
+export FRONTEND_NOTIFICATION_SCHEMA
+export FRONTEND_NOTIFICATION_HOST
+export FRONTEND_NOTIFICATION_PORT
+export FRONTEND_NOTIFICATION_SERVICE_USERNAME
+export FRONTEND_NOTIFICATION_SERVICE_PASSWORD
    ```
