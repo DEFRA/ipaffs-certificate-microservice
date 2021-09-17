@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 public class CertificateResourceTest {
 
   private static final ReferenceNumberGenerator REFERENCE = new ReferenceNumberGenerator("CHEDD.GB.2018.1010007");
-  private static final String URL = "http://ins.com/certificate/001";
+  private static final String URL = "http://somewebsite.com/certificate/001";
   private static final URI URI = java.net.URI.create(URL);
 
   @Mock

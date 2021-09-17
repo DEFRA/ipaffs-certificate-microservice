@@ -22,6 +22,6 @@ public class CertificateServiceHelper {
   }
 
   public String createUrl() {
-    return getUrl("/certificate/" + REFERENCE + "?url=http://ins.com/certificate/001");
+    return getUrl("/certificate/" + REFERENCE + "?url=http://somewebsite.com/certificate/001");
   }
 }
