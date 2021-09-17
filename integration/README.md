@@ -11,7 +11,7 @@ Also run `frontend-notification-microservice` - this is needed to serve styleshe
 
 ## How To Test
 
-You will find the appropriate value for _TEST_OPENID_TOKEN_SERVICE_AUTH_PASSWORD_ in /keybase/team/defra_devops/.env 
+You will find the appropriate value for _TEST_OPENID_TOKEN_SERVICE_AUTH_PASSWORD_ in `Defra Sharepoint/.env` 
 to use in the following command:
 
 ```
@@ -32,8 +32,6 @@ Use IntelliJ to debug whichever tests you wish, with the following env variables
 TEST_OPENID_TOKEN_SERVICE_URL
 TEST_OPENID_TOKEN_SERVICE_AUTH_USERNAME
 TEST_OPENID_TOKEN_SERVICE_AUTH_PASSWORD
-SERVICE_USERNAME=username
-SERVICE_PASSWORD=password1
 ```
 
 and these parameters:
