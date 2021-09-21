@@ -1,6 +1,7 @@
-ARG BASE_IMAGE
+ARG BASE_VERSION=jre-11
+FROM defradigital/java:$BASE_VERSION AS base
 
-FROM sndeuxfesacr001.azurecr.io/$BASE_IMAGE
+USER root
 
 RUN mkdir -p /usr/src/certificate-service
 WORKDIR /usr/src/certificate-service
