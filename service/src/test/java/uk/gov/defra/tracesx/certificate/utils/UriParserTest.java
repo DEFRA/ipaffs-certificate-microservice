@@ -11,11 +11,11 @@ public class UriParserTest {
 
   @Test
   public void shouldReturnBaseUri() {
-    assertBaseUri("http://www.any.com/some/path", "http://www.any.com");
-    assertBaseUri("http://www.any.com:8080/some/path", "http://www.any.com:8080");
-    assertBaseUri("https://www.any.com:8080/some/path", "https://www.any.com:8080");
-    assertBaseUri("https://www.any.com/some/path", "https://www.any.com");
-    assertBaseUri("http://www.any.com/some/path", "http://www.any.com");
+    assertBaseUri("http://www.somewebsite.com/some/path", "http://www.somewebsite.com");
+    assertBaseUri("http://www.somewebsite.com:8080/some/path", "http://www.somewebsite.com:8080");
+    assertBaseUri("https://www.somewebsite.com:8080/some/path", "https://www.somewebsite.com:8080");
+    assertBaseUri("https://www.somewebsite.com/some/path", "https://www.somewebsite.com");
+    assertBaseUri("http://www.somewebsite.com/some/path", "http://www.somewebsite.com");
   }
 
   private void assertBaseUri(String url, String expected) {

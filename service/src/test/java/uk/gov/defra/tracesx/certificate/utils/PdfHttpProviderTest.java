@@ -30,9 +30,7 @@ public class PdfHttpProviderTest {
 
   private static final String CSS_STYLES_URL = "http://localhost:8000/certificate.css";
   private static final String CSS = "body{font-size:12px;}";
-  private static final String JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NT"
-      + "Y3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6"
-      + "yJV_adQssw5c";
+  private static final String JWT_TOKEN = "abc.123.abc";
 
   @Mock
   private RestTemplate restTemplate;
