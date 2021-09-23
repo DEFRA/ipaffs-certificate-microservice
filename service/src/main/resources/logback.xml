@@ -3,9 +3,6 @@
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <property name="LOG_PATTERN"
               value="%d{yyyy-MM-dd HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) ConversationId:%X{ConversationId} %logger{36}.%M - %msg%n"/>
-    <appender name="aiAppender"
-              class="com.microsoft.applicationinsights.logback.ApplicationInsightsAppender">
-    </appender>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>
@@ -15,7 +12,6 @@
         </layout>
     </appender>
     <root level="info">
-        <appender-ref ref="aiAppender"/>
         <appender-ref ref="STDOUT"/>
     </root>
 </configuration>

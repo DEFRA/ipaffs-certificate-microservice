@@ -17,7 +17,8 @@ import javax.servlet.Filter;
 @Configuration
 public class ApplicationInsightsConfig {
 
-  private static final String APPLICATION_INSIGHTS_IKEY = "APPLICATION_INSIGHTS_IKEY";
+  private static final String APPLICATIONINSIGHTS_CONNECTION_STRING =
+          "APPLICATIONINSIGHTS_CONNECTION_STRING";
 
   @Autowired
   Environment environment;
@@ -25,11 +26,11 @@ public class ApplicationInsightsConfig {
   @Bean
   public String telemetryConfig() {
 
-    String telemetryKey = environment.getProperty(APPLICATION_INSIGHTS_IKEY);
-    if (!isEmpty(telemetryKey)) {
-      TelemetryConfiguration.getActive().setInstrumentationKey(telemetryKey);
+    String connectionString = environment.getProperty(APPLICATIONINSIGHTS_CONNECTION_STRING);
+    if (!isEmpty(connectionString)) {
+      TelemetryConfiguration.getActive().setConnectionString(connectionString);
     }
-    return telemetryKey;
+    return connectionString;
   }
 
   // Set AI Web Request Tracking Filter
