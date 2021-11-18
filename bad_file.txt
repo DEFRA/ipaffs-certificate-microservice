@@ -1,0 +1,1 @@
+another commit that removes the secret from the file (not git history)
