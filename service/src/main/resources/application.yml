@@ -15,6 +15,9 @@ management:
   health:
     defaults:
       enabled: false
+  info:
+    env:
+      enabled: true
 info:
   app:
     name: Certificate
