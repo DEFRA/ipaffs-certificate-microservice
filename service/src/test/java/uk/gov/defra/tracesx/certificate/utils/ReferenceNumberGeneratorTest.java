@@ -1,10 +1,10 @@
-package uk.gov.defra.tracesx.certificate.resource;
+package uk.gov.defra.tracesx.certificate.utils;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
-import uk.gov.defra.tracesx.certificate.utils.ReferenceNumberGenerator;
 import uk.gov.defra.tracesx.certificate.utils.exception.InvalidReferenceNumberException;
 
 public class ReferenceNumberGeneratorTest {
@@ -76,8 +76,8 @@ public class ReferenceNumberGeneratorTest {
 
   @Test
   public void shouldSupportToString() {
-    assertThat(ReferenceNumberGenerator.valueOf(CVEDA_REFERENCE).toString())
-        .isEqualTo("ReferenceNumberGenerator(" + CVEDA_REFERENCE + ")");
+    assertThat(ReferenceNumberGenerator.valueOf(CVEDA_REFERENCE)).hasToString(
+        "ReferenceNumberGenerator(" + CVEDA_REFERENCE + ")");
   }
 
   @Test
@@ -108,11 +108,16 @@ public class ReferenceNumberGeneratorTest {
   @Test
   public void shouldThrowExceptionIfRangeBreached() {
     assertThatThrownBy(
-            () -> ReferenceNumberGenerator.valueOf(INVALID_REFERENCE_REF_NUM_BREACH_TOO_LONG))
+        () -> ReferenceNumberGenerator.valueOf(INVALID_REFERENCE_REF_NUM_BREACH_TOO_LONG))
         .isInstanceOf(InvalidReferenceNumberException.class);
 
     assertThatThrownBy(
-            () -> ReferenceNumberGenerator.valueOf(INVALID_REFERENCE_REF_NUM_BREACH_TOO_SHORT))
+        () -> ReferenceNumberGenerator.valueOf(INVALID_REFERENCE_REF_NUM_BREACH_TOO_SHORT))
         .isInstanceOf(InvalidReferenceNumberException.class);
+  }
+
+  @Test
+  public void equalsAndHashCode() {
+    EqualsVerifier.forClass(ReferenceNumberGenerator.class).usingGetClass().verify();
   }
 }

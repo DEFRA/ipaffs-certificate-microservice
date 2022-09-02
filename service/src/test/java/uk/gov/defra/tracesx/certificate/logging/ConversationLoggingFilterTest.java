@@ -2,9 +2,7 @@ package uk.gov.defra.tracesx.certificate.logging;
 
 import static ch.qos.logback.classic.Level.INFO;
 import static ch.qos.logback.classic.Level.WARN;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import ch.qos.logback.classic.Logger;
@@ -68,9 +66,8 @@ public class ConversationLoggingFilterTest {
 
     verify(mockAppender).doAppend(captorLoggingEvent.capture());
     final LoggingEvent loggingEvent = captorLoggingEvent.getValue();
-    assertThat(loggingEvent.getLevel(), is(INFO));
-    assertThat(loggingEvent.getFormattedMessage(),
-        containsString("Initializing filter"));
+    assertThat(loggingEvent.getLevel()).isEqualTo(INFO);
+    assertThat(loggingEvent.getFormattedMessage()).contains("Initializing filter");
   }
 
   @Test
@@ -87,8 +84,7 @@ public class ConversationLoggingFilterTest {
 
     verify(mockAppender).doAppend(captorLoggingEvent.capture());
     final LoggingEvent loggingEvent = captorLoggingEvent.getValue();
-    assertThat(loggingEvent.getLevel(), is(WARN));
-    assertThat(loggingEvent.getFormattedMessage(),
-        containsString("Destroying filter"));
+    assertThat(loggingEvent.getLevel()).isEqualTo(WARN);
+    assertThat(loggingEvent.getFormattedMessage()).contains("Destroying filter");
   }
 }
