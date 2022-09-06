@@ -1,4 +1,4 @@
-@Library('pipeline-library') _
+@Library('pipeline-library@feature/IMTA-12174-add-secret-scanning-as-stage-of-featurebuild') _
 
 javaPipeline {
     SERVICE_NAME = "certificate-microservice"
