@@ -37,6 +37,6 @@ public class Certificate {
     }
     Certificate that = (Certificate) obj;
     return Objects.equals(referenceNumber, that.referenceNumber)
-        && Objects.equals(document, that.document);
+        && Arrays.equals(document, that.document);
   }
 }

@@ -1,4 +1,4 @@
-package uk.gov.defra.tracesx.certificate.resource;
+package uk.gov.defra.tracesx.certificate.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import org.apache.commons.io.FileUtils;

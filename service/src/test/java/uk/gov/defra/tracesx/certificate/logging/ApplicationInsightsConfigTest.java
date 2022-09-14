@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -13,6 +14,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
+
+
+import javax.servlet.Filter;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ApplicationInsightsConfigTest {
@@ -24,14 +28,14 @@ public class ApplicationInsightsConfigTest {
   @Mock
   private Environment environment;
   @InjectMocks
-  private ApplicationInsightsConfig underTest;
+  private ApplicationInsightsConfig applicationInsightsConfig;
 
   @Test
   public void whenEnvHasVariableSetThenTheResultContainsValue() {
 
     when(environment.getProperty(APPLICATIONINSIGHTS_CONNECTION_STRING)).thenReturn(
             APPLICATIONINSIGHTS_CONNECTION_STRING_VALUE);
-    String result = underTest.telemetryConfig();
+    String result = applicationInsightsConfig.telemetryConfig();
     assertThat(result, is(APPLICATIONINSIGHTS_CONNECTION_STRING_VALUE));
   }
 
@@ -39,7 +43,7 @@ public class ApplicationInsightsConfigTest {
   public void whenEnvHasVariableSetToBlankThenTheResultDoesntContainValue() {
 
     when(environment.getProperty(APPLICATIONINSIGHTS_CONNECTION_STRING)).thenReturn(BLANK);
-    String result = underTest.telemetryConfig();
+    String result = applicationInsightsConfig.telemetryConfig();
     assertThat(result, is(BLANK));
   }
 
@@ -47,17 +51,14 @@ public class ApplicationInsightsConfigTest {
   public void whenEnvHasVariableNotSetThenTheResultDoesntContainValue() {
 
     when(environment.getProperty(APPLICATIONINSIGHTS_CONNECTION_STRING)).thenReturn(null);
-    String result = underTest.telemetryConfig();
+    String result = applicationInsightsConfig.telemetryConfig();
     assertThat(result, is(nullValue()));
   }
 
   @Test
   public void filterRegistrationBeanHasCatchAllUrl() {
-    //Given
-    ApplicationInsightsConfig aiConfig = new ApplicationInsightsConfig();
-
     //When
-    FilterRegistrationBean filterRegistration = aiConfig.aiFilterRegistration(APPLICATION_NAME);
+    FilterRegistrationBean filterRegistration = applicationInsightsConfig.aiFilterRegistration(APPLICATION_NAME);
 
     //Then
     assertEquals(1, filterRegistration.getUrlPatterns().size());
@@ -66,13 +67,16 @@ public class ApplicationInsightsConfigTest {
 
   @Test
   public void filterRegistrationBeanHasHighOrder() {
-    //Given
-    ApplicationInsightsConfig aiConfig = new ApplicationInsightsConfig();
-
     //When
-    FilterRegistrationBean filterRegistration = aiConfig.aiFilterRegistration(APPLICATION_NAME);
+    FilterRegistrationBean filterRegistration = applicationInsightsConfig.aiFilterRegistration(APPLICATION_NAME);
 
     //Then
     assertEquals(Ordered.HIGHEST_PRECEDENCE + 10, filterRegistration.getOrder());
+  }
+
+  @Test
+  public void whenwebRequestTrackingFilterReturnFilter() {
+    assertThat(applicationInsightsConfig.webRequestTrackingFilter("APPLICATION_NAME")).isInstanceOf(
+        Filter.class);
   }
 }
