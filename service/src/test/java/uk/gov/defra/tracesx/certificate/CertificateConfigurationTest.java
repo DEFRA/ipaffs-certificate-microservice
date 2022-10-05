@@ -1,21 +1,27 @@
 package uk.gov.defra.tracesx.certificate;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.web.client.RestTemplate;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(MockitoJUnitRunner.class)
-public class CertificateConfigurationTest {
+import org.junit.jupiter.api.Test;
+import org.springframework.web.client.RestTemplate;
+
+class CertificateConfigurationTest {
 
   private final CertificateConfiguration certificateConfiguration = new CertificateConfiguration();
 
   @Test
-  public void httpClientReturnsRestTemplate(){
+  void httpClient_ReturnsRestTemplate() {
     assertThat(certificateConfiguration.httpClient()).isInstanceOf(RestTemplate.class);
+  }
+
+  @Test
+  void fontFile_ReturnsTimesNewRoman() {
+    assertThat(certificateConfiguration.fontFile().getName()).isEqualTo("Times New Roman");
+  }
+
+  @Test
+  void fontFileBold_ReturnsTimesNewRomanBold() {
+    assertThat(certificateConfiguration.fontFileBold().getName()).isEqualTo("Times New Roman Bold");
   }
 
 }
