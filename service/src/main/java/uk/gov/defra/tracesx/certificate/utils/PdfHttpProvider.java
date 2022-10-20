@@ -54,7 +54,6 @@ public class PdfHttpProvider implements FSStreamFactory {
 
     headers.add("Authorization", "Bearer " + token);
     HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-    LOGGER.info("credentials: {}", headers);
     ResponseEntity<byte[]> exchange =
         restTemplate.exchange(uri, HttpMethod.GET, requestEntity, byte[].class);
     return new FSStream() {
