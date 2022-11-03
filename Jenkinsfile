@@ -1,4 +1,4 @@
-@Library('pipeline-library@feature/IMTA-12898-azure-default-port') _
+@Library('pipeline-library') _
 
 javaPipeline {
     SERVICE_NAME = "certificate-microservice"
