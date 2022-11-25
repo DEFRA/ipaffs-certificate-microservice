@@ -13,6 +13,6 @@ COPY lib/applicationinsights.json /usr/src/certificate-service/
 RUN chown jreuser /usr/src/certificate-service
 USER jreuser
 
-EXPOSE 4000
+EXPOSE 8080
 
 CMD ["java", "-javaagent:/usr/src/certificate-service/applicationinsights-agent.jar", "-jar", "TracesX_Certificate.jar"]
