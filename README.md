@@ -20,7 +20,7 @@ It is used as a pre-push hook and will scan any local commits being pushed
 1. Install [truffleHog](https://github.com/trufflesecurity/truffleHog)
     - `pip3 install --trusted-host pypi.org --trusted-host files.pythonhosted.org truffleHog` (might require sudo privileges)
 2. Set DEFRA_WORKSPACE env var (`export DEFRA_WORKSPACE=/path/to/workspace`)
-3. Copy the pre-push hook to your .git hooks folder or run `git config core.hooksPath hooks`
+3. Run `mvn install` to configure hooks
 
 ## Set up
 Ensure that you have the necessary configuration to resolve dependencies from Artifactory: https://eaflood.atlassian.net/wiki/spaces/IT/pages/1047823027/Artifactory
