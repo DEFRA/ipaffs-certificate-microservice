@@ -1,4 +1,4 @@
-@Library('pipeline-library') _
+@Library('pipeline-library@feature/IMTA-12175-secret-scanning-whitelisting') _
 
 javaPipeline {
     SERVICE_NAME = "certificate-microservice"
