@@ -1,0 +1,22 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "tradePlatformAlertEmailReceivers": {
+      "value": [#{tradePlatformAlertEmailReceivers}]
+    },
+    "tradePlatformLogicAppName": {
+      "value": "#{tradePlatformLogicAppName}"
+    },
+    "tradePlatformAlertActionGroupName": {
+      "value": "#{tradePlatformAlertActionGroupName}"
+    },
+    "tradePlatformAlertActionGroupShortName": {
+      "value": "#{tradePlatformAlertActionGroupShortName}"
+    },
+    "tradePlatformAlertName": {
+      "value": "#{tradePlatformAlertName}"
+    }
+  }
+}
+  

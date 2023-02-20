@@ -1,0 +1,79 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "blueGreen": {
+      "value": ""
+    },
+    "containerRepository": {
+      "value": "imports-release"
+    },
+    "dateCreated": {
+      "value": ""
+    },
+    "dnsCacheTtl": {
+      "value": "20"
+    },
+    "containerStartTimeLimit": {
+      "value": "230"
+    },
+    "dnsSuffix": {
+      "value": ".azurewebsites.net"
+    },
+    "dockerRegistryPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "azureDockerRegistryPassword"
+      }
+    },
+    "dockerRegistryServerUrl": {
+      "value": "sndeuxfesacr001.azurecr.io"
+    },
+    "dockerRegistryServerUsername": {
+      "value": "9f9d7738-e643-4ad3-820b-b461583302a8"
+    },
+    "envCode": {
+      "value": "SND"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "healthcheckMaxFailures": {
+      "value": 5
+    },
+    "javaToolOptions": {
+      "value": "-Xmx512m"
+    },
+    "permissionsServiceBasicAuthPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "permissionsBasicAuthPassword"
+      }
+    },
+    "proxyHost": {
+      "value": "imports-proxy-static"
+    },
+    "serviceCode": {
+      "value": "IMP"
+    },
+    "serviceName": {
+      "value": "antivirus-stub-microservice"
+    },
+    "servicePlanGroup": {
+      "value": "low-traffic-plan-1"
+    },
+    "version": {
+      "value": "1.0"
+    },
+    "sharedInfraResourceGroupName": {
+      "value": ""
+    },
+    "WebvNetResourceGroup": {
+      "value": "SNDINFNETRGP001"
+    }
+  }
+}

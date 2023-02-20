@@ -1,0 +1,56 @@
+pipeline {
+    agent {label 'swarm'}
+    options {
+        ansiColor('xterm')
+        timestamps()
+        disableConcurrentBuilds()
+        gitLabConnection('Gitlab')
+    }
+
+    post {
+        always {
+            step([$class: 'WsCleanup'])
+        }
+        failure {
+            updateGitlabCommitStatus name: 'build', state: 'failed'
+        }
+        success {
+            updateGitlabCommitStatus name: 'build', state: 'success'
+        }
+      }
+
+    stages {
+        stage('Checkout Pipeline-Library Branch'){
+          steps {
+            library "pipeline-library@$BRANCH_NAME"
+          }
+        }
+
+        stage('Run Pipeline Library Unit Tests') {
+            steps {
+                script {
+                    sh "./gradlew clean test"
+                }
+            }
+        }
+
+        stage('Validate Template and Parameter file for deployment to Sandpit') {
+            steps {
+              armTemplateValidateParallel('sandpit')
+            }
+        }
+
+        stage('Validate Template and Parameter file for deployment to SandpitASEv2') {
+            steps {
+              armTemplateValidateParallel('sandpitasev2')
+            }
+        }
+
+        // stage('Compare Parameters in parameter files for SandpitASEv2 and Octopus') {
+        //     steps {
+        //       compareParameterFiles('sandpitasev2', 'octopus')
+        //     }
+        // }
+        // Commented out as boolean values in octopus parameter files break validation
+    }
+}

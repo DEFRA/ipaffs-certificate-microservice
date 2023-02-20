@@ -1,0 +1,1642 @@
+[
+  {
+    "line": 2,
+    "elements": [
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 5694190626,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hooks.setScenario(Scenario)"
+            }
+          }
+        ],
+        "line": 4,
+        "name": "Assess new CED notification and mark as accepted",
+        "description": "",
+        "id": "selenium-regression-test-|-accept-decision-for-ced;assess-new-ced-notification-and-mark-as-accepted",
+        "after": [
+          {
+            "result": {
+              "duration": 58419736,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hooks.tearDownBrowser(Scenario)"
+            }
+          },
+          {
+            "result": {
+              "duration": 149699,
+              "error_message": "Failed @After step",
+              "status": "failed"
+            },
+            "match": {
+              "location": "Hooks.somethingThatDoesntWork(Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 11795098834,
+              "status": "passed"
+            },
+            "line": 5,
+            "name": "An importer has already submitted a new CED import notification without Veterinary info",
+            "match": {
+              "arguments": [
+                {
+                  "val": "CED",
+                  "offset": 40
+                }
+              ],
+              "location": "CreateNewNotificationStepDefs.iCompleteAllInfoForTheNewWithOutVeterinaryInfoImportNotification(CertificateType)"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 11641304701,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "I am signed in with BIP credentials",
+            "match": {
+              "arguments": [
+                {
+                  "val": "BIP",
+                  "offset": 20
+                }
+              ],
+              "location": "SignInStepDefs.iAmSignedWithCredentials(UserType)"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 535797638,
+              "status": "passed"
+            },
+            "line": 7,
+            "name": "I type a reference number",
+            "match": {
+              "location": "NotificationsDashboardStepDefs.iTypeReferenceNumber()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 1057811812,
+              "status": "passed"
+            },
+            "line": 8,
+            "name": "I click search button",
+            "match": {
+              "location": "NotificationsDashboardStepDefs.iClickSearchButton()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 2851191909,
+              "status": "passed"
+            },
+            "line": 9,
+            "name": "I have started the process of assessing a new import notification",
+            "match": {
+              "location": "AssessNewNotificationStepDefs.iHaveStartedTheProcessOfAssessingANewImportNotification()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 279202536,
+              "status": "passed"
+            },
+            "line": 10,
+            "name": "Hub page is opened",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Hub",
+                  "offset": 0
+                }
+              ],
+              "location": "GenericStepDefs.isPageOpened(String)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 193516471,
+              "status": "passed"
+            },
+            "line": 11,
+            "name": "the notification reference number is displayed",
+            "match": {
+              "location": "GenericStepDefs.theNotificationReferenceNumberIsDisplayed()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 1276976407,
+              "status": "passed"
+            },
+            "line": 12,
+            "name": "I click on link \u0027Review decision outcome\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Review decision outcome",
+                  "offset": 17
+                }
+              ],
+              "location": "GenericStepDefs.iClickOnLink(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 128300749,
+              "status": "passed"
+            },
+            "line": 13,
+            "name": "I can see error message \"Documentary check\" is displayed for CED notification",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Documentary check",
+                  "offset": 25
+                },
+                {
+                  "val": "CED",
+                  "offset": 61
+                }
+              ],
+              "location": "ReviewYourChecksStepDefs.errorMessageShouldBeDisplayed(String,CertificateType)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 75216394,
+              "status": "passed"
+            },
+            "line": 14,
+            "name": "I cannot see error message \"Approved establishment\" is displayed for CED notification",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Approved establishment",
+                  "offset": 28
+                },
+                {
+                  "val": "CED",
+                  "offset": 69
+                }
+              ],
+              "location": "ReviewYourChecksStepDefs.errorMessageShouldNotBeDisplayed(String,CertificateType)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 79038183,
+              "status": "passed"
+            },
+            "line": 15,
+            "name": "I cannot see error message \"Veterinary Information\" is displayed for CED notification",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Veterinary Information",
+                  "offset": 28
+                },
+                {
+                  "val": "CED",
+                  "offset": 69
+                }
+              ],
+              "location": "ReviewYourChecksStepDefs.errorMessageShouldNotBeDisplayed(String,CertificateType)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 756650229,
+              "status": "passed"
+            },
+            "line": 16,
+            "name": "I click on link \u0027Back\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Back",
+                  "offset": 17
+                }
+              ],
+              "location": "GenericStepDefs.iClickOnLink(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 45473675,
+              "status": "passed"
+            },
+            "line": 17,
+            "name": "Hub page is opened",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Hub",
+                  "offset": 0
+                }
+              ],
+              "location": "GenericStepDefs.isPageOpened(String)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 991108187,
+              "status": "passed"
+            },
+            "line": 18,
+            "name": "I open Local reference number from hub page",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Local reference number",
+                  "offset": 7
+                }
+              ],
+              "location": "HubPageStepDefs.openPageFromHubPage(String)"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 122662464,
+              "status": "passed"
+            },
+            "line": 19,
+            "name": "the notification reference number is displayed",
+            "match": {
+              "location": "GenericStepDefs.theNotificationReferenceNumberIsDisplayed()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 152443882,
+              "status": "passed"
+            },
+            "line": 20,
+            "name": "the notification version number V1 is displayed",
+            "match": {
+              "arguments": [
+                {
+                  "val": "V1",
+                  "offset": 32
+                }
+              ],
+              "location": "GenericStepDefs.theVersionNumberIsDisplayed(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 578821215,
+              "status": "passed"
+            },
+            "line": 21,
+            "name": "I complete the local reference number page",
+            "match": {
+              "location": "AssessNewNotificationStepDefs.iCompleteTheLocalReferenceNumberPage()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 1111724354,
+              "status": "passed"
+            },
+            "line": 22,
+            "name": "I click on save and continue",
+            "match": {
+              "location": "GenericStepDefs.iClickOnSaveAndContinue()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 96229236,
+              "status": "passed"
+            },
+            "line": 23,
+            "name": "Checks page is opened",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Checks",
+                  "offset": 0
+                }
+              ],
+              "location": "GenericStepDefs.isPageOpened(String)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 3528637324,
+              "status": "passed"
+            },
+            "line": 24,
+            "name": "I enter data for checks page for CED",
+            "match": {
+              "arguments": [
+                {
+                  "val": "CED",
+                  "offset": 33
+                }
+              ],
+              "location": "ChecksPageFlow.iFillInChecksPage(CertificateType,String\u003e\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "Key",
+                  "Value"
+                ],
+                "line": 25
+              },
+              {
+                "cells": [
+                  "Documentary check",
+                  "Satisfactory"
+                ],
+                "line": 26
+              },
+              {
+                "cells": [
+                  "Identity check",
+                  "Yes"
+                ],
+                "line": 27
+              },
+              {
+                "cells": [
+                  "Identity check result",
+                  "Satisfactory"
+                ],
+                "line": 28
+              },
+              {
+                "cells": [
+                  "Physical check",
+                  "Yes"
+                ],
+                "line": 29
+              },
+              {
+                "cells": [
+                  "Physical check result",
+                  "Satisfactory"
+                ],
+                "line": 30
+              }
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 1072928755,
+              "status": "passed"
+            },
+            "line": 31,
+            "name": "I click on save and continue",
+            "match": {
+              "location": "GenericStepDefs.iClickOnSaveAndContinue()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 274985245,
+              "status": "passed"
+            },
+            "line": 32,
+            "name": "I click new seals are needed",
+            "match": {
+              "location": "BipSealsStepDefs.newSealsAreNeeded()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 243345432,
+              "status": "passed"
+            },
+            "line": 33,
+            "name": "I enter new seal \u0027testone\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "testone",
+                  "offset": 18
+                }
+              ],
+              "location": "BipSealsStepDefs.iEnterSeal(String)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 1567328595,
+              "status": "passed"
+            },
+            "line": 34,
+            "name": "I enter new seal \u0027testtwo\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "testtwo",
+                  "offset": 18
+                }
+              ],
+              "location": "BipSealsStepDefs.iEnterSeal(String)"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 1663276429,
+              "status": "passed"
+            },
+            "line": 35,
+            "name": "I enter new seal \u0027testthree\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "testthree",
+                  "offset": 18
+                }
+              ],
+              "location": "BipSealsStepDefs.iEnterSeal(String)"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 1604506388,
+              "status": "passed"
+            },
+            "line": 36,
+            "name": "I enter new seal \u0027testfour\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "testfour",
+                  "offset": 18
+                }
+              ],
+              "location": "BipSealsStepDefs.iEnterSeal(String)"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 1586697434,
+              "status": "passed"
+            },
+            "line": 37,
+            "name": "I remove new seal \u0027testone\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "testone",
+                  "offset": 19
+                }
+              ],
+              "location": "BipSealsStepDefs.iRemoveSeal(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 1328385943,
+              "status": "passed"
+            },
+            "line": 38,
+            "name": "I remove new seal \u0027testthree\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "testthree",
+                  "offset": 19
+                }
+              ],
+              "location": "BipSealsStepDefs.iRemoveSeal(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 51188859,
+              "status": "passed"
+            },
+            "line": 39,
+            "name": "I assess that 2 seals exists for CED",
+            "match": {
+              "arguments": [
+                {
+                  "val": "2",
+                  "offset": 14
+                },
+                {
+                  "val": "CED",
+                  "offset": 33
+                }
+              ],
+              "location": "BipSealsStepDefs.iAssessHowManySealsAreLeft(int,CertificateType)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 890572847,
+              "status": "passed"
+            },
+            "line": 40,
+            "name": "I click on save and continue",
+            "match": {
+              "location": "GenericStepDefs.iClickOnSaveAndContinue()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 192714669,
+              "status": "passed"
+            },
+            "line": 41,
+            "name": "I select the option \"true\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "true",
+                  "offset": 21
+                }
+              ],
+              "location": "GenericStepDefs.selectOption(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 958016361,
+              "status": "passed"
+            },
+            "line": 42,
+            "name": "I click on save and continue",
+            "match": {
+              "location": "GenericStepDefs.iClickOnSaveAndContinue()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 764463293,
+              "status": "passed"
+            },
+            "line": 43,
+            "name": "I choose the first commodity to test",
+            "match": {
+              "location": "ChooseCommodityForTestStepDefs.iChooseCommodityForTest()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 778192755,
+              "status": "passed"
+            },
+            "line": 44,
+            "name": "I choose the first lab test",
+            "match": {
+              "location": "ChooseLabTestStepDefs.iChooseFirstLabTest()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 295069586,
+              "status": "passed"
+            },
+            "line": 45,
+            "name": "I select the \"Kent Scientific Services (AA PA)\" option from the \"laboratory\" dropdown",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Kent Scientific Services (AA PA)",
+                  "offset": 14
+                },
+                {
+                  "val": "laboratory",
+                  "offset": 65
+                }
+              ],
+              "location": "GenericStepDefs.selectFromDropdown(String,String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 246946919,
+              "status": "passed"
+            },
+            "line": 46,
+            "name": "I enter \"123\" in the \"sampleReferenceNumber\" text field",
+            "match": {
+              "arguments": [
+                {
+                  "val": "123",
+                  "offset": 9
+                },
+                {
+                  "val": "sampleReferenceNumber",
+                  "offset": 22
+                }
+              ],
+              "location": "GenericStepDefs.enterTextInTextField(String,String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 199554750,
+              "status": "passed"
+            },
+            "line": 47,
+            "name": "I enter \"30\" in the \"numberOfSamples\" text field",
+            "match": {
+              "arguments": [
+                {
+                  "val": "30",
+                  "offset": 9
+                },
+                {
+                  "val": "numberOfSamples",
+                  "offset": 21
+                }
+              ],
+              "location": "GenericStepDefs.enterTextInTextField(String,String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 213596710,
+              "status": "passed"
+            },
+            "line": 48,
+            "name": "I select the \"Adult\" option from the \"sampleType\" dropdown",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Adult",
+                  "offset": 14
+                },
+                {
+                  "val": "sampleType",
+                  "offset": 38
+                }
+              ],
+              "location": "GenericStepDefs.selectFromDropdown(String,String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 165296345,
+              "status": "passed"
+            },
+            "line": 49,
+            "name": "I select the \"Chilled\" option from the \"conservationOfSample\" dropdown",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Chilled",
+                  "offset": 14
+                },
+                {
+                  "val": "conservationOfSample",
+                  "offset": 40
+                }
+              ],
+              "location": "GenericStepDefs.selectFromDropdown(String,String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 997925447,
+              "status": "passed"
+            },
+            "line": 50,
+            "name": "I click on save and continue",
+            "match": {
+              "location": "GenericStepDefs.iClickOnSaveAndContinue()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 88023457,
+              "status": "passed"
+            },
+            "line": 51,
+            "name": "Lab tests to be performed page is opened",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Lab tests to be performed",
+                  "offset": 0
+                }
+              ],
+              "location": "GenericStepDefs.isPageOpened(String)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 97737130,
+              "status": "passed"
+            },
+            "line": 52,
+            "name": "the notification reference number is displayed",
+            "match": {
+              "location": "GenericStepDefs.theNotificationReferenceNumberIsDisplayed()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 140958111,
+              "status": "passed"
+            },
+            "line": 53,
+            "name": "the notification version number V1 is displayed",
+            "match": {
+              "arguments": [
+                {
+                  "val": "V1",
+                  "offset": 32
+                }
+              ],
+              "location": "GenericStepDefs.theVersionNumberIsDisplayed(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 1252245843,
+              "status": "passed"
+            },
+            "line": 54,
+            "name": "I click the link \"RemoveLabTest-0\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "RemoveLabTest-0",
+                  "offset": 18
+                }
+              ],
+              "location": "GenericStepDefs.clickLink(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 3261355989,
+              "status": "passed"
+            },
+            "line": 55,
+            "name": "I click the link \"AddAnotherTest\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "AddAnotherTest",
+                  "offset": 18
+                }
+              ],
+              "location": "GenericStepDefs.clickLink(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 752213320,
+              "status": "passed"
+            },
+            "line": 56,
+            "name": "I choose the first commodity to test",
+            "match": {
+              "location": "ChooseCommodityForTestStepDefs.iChooseCommodityForTest()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 524521749,
+              "status": "passed"
+            },
+            "line": 57,
+            "name": "I choose the first lab test",
+            "match": {
+              "location": "ChooseLabTestStepDefs.iChooseFirstLabTest()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 239936337,
+              "status": "passed"
+            },
+            "line": 58,
+            "name": "I select the \"Kent Scientific Services (AA PA)\" option from the \"laboratory\" dropdown",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Kent Scientific Services (AA PA)",
+                  "offset": 14
+                },
+                {
+                  "val": "laboratory",
+                  "offset": 65
+                }
+              ],
+              "location": "GenericStepDefs.selectFromDropdown(String,String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 211387415,
+              "status": "passed"
+            },
+            "line": 59,
+            "name": "I enter \"123\" in the \"sampleReferenceNumber\" text field",
+            "match": {
+              "arguments": [
+                {
+                  "val": "123",
+                  "offset": 9
+                },
+                {
+                  "val": "sampleReferenceNumber",
+                  "offset": 22
+                }
+              ],
+              "location": "GenericStepDefs.enterTextInTextField(String,String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 237149544,
+              "status": "passed"
+            },
+            "line": 60,
+            "name": "I enter \"30\" in the \"numberOfSamples\" text field",
+            "match": {
+              "arguments": [
+                {
+                  "val": "30",
+                  "offset": 9
+                },
+                {
+                  "val": "numberOfSamples",
+                  "offset": 21
+                }
+              ],
+              "location": "GenericStepDefs.enterTextInTextField(String,String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 185287288,
+              "status": "passed"
+            },
+            "line": 61,
+            "name": "I select the \"Adult\" option from the \"sampleType\" dropdown",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Adult",
+                  "offset": 14
+                },
+                {
+                  "val": "sampleType",
+                  "offset": 38
+                }
+              ],
+              "location": "GenericStepDefs.selectFromDropdown(String,String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 156523367,
+              "status": "passed"
+            },
+            "line": 62,
+            "name": "I select the \"Chilled\" option from the \"conservationOfSample\" dropdown",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Chilled",
+                  "offset": 14
+                },
+                {
+                  "val": "conservationOfSample",
+                  "offset": 40
+                }
+              ],
+              "location": "GenericStepDefs.selectFromDropdown(String,String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 1167779068,
+              "status": "passed"
+            },
+            "line": 63,
+            "name": "I click on save and continue",
+            "match": {
+              "location": "GenericStepDefs.iClickOnSaveAndContinue()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 62906826,
+              "status": "passed"
+            },
+            "line": 64,
+            "name": "Lab tests to be performed page is opened",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Lab tests to be performed",
+                  "offset": 0
+                }
+              ],
+              "location": "GenericStepDefs.isPageOpened(String)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 321008911,
+              "status": "passed"
+            },
+            "line": 65,
+            "name": "I open \u0027lab-test-results\u0027 page",
+            "match": {
+              "arguments": [
+                {
+                  "val": "lab-test-results",
+                  "offset": 8
+                }
+              ],
+              "location": "GenericStepDefs.iOpenPage(String)"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 90981249,
+              "status": "passed"
+            },
+            "line": 66,
+            "name": "the notification reference number is displayed",
+            "match": {
+              "location": "GenericStepDefs.theNotificationReferenceNumberIsDisplayed()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 50650560,
+              "status": "passed"
+            },
+            "line": 67,
+            "name": "testing laboratory is populated for \"Kent Scientific Services (AA PA)\" with saved data",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Kent Scientific Services (AA PA)",
+                  "offset": 37
+                }
+              ],
+              "location": "LabTestStepDefs.testingLaboratoryIsPopulatedForWithSavedData(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 53525551,
+              "status": "passed"
+            },
+            "line": 68,
+            "name": "lab test is populated for \".AMINOGLYCOSIDE/AMINOSIDE\" with saved data",
+            "match": {
+              "arguments": [
+                {
+                  "val": ".AMINOGLYCOSIDE/AMINOSIDE",
+                  "offset": 27
+                }
+              ],
+              "location": "LabTestStepDefs.labTestIsPopulatedForWithSavedData(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 56852142,
+              "status": "passed"
+            },
+            "line": 69,
+            "name": "sample reference number is populated for \"123\" with saved data",
+            "match": {
+              "arguments": [
+                {
+                  "val": "123",
+                  "offset": 42
+                }
+              ],
+              "location": "LabTestStepDefs.sampleReferenceNumberIsPopulatedForWithSavedData(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 75688191,
+              "status": "passed"
+            },
+            "line": 70,
+            "name": "Number of samples is populated for \"30\" with saved data",
+            "match": {
+              "arguments": [
+                {
+                  "val": "30",
+                  "offset": 36
+                }
+              ],
+              "location": "LabTestStepDefs.numberOfSamplesIsPopulatedForWithSavedData(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 45000275,
+              "status": "passed"
+            },
+            "line": 71,
+            "name": "sample type is populated for \"Adult\" with saved data",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Adult",
+                  "offset": 30
+                }
+              ],
+              "location": "LabTestStepDefs.sampleTypeIsPopulatedForWithSavedData(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 72724099,
+              "status": "passed"
+            },
+            "line": 72,
+            "name": "conservation of sample is populated for \"Chilled\" with saved data",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Chilled",
+                  "offset": 41
+                }
+              ],
+              "location": "LabTestStepDefs.conservationOfSampleIsPopulatedForWithSavedData(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 194110963,
+              "status": "passed"
+            },
+            "line": 73,
+            "name": "I enter \"12\" in the \"sample-use-by-date-day\" text field",
+            "match": {
+              "arguments": [
+                {
+                  "val": "12",
+                  "offset": 9
+                },
+                {
+                  "val": "sample-use-by-date-day",
+                  "offset": 21
+                }
+              ],
+              "location": "GenericStepDefs.enterTextInTextField(String,String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 225701775,
+              "status": "passed"
+            },
+            "line": 74,
+            "name": "I enter \"12\" in the \"sample-use-by-date-month\" text field",
+            "match": {
+              "arguments": [
+                {
+                  "val": "12",
+                  "offset": 9
+                },
+                {
+                  "val": "sample-use-by-date-month",
+                  "offset": 21
+                }
+              ],
+              "location": "GenericStepDefs.enterTextInTextField(String,String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 265480265,
+              "status": "passed"
+            },
+            "line": 75,
+            "name": "I enter \"2018\" in the \"sample-use-by-date-year\" text field",
+            "match": {
+              "arguments": [
+                {
+                  "val": "2018",
+                  "offset": 9
+                },
+                {
+                  "val": "sample-use-by-date-year",
+                  "offset": 23
+                }
+              ],
+              "location": "GenericStepDefs.enterTextInTextField(String,String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 298865272,
+              "status": "passed"
+            },
+            "line": 76,
+            "name": "I enter \"12\" in the \"released-date-day\" text field",
+            "match": {
+              "arguments": [
+                {
+                  "val": "12",
+                  "offset": 9
+                },
+                {
+                  "val": "released-date-day",
+                  "offset": 21
+                }
+              ],
+              "location": "GenericStepDefs.enterTextInTextField(String,String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 253206799,
+              "status": "passed"
+            },
+            "line": 77,
+            "name": "I enter \"12\" in the \"released-date-month\" text field",
+            "match": {
+              "arguments": [
+                {
+                  "val": "12",
+                  "offset": 9
+                },
+                {
+                  "val": "released-date-month",
+                  "offset": 21
+                }
+              ],
+              "location": "GenericStepDefs.enterTextInTextField(String,String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 380121947,
+              "status": "passed"
+            },
+            "line": 78,
+            "name": "I enter \"2018\" in the \"released-date-year\" text field",
+            "match": {
+              "arguments": [
+                {
+                  "val": "2018",
+                  "offset": 9
+                },
+                {
+                  "val": "released-date-year",
+                  "offset": 23
+                }
+              ],
+              "location": "GenericStepDefs.enterTextInTextField(String,String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 593903454,
+              "status": "passed"
+            },
+            "line": 79,
+            "name": "I enter \"Testing Methods Sample\" in the \"lab-test-method\" text field",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Testing Methods Sample",
+                  "offset": 9
+                },
+                {
+                  "val": "lab-test-method",
+                  "offset": 41
+                }
+              ],
+              "location": "GenericStepDefs.enterTextInTextField(String,String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 392615612,
+              "status": "passed"
+            },
+            "line": 80,
+            "name": "I enter \"Results Positive in test \" in the \"lab-test-results\" text field",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Results Positive in test ",
+                  "offset": 9
+                },
+                {
+                  "val": "lab-test-results",
+                  "offset": 44
+                }
+              ],
+              "location": "GenericStepDefs.enterTextInTextField(String,String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 301870463,
+              "status": "passed"
+            },
+            "line": 81,
+            "name": "I select the option \"Satisfactory\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Satisfactory",
+                  "offset": 21
+                }
+              ],
+              "location": "GenericStepDefs.selectOption(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 1300858593,
+              "status": "passed"
+            },
+            "line": 82,
+            "name": "I click on save and continue",
+            "match": {
+              "location": "GenericStepDefs.iClickOnSaveAndContinue()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 361576297,
+              "status": "passed"
+            },
+            "line": 83,
+            "name": "I open \u0027hub\u0027 page",
+            "match": {
+              "arguments": [
+                {
+                  "val": "hub",
+                  "offset": 8
+                }
+              ],
+              "location": "GenericStepDefs.iOpenPage(String)"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 74728693,
+              "status": "passed"
+            },
+            "line": 84,
+            "name": "Hub page is opened",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Hub",
+                  "offset": 0
+                }
+              ],
+              "location": "GenericStepDefs.isPageOpened(String)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 605314921,
+              "status": "passed"
+            },
+            "line": 85,
+            "name": "I open Laboratory tests from hub page",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Laboratory tests",
+                  "offset": 7
+                }
+              ],
+              "location": "HubPageStepDefs.openPageFromHubPage(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 284262412,
+              "status": "passed"
+            },
+            "line": 86,
+            "name": "I select the option \"false\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "false",
+                  "offset": 21
+                }
+              ],
+              "location": "GenericStepDefs.selectOption(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 1346504063,
+              "status": "passed"
+            },
+            "line": 87,
+            "name": "I click on save and continue",
+            "match": {
+              "location": "GenericStepDefs.iClickOnSaveAndContinue()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 272662943,
+              "status": "passed"
+            },
+            "line": 88,
+            "name": "I mark the CED consignment as Acceptable for \"Transfer\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Transfer",
+                  "offset": 46
+                }
+              ],
+              "location": "AcceptanceDecisionStepDefs.iMarkTheCEDConsignmentAsAcceptableFor(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 1204263456,
+              "status": "passed"
+            },
+            "line": 89,
+            "name": "I click on save and continue",
+            "match": {
+              "location": "GenericStepDefs.iClickOnSaveAndContinue()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 1879847878,
+              "status": "passed"
+            },
+            "line": 90,
+            "name": "I can Review my Checks for the \"CED\" Notification",
+            "match": {
+              "arguments": [
+                {
+                  "val": "CED",
+                  "offset": 32
+                }
+              ],
+              "location": "ReviewYourChecksStepDefs.iCanReviewMyChecksForTheNotification(CertificateType)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 663908954,
+              "status": "passed"
+            },
+            "line": 91,
+            "name": "the Last Submitted Date is displayed for CED on the Review page",
+            "match": {
+              "arguments": [
+                {
+                  "val": "CED",
+                  "offset": 41
+                }
+              ],
+              "location": "ReviewYourChecksStepDefs.lastSubmissionDateIsDisplayed(CertificateType)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 569267517,
+              "status": "passed"
+            },
+            "line": 92,
+            "name": "the Last Updated Date is displayed for CED on the Review page",
+            "match": {
+              "arguments": [
+                {
+                  "val": "CED",
+                  "offset": 39
+                }
+              ],
+              "location": "ReviewYourChecksStepDefs.lastUpdatedDateIsDisplayed(CertificateType)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 637056829,
+              "status": "passed"
+            },
+            "line": 93,
+            "name": "the user who last updated the notification for CED is displayed on the Review Page",
+            "match": {
+              "arguments": [
+                {
+                  "val": "CED",
+                  "offset": 47
+                }
+              ],
+              "location": "ReviewYourChecksStepDefs.lastUpdatedByIsDisplayed(CertificateType)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 904211985,
+              "status": "passed"
+            },
+            "line": 94,
+            "name": "the user who submitted the notification for CED is displayed on the Review Page",
+            "match": {
+              "arguments": [
+                {
+                  "val": "CED",
+                  "offset": 44
+                }
+              ],
+              "location": "ReviewYourChecksStepDefs.submittedByIsDisplayed(CertificateType)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 152440876,
+              "status": "passed"
+            },
+            "line": 95,
+            "name": "the notification reference number is displayed",
+            "match": {
+              "location": "GenericStepDefs.theNotificationReferenceNumberIsDisplayed()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 117520473,
+              "status": "passed"
+            },
+            "line": 96,
+            "name": "the notification version number V1 is displayed",
+            "match": {
+              "arguments": [
+                {
+                  "val": "V1",
+                  "offset": 32
+                }
+              ],
+              "location": "GenericStepDefs.theVersionNumberIsDisplayed(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 12810623181,
+              "status": "passed"
+            },
+            "line": 97,
+            "name": "I submit my Checks for the \"CED\" Notification",
+            "match": {
+              "arguments": [
+                {
+                  "val": "CED",
+                  "offset": 28
+                }
+              ],
+              "location": "ReviewYourChecksStepDefs.iSubmitMyChecksForTheNotification(CertificateType)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 1346751735,
+              "status": "passed"
+            },
+            "line": 98,
+            "name": "the outcome of the \"CED\" assessment is confirmed as \"Acceptable for Transhipment\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "CED",
+                  "offset": 20
+                },
+                {
+                  "val": "Acceptable for Transhipment",
+                  "offset": 53
+                }
+              ],
+              "location": "OutcomeConfirmationFlow.theOutcomeOfTheAssessmentIsConfirmedAs(String,String)"
+            },
+            "keyword": "Then "
+          }
+        ]
+      }
+    ],
+    "name": "Selenium Regression Test | Accept decision for CED",
+    "description": "",
+    "id": "selenium-regression-test-|-accept-decision-for-ced",
+    "keyword": "Feature",
+    "uri": "/home/jenkinsagent/SeleniumBrowserStack41896/integration/src/test/resources/features/regression/access-notification/AcceptCEDDecision.feature",
+    "tags": [
+      {
+        "line": 1,
+        "name": "@Regression"
+      }
+    ]
+  }
+]

@@ -1,0 +1,964 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "alertEmailReceivers": {
+      "type": "string"
+    },
+    "archiveDeleteErrorAlertEmailReceivers": {
+      "type": "string"
+    },
+    "blueGreen": {
+      "type": "string"
+    },
+    "ServiceCode": {
+      "type": "string"
+    },
+    "ServiceType": {
+      "type": "string"
+    },
+    "Tier": {
+      "type": "string"
+    },
+    "envCode": {
+      "type": "string"
+    },
+    "envSuffix": {
+      "type": "string"
+    },
+    "dateCreated": {
+      "type": "string"
+    },
+    "serviceBusConfig": {
+      "type": "object"
+    },
+    "sharedInfraResourceGroupName": {
+      "type": "string"
+    },
+    "rdlSyncAlertEmailReceivers": {
+      "type": "string"
+    },
+    "rdsCountErrorAlertEmailReceivers": {
+      "type": "string"
+    },
+    "rdsSyncErrorAlertEmailReceivers": {
+      "type": "string"
+    },
+    "riskLockingErrorEmailReceivers": {
+      "type": "string"
+    },
+    "notifyErrorEmailReceivers": {
+      "type": "string"
+    },
+    "notifyQueueName": {
+      "type": "string"
+    },
+    "autoClearanceErrorEmailReceivers": {
+      "type": "string"
+    },
+    "riskInterfaceErrorEmailReceivers": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "appInsightsName": "[concat('insights-',if(empty(parameters('sharedInfraResourceGroupName')),resourceGroup().name, parameters('sharedInfraResourceGroupName')), if(not(empty(parameters('blueGreen'))), concat('-', parameters('blueGreen')),''))]",
+    "archiveDeleteErrorAlertsActionGroupName": "Archive Soft Delete Error Alerts Recipients",
+    "archiveDeleteErrorAlertsActionGroupShortName": "ArchErrAlrts",
+    "archiveDeleteErrorAlertsAlertName": "[concat('Archive Soft DeleteError Alert ', variables('appInsightsName'))]",
+    "tracesDataProcessorErrorAlertsActionGroupName": "Traces Data Import Alerts Recipients",
+    "tracesDataProcessorErrorAlertsActionGroupShortName": "trcImpAlrts",
+    "tracesDataProcessorErrorAlertsAlertName": "[concat('IPAFFS Traces data import alert ', variables('appInsightsName'))]",
+    "TradePlatformConnectivityAlertName": "[concat('IPAFFS Trade Platform connectivity alert ', variables('appInsightsName'))]",
+    "TradePlatformDispatchAlertName": "[concat('IPAFFS Trade Platform dispatch alert ', variables('appInsightsName'))]",
+    "TradePlatformMappingAlertName": "[concat('IPAFFS Trade Platform mapping alert ', variables('appInsightsName'))]",
+    "TradePlatformAlertsActionGroupName": "Trade Platform Alerts Recipients",
+    "TradePlatformAlertsActionGroupShortName": "trdPlatAlrts",
+    "rdlSyncAlertsActionGroupName": "RDL Sync Alerts Recipients",
+    "rdlSyncAlertsActionGroupShortName": "rdlSyncAlrts",
+    "rdlSyncFieldConfigAlertName": "[concat('RDL Sync Field Configuration Alert ', variables('appInsightsName'))]",
+    "rdsCountErrorAlertsActionGroupName": "RDS Count Error Alerts Recipients",
+    "rdsCountErrorAlertsActionGroupShortName": "rdsCountAlrt",
+    "rdsCountErrorAlertsAlertName": "[concat('RDS Count Error Alert ', variables('appInsightsName'))]",
+    "rdsSyncErrorAlertsActionGroupName": "RDS Sync Error Alerts Recipients",
+    "rdsSyncErrorAlertsActionGroupShortName": "rdsSyncAlrts",
+    "rdsSyncErrorAlertsAlertName": "[concat('RDS Sync Error Alert ', variables('appInsightsName'))]",
+    "riskLockingErrorAlertsActionGroupName": "Risk Locking Microservice Error Alerts Recipients",
+    "riskLockingErrorAlertsActionGroupShortName": "rlErrAlrts",
+    "riskLockingErrorFieldConfigAlertName": "[concat('Risk Locking Microservice Error Alerts ', variables('appInsightsName'))]",
+    "serviceBusDLQAlertActionGroupName": "Dead Letter Queue Alerts Recipients",
+    "serviceBusDLQAlertActionGroupShortName": "dlqAlrts",
+    "serviceBusHealthCertificateDLQAlertName": "[concat('Dead Letter Queue Health Certificates ', variables('appInsightsName'))]",
+    "serviceBusNotificationDLQAlertName": "[concat('Dead Letter Queue Notifications ', variables('appInsightsName'))]",
+    "serviceBusNotifyDLQAlertName": "[concat('Dead Letter Queue Notify ', variables('appInsightsName'))]",
+    "emailAddresses": "[split(first(split(parameters('alertEmailReceivers'), ';')), ',')]",
+    "names": "[split(last(split(parameters('alertEmailReceivers'), ';')), ',')]",
+    "archiveDeleteErrorAlertEmailAddresses": "[split(first(split(parameters('archiveDeleteErrorAlertEmailReceivers'), ';')), ',')]",
+    "archiveDeleteErrorAlertNames": "[split(last(split(parameters('archiveDeleteErrorAlertEmailReceivers'), ';')), ',')]",
+    "rdlSyncEmailAddresses": "[split(first(split(parameters('rdlSyncAlertEmailReceivers'), ';')), ',')]",
+    "rdlSyncNames": "[split(last(split(parameters('rdlSyncAlertEmailReceivers'), ';')), ',')]",
+    "rdsCountErrorAlertEmailAddresses": "[split(first(split(parameters('rdsCountErrorAlertEmailReceivers'), ';')), ',')]",
+    "rdsCountErrorAlertNames": "[split(last(split(parameters('rdsCountErrorAlertEmailReceivers'), ';')), ',')]",
+    "rdsSyncErrorAlertEmailAddresses": "[split(first(split(parameters('rdsSyncErrorAlertEmailReceivers'), ';')), ',')]",
+    "rdsSyncErrorAlertNames": "[split(last(split(parameters('rdsSyncErrorAlertEmailReceivers'), ';')), ',')]",
+    "riskLockingErrorEmailAddresses": "[split(first(split(parameters('riskLockingErrorEmailReceivers'), ';')), ',')]",
+    "riskLockingErrorNames": "[split(last(split(parameters('riskLockingErrorEmailReceivers'), ';')), ',')]",
+    "notifyErrorAlertsActionGroupName": "Notify Microservice Error Alerts Recipients",
+    "notifyErrorAlertsActionGroupShortName": "ntfyErrAlrts",
+    "notifyErrorFieldConfigAlertName": "[concat('Notify Microservice Error Alerts ', variables('appInsightsName'))]",
+    "notifyErrorEmailAddresses": "[split(first(split(parameters('notifyErrorEmailReceivers'), ';')), ',')]",
+    "notifyErrorNames": "[split(last(split(parameters('notifyErrorEmailReceivers'), ';')), ',')]",
+    "notifyQueueName": "[if(empty(parameters('blueGreen')), concat('dev', '_', parameters('notifyQueueName'), '_', parameters('envSuffix')), parameters('notifyQueueName'))]",
+    "autoClearanceErrorAlertsActionGroupName": "AutoClearance Error Alerts Recipients",
+    "autoClearanceErrorAlertsActionGroupShortName": "aClrErrAlrts",
+    "autoClearanceErrorFieldConfigAlertName": "[concat('AutoClearance Error Alerts ', variables('appInsightsName'))]",
+    "autoClearanceErrorEmailAddresses": "[split(first(split(parameters('autoClearanceErrorEmailReceivers'), ';')), ',')]",
+    "autoClearanceErrorNames": "[split(last(split(parameters('autoClearanceErrorEmailReceivers'), ';')), ',')]",
+    "riskInterfaceErrorAlertsActionGroupName": "Risk Interface Error Alerts Recipients",
+    "riskInterfaceErrorAlertsActionGroupShortName": "riErrAlrts",
+    "riskInterfaceErrorFieldConfigAlertName": "[concat('Risk Interface Error Alerts ', variables('appInsightsName'))]",
+    "riskInterfaceErrorEmailAddresses": "[split(first(split(parameters('riskInterfaceErrorEmailReceivers'), ';')), ',')]",
+    "riskInterfaceErrorNames": "[split(last(split(parameters('riskInterfaceErrorEmailReceivers'), ';')), ',')]",
+    "empty": [],
+    "copy": [
+      {
+        "name": "alertEmailReceivers",
+        "count": "[length(variables('emailAddresses'))]",
+        "input": {
+          "emailAddress": "[variables('emailAddresses')[copyIndex('alertEmailReceivers')]]",
+          "name": "[variables('names')[copyIndex('alertEmailReceivers')]]"
+        }
+      },
+      {
+        "name": "archiveDeleteErrorAlertEmailReceivers",
+        "count": "[length(variables('archiveDeleteErrorAlertEmailAddresses'))]",
+        "input": {
+          "emailAddress": "[variables('archiveDeleteErrorAlertEmailAddresses')[copyIndex('archiveDeleteErrorAlertEmailReceivers')]]",
+          "name": "[variables('archiveDeleteErrorAlertNames')[copyIndex('archiveDeleteErrorAlertEmailReceivers')]]"
+        }
+      },
+      {
+        "name": "rdlSyncAlertEmailReceivers",
+        "count": "[length(variables('rdlSyncEmailAddresses'))]",
+        "input": {
+          "emailAddress": "[variables('rdlSyncEmailAddresses')[copyIndex('rdlSyncAlertEmailReceivers')]]",
+          "name": "[variables('rdlSyncNames')[copyIndex('rdlSyncAlertEmailReceivers')]]"
+        }
+      },
+      {
+        "name": "rdsCountErrorAlertEmailReceivers",
+        "count": "[length(variables('rdsCountErrorAlertEmailAddresses'))]",
+        "input": {
+          "emailAddress": "[variables('rdsCountErrorAlertEmailAddresses')[copyIndex('rdsCountErrorAlertEmailReceivers')]]",
+          "name": "[variables('rdsCountErrorAlertNames')[copyIndex('rdsCountErrorAlertEmailReceivers')]]"
+        }
+      },
+      {
+        "name": "rdsSyncErrorAlertEmailReceivers",
+        "count": "[length(variables('rdsSyncErrorAlertEmailAddresses'))]",
+        "input": {
+          "emailAddress": "[variables('rdsSyncErrorAlertEmailAddresses')[copyIndex('rdsSyncErrorAlertEmailReceivers')]]",
+          "name": "[variables('rdsSyncErrorAlertNames')[copyIndex('rdsSyncErrorAlertEmailReceivers')]]"
+        }
+      },
+      {
+        "name": "riskLockingErrorEmailReceivers",
+        "count": "[length(variables('riskLockingErrorEmailAddresses'))]",
+        "input": {
+          "emailAddress": "[variables('riskLockingErrorEmailAddresses')[copyIndex('riskLockingErrorEmailReceivers')]]",
+          "name": "[variables('riskLockingErrorNames')[copyIndex('riskLockingErrorEmailReceivers')]]"
+        }
+      },
+      {
+        "name": "notifyErrorEmailReceivers",
+        "count": "[length(variables('notifyErrorEmailAddresses'))]",
+        "input": {
+          "emailAddress": "[variables('notifyErrorEmailAddresses')[copyIndex('notifyErrorEmailReceivers')]]",
+          "name": "[variables('notifyErrorNames')[copyIndex('notifyErrorEmailReceivers')]]"
+        }
+      },
+      {
+        "name": "autoClearanceErrorEmailReceivers",
+        "count": "[length(variables('autoClearanceErrorEmailAddresses'))]",
+        "input": {
+          "emailAddress": "[variables('autoClearanceErrorEmailAddresses')[copyIndex('autoClearanceErrorEmailReceivers')]]",
+          "name": "[variables('autoClearanceErrorNames')[copyIndex('autoClearanceErrorEmailReceivers')]]"
+        }
+      },
+      {
+        "name": "riskInterfaceErrorEmailReceivers",
+        "count": "[length(variables('riskInterfaceErrorEmailAddresses'))]",
+        "input": {
+          "emailAddress": "[variables('riskInterfaceErrorEmailAddresses')[copyIndex('riskInterfaceErrorEmailReceivers')]]",
+          "name": "[variables('riskInterfaceErrorNames')[copyIndex('riskInterfaceErrorEmailReceivers')]]"
+        }
+      }
+    ]
+  },
+  "resources": [
+    {
+      "name": "[variables('appInsightsName')]",
+      "type": "Microsoft.Insights/components",
+      "apiVersion": "2015-05-01",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "Name": "[variables('appInsightsName')]",
+        "ServiceName": "[concat('EUX Imports:', variables('appInsightsName'))]",
+        "ServiceType": "[parameters('ServiceType')]",
+        "ServiceCode": "[parameters('ServiceCode')]",
+        "CreationDateTime": "[parameters('dateCreated')]",
+        "Environment": "[parameters('envCode')]",
+        "Tier": "[parameters('Tier')]",
+        "Region": "[resourceGroup().location]"
+      },
+      "kind": "web",
+      "properties": {
+        "Application_Type": "web"
+      }
+    },
+    {
+      "type": "microsoft.insights/actionGroups",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "apiVersion": "2019-06-01",
+      "name": "[variables('archiveDeleteErrorAlertsActionGroupName')]",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "groupShortName": "[variables('archiveDeleteErrorAlertsActionGroupShortName')]",
+        "enabled": true,
+        "emailReceivers": "[if(empty(parameters('archiveDeleteErrorAlertEmailReceivers')), variables('empty'), variables('archiveDeleteErrorAlertEmailReceivers'))]"
+      }
+    },
+    {
+      "type":"Microsoft.Insights/scheduledQueryRules",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "apiVersion": "2018-04-16",
+      "name": "[variables('archiveDeleteErrorAlertsAlertName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/actionGroups', variables('archiveDeleteErrorAlertsActionGroupName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "description": "Raise an alert when there is an error with soft delete in archive-notifications-microservice",
+        "enabled": "true",
+        "source": {
+          "query": "traces | where severityLevel == 3 | where message has \"ArchiveNotificationsFunction error occurred\"",
+          "dataSourceId": "[concat(resourceGroup().id, '/providers/Microsoft.Insights/components/', variables('appInsightsName'))]",
+          "queryType": "ResultCount"
+        },
+        "schedule": {
+          "frequencyInMinutes": 30,
+          "timeWindowInMinutes": 30
+        },
+        "action": {
+          "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+          "severity": "3",
+          "aznsAction": {
+            "actionGroup": "[array(resourceId('Microsoft.Insights/actiongroups', variables('archiveDeleteErrorAlertsActionGroupName')))]",
+            "emailSubject": "Error in IPAFFS with soft delete in archive-notifications-microservice"
+          },
+          "trigger": {
+            "thresholdOperator": "GreaterThan",
+            "threshold": 0
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Insights/actionGroups",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "apiVersion": "2019-03-01",
+      "name": "[variables('tracesDataProcessorErrorAlertsActionGroupName')]",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "groupShortName": "[variables('tracesDataProcessorErrorAlertsActionGroupShortName')]",
+        "enabled": true,
+        "emailReceivers": "[if(empty(parameters('alertEmailReceivers')), variables('empty'), variables('alertEmailReceivers'))]"
+      }
+    },
+    {
+      "type": "Microsoft.Insights/actionGroups",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "apiVersion": "2019-03-01",
+      "name": "[variables('serviceBusDLQAlertActionGroupName')]",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "groupShortName": "[variables('serviceBusDLQAlertActionGroupShortName')]",
+        "enabled": true,
+        "emailReceivers": "[if(empty(parameters('alertEmailReceivers')), variables('empty'), variables('alertEmailReceivers'))]"
+      }
+    },
+    {
+      "type": "Microsoft.Insights/actionGroups",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "apiVersion": "2019-03-01",
+      "name": "[variables('TradePlatformAlertsActionGroupName')]",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "groupShortName": "[variables('TradePlatformAlertsActionGroupShortName')]",
+        "enabled": true,
+        "emailReceivers": "[if(empty(parameters('alertEmailReceivers')), variables('empty'), variables('alertEmailReceivers'))]"
+      }
+    },
+    {
+      "type": "Microsoft.Insights/scheduledQueryRules",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "apiVersion": "2018-04-16",
+      "name": "[variables('tracesDataProcessorErrorAlertsAlertName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/actionGroups', variables('tracesDataProcessorErrorAlertsActionGroupName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "description": "Identifies failures when importing certificates from Traces",
+        "enabled": "true",
+        "source": {
+          "query": "traces | where customDimensions.LoggerName contains \"uk.gov.defra.tracesx.tracesdataprocessor\" or customDimensions.LoggerName contains \"uk.gov.defra.tracesx.notification\" | where message startswith \"FAIL:\" or message contains \"notificationsAzureServiceBusQueue - FAIL:\"",
+          "dataSourceId": "[concat(resourceGroup().id, '/providers/Microsoft.Insights/components/', variables('appInsightsName'))]",
+          "queryType": "ResultCount"
+        },
+        "schedule": {
+          "frequencyInMinutes": 30,
+          "timeWindowInMinutes": 30
+        },
+        "action": {
+          "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+          "severity": "3",
+          "aznsAction": {
+            "actionGroup": "[array(resourceId('Microsoft.Insights/actiongroups', variables('tracesDataProcessorErrorAlertsActionGroupName')))]",
+            "emailSubject": "IPAFFS Traces data import alert",
+            "customWebhookPayload": "{ \"alertname\":\"#alertrulename\"}"
+          },
+          "trigger": {
+            "thresholdOperator": "GreaterThan",
+            "threshold": 0
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Insights/scheduledQueryRules",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "apiVersion": "2018-04-16",
+      "name": "[variables('TradePlatformConnectivityAlertName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/actionGroups', variables('TradePlatformAlertsActionGroupName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "description": "Identifies failures when communicating with the Trade Platform",
+        "enabled": "true",
+        "source": {
+          "query": "traces | where message contains \"Trade Platform retry limit exhausted for EHC call\"",
+          "dataSourceId": "[concat(resourceGroup().id, '/providers/Microsoft.Insights/components/', variables('appInsightsName'))]",
+          "queryType": "ResultCount"
+        },
+        "schedule": {
+          "frequencyInMinutes": 30,
+          "timeWindowInMinutes": 30
+        },
+        "action": {
+          "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+          "severity": "3",
+          "aznsAction": {
+            "actionGroup": "[array(resourceId('Microsoft.Insights/actiongroups', variables('TradePlatformAlertsActionGroupName')))]",
+            "emailSubject": "IPAFFS Trade Platform alert",
+            "customWebhookPayload": "{ \"alertname\":\"#alertrulename\"}"
+          },
+          "trigger": {
+            "thresholdOperator": "GreaterThan",
+            "threshold": 0
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Insights/scheduledQueryRules",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "apiVersion": "2018-04-16",
+      "name": "[variables('TradePlatformDispatchAlertName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/actionGroups', variables('TradePlatformAlertsActionGroupName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "description": "Identifies failures when dispatching certificates to the Trade Platform",
+        "enabled": "true",
+        "source": {
+          "query": "exceptions | where customDimensions contains \"Unable to dispatch notification with referenceId\"",
+          "dataSourceId": "[concat(resourceGroup().id, '/providers/Microsoft.Insights/components/', variables('appInsightsName'))]",
+          "queryType": "ResultCount"
+        },
+        "schedule": {
+          "frequencyInMinutes": 30,
+          "timeWindowInMinutes": 30
+        },
+        "action": {
+          "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+          "severity": "3",
+          "aznsAction": {
+            "actionGroup": "[array(resourceId('Microsoft.Insights/actiongroups', variables('TradePlatformAlertsActionGroupName')))]",
+            "emailSubject": "IPAFFS Trade Platform dispatching alert",
+            "customWebhookPayload": "{ \"alertname\":\"#alertrulename\"}"
+          },
+          "trigger": {
+            "thresholdOperator": "GreaterThan",
+            "threshold": 0
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Insights/scheduledQueryRules",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "apiVersion": "2018-04-16",
+      "name": "[variables('TradePlatformMappingAlertName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/actionGroups', variables('TradePlatformAlertsActionGroupName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "description": "Identifies failures when processing EHC Trade JSON from Trade Platform",
+        "enabled": "true",
+        "source": {
+          "query": "traces | where message contains \"Trade Platform EHC processing failed\"",
+          "dataSourceId": "[concat(resourceGroup().id, '/providers/Microsoft.Insights/components/', variables('appInsightsName'))]",
+          "queryType": "ResultCount"
+        },
+        "schedule": {
+          "frequencyInMinutes": 30,
+          "timeWindowInMinutes": 30
+        },
+        "action": {
+          "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+          "severity": "3",
+          "aznsAction": {
+            "actionGroup": "[array(resourceId('Microsoft.Insights/actiongroups', variables('TradePlatformAlertsActionGroupName')))]",
+            "emailSubject": "IPAFFS Trade Platform alert",
+            "customWebhookPayload": "{ \"alertname\":\"#alertrulename\"}"
+          },
+          "trigger": {
+            "thresholdOperator": "GreaterThan",
+            "threshold": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "[variables('serviceBusHealthCertificateDLQAlertName')]",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "type": "Microsoft.Insights/metricAlerts",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/actionGroups', variables('serviceBusDLQAlertActionGroupName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "apiVersion": "2018-03-01",
+      "properties": {
+        "description": "Sends out an alert message when messages arrive in the Dead Letter Queue for health certificates",
+        "severity": 3,
+        "enabled": true,
+        "scopes": [
+          "[resourceId(parameters('serviceBusConfig').resourceGroup, 'Microsoft.ServiceBus/namespaces', parameters('serviceBusConfig').name)]"
+        ],
+        "evaluationFrequency": "PT1M",
+        "windowSize": "PT5M",
+        "criteria": {
+          "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria",
+          "allOf": [
+            {
+              "criterionType": "StaticThresholdCriterion",
+              "name": "Criterion",
+              "metricName": "DeadletteredMessages",
+              "dimensions": [
+                {
+                  "name": "EntityName",
+                  "values": [
+                    "[parameters('serviceBusConfig').healthCertificateQueueName]"
+                  ],
+                  "operator": "Include"
+                }
+              ],
+              "operator": "GreaterThan",
+              "threshold": 0,
+              "timeAggregation": "Average"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "actionGroupId": "[concat(resourceGroup().id, '/providers/Microsoft.Insights/actiongroups/', variables('serviceBusDLQAlertActionGroupName'))]"
+          }
+        ]
+      }
+    },
+    {
+      "name": "[variables('serviceBusNotificationDLQAlertName')]",
+      "type": "Microsoft.Insights/metricAlerts",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/actionGroups', variables('serviceBusDLQAlertActionGroupName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "apiVersion": "2018-03-01",
+      "properties": {
+        "description": "Sends out an alert message when messages arrive in the Dead Letter Queue for notifications",
+        "severity": 3,
+        "enabled": true,
+        "scopes": [
+          "[resourceId(parameters('serviceBusConfig').resourceGroup, 'Microsoft.ServiceBus/namespaces', parameters('serviceBusConfig').name)]"
+        ],
+        "evaluationFrequency": "PT1M",
+        "windowSize": "PT5M",
+        "criteria": {
+          "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria",
+          "allOf": [
+            {
+              "criterionType": "StaticThresholdCriterion",
+              "name": "Criterion",
+              "metricName": "DeadletteredMessages",
+              "dimensions": [
+                {
+                  "name": "EntityName",
+                  "values": [
+                    "[parameters('serviceBusConfig').notificationQueueName]"
+                  ],
+                  "operator": "Include"
+                }
+              ],
+              "operator": "GreaterThan",
+              "threshold": 0,
+              "timeAggregation": "Average"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "actionGroupId": "[concat(resourceGroup().id, '/providers/Microsoft.Insights/actiongroups/', variables('serviceBusDLQAlertActionGroupName'))]"
+          }
+        ]
+      }
+    },
+    {
+      "type": "microsoft.insights/actionGroups",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "apiVersion": "2019-06-01",
+      "name": "[variables('rdlSyncAlertsActionGroupName')]",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "groupShortName": "[variables('rdlSyncAlertsActionGroupShortName')]",
+        "enabled": true,
+        "emailReceivers": "[if(empty(parameters('rdlSyncAlertEmailReceivers')), variables('empty'), variables('rdlSyncAlertEmailReceivers'))]"
+      }
+    },
+    {
+      "type":"Microsoft.Insights/scheduledQueryRules",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "apiVersion": "2018-04-16",
+      "name": "[variables('rdlSyncFieldConfigAlertName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/actionGroups', variables('rdlSyncAlertsActionGroupName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "description": "Identifies commodity codes without field configuration",
+        "enabled": "true",
+        "source": {
+          "query": "traces\n| where message startswith \"[AZURE ALERT] Commodities without field configuration\"",
+          "dataSourceId": "[concat(resourceGroup().id, '/providers/Microsoft.Insights/components/', variables('appInsightsName'))]",
+          "queryType": "ResultCount"
+        },
+        "schedule": {
+          "frequencyInMinutes": 30,
+          "timeWindowInMinutes": 30
+        },
+        "action": {
+          "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+          "severity": "3",
+          "aznsAction": {
+            "actionGroup": "[array(resourceId('Microsoft.Insights/actiongroups', variables('rdlSyncAlertsActionGroupName')))]",
+            "emailSubject": "IPAFFS RDL Sync: Commodities without field configuration detected"
+          },
+          "trigger": {
+            "thresholdOperator": "GreaterThan",
+            "threshold": 0
+          }
+        }
+      }
+    },
+    {
+      "type": "microsoft.insights/actionGroups",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "apiVersion": "2019-06-01",
+      "name": "[variables('rdsCountErrorAlertsActionGroupName')]",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "groupShortName": "[variables('rdsCountErrorAlertsActionGroupShortName')]",
+        "enabled": true,
+        "emailReceivers": "[if(empty(parameters('rdsCountErrorAlertEmailReceivers')), variables('empty'), variables('rdsCountErrorAlertEmailReceivers'))]"
+      }
+    },
+    {
+      "type":"Microsoft.Insights/scheduledQueryRules",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "apiVersion": "2018-04-16",
+      "name": "[variables('rdsCountErrorAlertsAlertName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/actionGroups', variables('rdsCountErrorAlertsActionGroupName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "description": "Raise an alert when there is an RDS Count error",
+        "enabled": "true",
+        "source": {
+          "query": "traces\n| where message startswith \"Expected count for table\" | where message contains \"doesn't match. Actual: \"",
+          "dataSourceId": "[concat(resourceGroup().id, '/providers/Microsoft.Insights/components/', variables('appInsightsName'))]",
+          "queryType": "ResultCount"
+        },
+        "schedule": {
+          "frequencyInMinutes": 30,
+          "timeWindowInMinutes": 30
+        },
+        "action": {
+          "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+          "severity": "3",
+          "aznsAction": {
+            "actionGroup": "[array(resourceId('Microsoft.Insights/actiongroups', variables('rdsCountErrorAlertsActionGroupName')))]",
+            "emailSubject": "Error in IPAFFS RDS count"
+          },
+          "trigger": {
+            "thresholdOperator": "GreaterThan",
+            "threshold": 0
+          }
+        }
+      }
+    },
+    {
+      "type": "microsoft.insights/actionGroups",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "apiVersion": "2019-06-01",
+      "name": "[variables('rdsSyncErrorAlertsActionGroupName')]",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "groupShortName": "[variables('rdsSyncErrorAlertsActionGroupShortName')]",
+        "enabled": true,
+        "emailReceivers": "[if(empty(parameters('rdsSyncErrorAlertEmailReceivers')), variables('empty'), variables('rdsSyncErrorAlertEmailReceivers'))]"
+      }
+    },
+    {
+      "type":"Microsoft.Insights/scheduledQueryRules",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "apiVersion": "2018-04-16",
+      "name": "[variables('rdsSyncErrorAlertsAlertName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/actionGroups', variables('rdsSyncErrorAlertsActionGroupName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "description": "Raise an alert when there is an RDS sync error",
+        "enabled": "true",
+        "source": {
+          "query": "traces\n| where message startswith \"Synchronization of dataset\" | where message contains \"failed with error\"",
+          "dataSourceId": "[concat(resourceGroup().id, '/providers/Microsoft.Insights/components/', variables('appInsightsName'))]",
+          "queryType": "ResultCount"
+        },
+        "schedule": {
+          "frequencyInMinutes": 30,
+          "timeWindowInMinutes": 30
+        },
+        "action": {
+          "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+          "severity": "3",
+          "aznsAction": {
+            "actionGroup": "[array(resourceId('Microsoft.Insights/actiongroups', variables('rdsSyncErrorAlertsActionGroupName')))]",
+            "emailSubject": "Error in IPAFFS RDS sync"
+          },
+          "trigger": {
+            "thresholdOperator": "GreaterThan",
+            "threshold": 0
+          }
+        }
+      }
+    },
+    {
+      "type": "microsoft.insights/actionGroups",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "apiVersion": "2019-06-01",
+      "name": "[variables('riskLockingErrorAlertsActionGroupName')]",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "groupShortName": "[variables('riskLockingErrorAlertsActionGroupShortName')]",
+        "enabled": true,
+        "emailReceivers": "[if(empty(parameters('riskLockingErrorEmailReceivers')), variables('empty'), variables('riskLockingErrorEmailReceivers'))]"
+      }
+    },
+    {
+      "type":"Microsoft.Insights/scheduledQueryRules",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "apiVersion": "2018-04-16",
+      "name": "[variables('riskLockingErrorFieldConfigAlertName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/actionGroups', variables('riskLockingErrorAlertsActionGroupName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "description": "Raise an alert when there is an error in Risk locking microservice",
+        "enabled": "true",
+        "source": {
+          "query": "traces | where operation_Name contains \"RiskLockingFunction\" | where message contains \"Error patching \" or message contains \"Service error\"",
+          "dataSourceId": "[concat(resourceGroup().id, '/providers/Microsoft.Insights/components/', variables('appInsightsName'))]",
+          "queryType": "ResultCount"
+        },
+        "schedule": {
+          "frequencyInMinutes": 5,
+          "timeWindowInMinutes": 5
+        },
+        "action": {
+          "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+          "severity": "1",
+          "aznsAction": {
+            "actionGroup": "[array(resourceId('Microsoft.Insights/actiongroups', variables('riskLockingErrorAlertsActionGroupName')))]",
+            "emailSubject": "IPAFFS detected an error in the risk-locking-microservice"
+          },
+          "trigger": {
+            "thresholdOperator": "GreaterThan",
+            "threshold": 0
+          }
+        }
+      }
+    },
+    {
+      "type": "microsoft.insights/actionGroups",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "apiVersion": "2019-06-01",
+      "name": "[variables('notifyErrorAlertsActionGroupName')]",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "groupShortName": "[variables('notifyErrorAlertsActionGroupShortName')]",
+        "enabled": true,
+        "emailReceivers": "[if(empty(parameters('notifyErrorEmailReceivers')), variables('empty'), variables('notifyErrorEmailReceivers'))]"
+      }
+    },
+    {
+      "type": "Microsoft.Insights/scheduledQueryRules",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "apiVersion": "2018-04-16",
+      "name": "[variables('notifyErrorFieldConfigAlertName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/actionGroups', variables('notifyErrorAlertsActionGroupName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "description": "Raise an alert when there is an error in Notify microservice",
+        "enabled": "true",
+        "source": {
+          "query": "traces | where operation_Name contains \"NotifyFunction\" | where message contains \"Error sending to Trade for Notify \" or message contains \"Failed to send to Trade \"",
+          "dataSourceId": "[concat(resourceGroup().id, '/providers/Microsoft.Insights/components/', variables('appInsightsName'))]",
+          "queryType": "ResultCount"
+        },
+        "schedule": {
+          "frequencyInMinutes": 5,
+          "timeWindowInMinutes": 5
+        },
+        "action": {
+          "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+          "severity": "1",
+          "aznsAction": {
+            "actionGroup": "[array(resourceId('Microsoft.Insights/actiongroups', variables('notifyErrorAlertsActionGroupName')))]",
+            "emailSubject": "IPAFFS detected an error in email/text service"
+          },
+          "trigger": {
+            "thresholdOperator": "GreaterThan",
+            "threshold": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "[variables('serviceBusNotifyDLQAlertName')]",
+      "type": "Microsoft.Insights/metricAlerts",
+      "condition": "[not(empty(parameters('blueGreen')))]",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/actionGroups', variables('serviceBusDLQAlertActionGroupName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "apiVersion": "2018-03-01",
+      "properties": {
+        "description": "Sends out an alert message when messages arrive in the Dead Letter Queue for notify",
+        "severity": 3,
+        "enabled": true,
+        "scopes": [
+          "[resourceId(parameters('serviceBusConfig').resourceGroup, 'Microsoft.ServiceBus/namespaces', parameters('serviceBusConfig').name)]"
+        ],
+        "evaluationFrequency": "PT1M",
+        "windowSize": "PT5M",
+        "criteria": {
+          "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria",
+          "allOf": [
+            {
+              "criterionType": "StaticThresholdCriterion",
+              "name": "Criterion",
+              "metricName": "DeadletteredMessages",
+              "dimensions": [
+                {
+                  "name": "EntityName",
+                  "values": [
+                    "[variables('notifyQueueName')]"
+                  ],
+                  "operator": "Include"
+                }
+              ],
+              "operator": "GreaterThan",
+              "threshold": 0,
+              "timeAggregation": "Average"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "actionGroupId": "[concat(resourceGroup().id, '/providers/Microsoft.Insights/actiongroups/', variables('serviceBusDLQAlertActionGroupName'))]"
+          }
+        ]
+      }
+    },
+    {
+      "type": "microsoft.insights/actionGroups",
+      "condition": "[equals(parameters('envSuffix'), 'vnet')]",
+      "apiVersion": "2019-06-01",
+      "name": "[variables('autoClearanceErrorAlertsActionGroupName')]",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "groupShortName": "[variables('autoClearanceErrorAlertsActionGroupShortName')]",
+        "enabled": true,
+        "emailReceivers": "[if(empty(parameters('autoClearanceErrorEmailReceivers')), variables('empty'), variables('autoClearanceErrorEmailReceivers'))]"
+      }
+    },
+    {
+      "type":"Microsoft.Insights/scheduledQueryRules",
+      "condition": "[equals(parameters('envSuffix'), 'vnet')]",
+      "apiVersion": "2018-04-16",
+      "name": "[variables('autoClearanceErrorFieldConfigAlertName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/actionGroups', variables('autoClearanceErrorAlertsActionGroupName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "description": "Raise an alert when there is an error in Auto clearance process",
+        "enabled": "true",
+        "source": {
+          "query": "exceptions | where cloud_RoleName == \"notification-microservice\" and (['type'] contains \"SLAEntryNotFoundException\"  or (['type'] contains \"NotificationServiceException\" and outerMessage contains \"Unable to auto clear\"))",
+          "dataSourceId": "[concat(resourceGroup().id, '/providers/Microsoft.Insights/components/', variables('appInsightsName'))]",
+          "queryType": "ResultCount"
+        },
+        "schedule": {
+          "frequencyInMinutes": 5,
+          "timeWindowInMinutes": 5
+        },
+        "action": {
+          "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+          "severity": "1",
+          "aznsAction": {
+            "actionGroup": "[array(resourceId('Microsoft.Insights/actiongroups', variables('autoClearanceErrorAlertsActionGroupName')))]",
+            "emailSubject": "IPAFFS detected an error when Auto clearing in notification microservice"
+          },
+          "trigger": {
+            "thresholdOperator": "GreaterThan",
+            "threshold": 0
+          }
+        }
+      }
+    },
+    {
+      "type": "microsoft.insights/actionGroups",
+      "condition": "[equals(parameters('envSuffix'), 'vnet')]",
+      "apiVersion": "2019-06-01",
+      "name": "[variables('riskInterfaceErrorAlertsActionGroupName')]",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "groupShortName": "[variables('riskInterfaceErrorAlertsActionGroupShortName')]",
+        "enabled": true,
+        "emailReceivers": "[if(empty(parameters('riskInterfaceErrorEmailReceivers')), variables('empty'), variables('riskInterfaceErrorEmailReceivers'))]"
+      }
+    },
+    {
+      "type":"Microsoft.Insights/scheduledQueryRules",
+      "condition": "[equals(parameters('envSuffix'), 'vnet')]",
+      "apiVersion": "2018-04-16",
+      "name": "[variables('riskInterfaceErrorFieldConfigAlertName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/actionGroups', variables('riskInterfaceErrorAlertsActionGroupName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "description": "Raise an alert when there is an error in Risk interface service",
+        "enabled": "true",
+        "source": {
+          "query": "traces | where operation_Name contains \"NotificationRiskAssessmentFunction\" | where message contains \"Error when mapping \"  or message contains \"Unexpected error \"",
+          "dataSourceId": "[concat(resourceGroup().id, '/providers/Microsoft.Insights/components/', variables('appInsightsName'))]",
+          "queryType": "ResultCount"
+        },
+        "schedule": {
+          "frequencyInMinutes": 5,
+          "timeWindowInMinutes": 5
+        },
+        "action": {
+          "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction",
+          "severity": "1",
+          "aznsAction": {
+            "actionGroup": "[array(resourceId('Microsoft.Insights/actiongroups', variables('riskInterfaceErrorAlertsActionGroupName')))]",
+            "emailSubject": "IPAFFS detected an error in Risk interface service"
+          },
+          "trigger": {
+            "thresholdOperator": "GreaterThan",
+            "threshold": 0
+          }
+        }
+      }
+    }
+  ]
+}

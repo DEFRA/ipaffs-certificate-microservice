@@ -1,0 +1,89 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "bipPasswordBasicAuth": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "bip-microserviceBasicAuthPassword"
+      }
+    },
+    "bipServiceString": {
+      "value": "bip-microservice"
+    },
+    "containerStartTimeLimit": {
+      "value": "230"
+    },
+    "deployEnvironment": {
+      "value": "Sandpit"
+    },
+    "dockerRegistryPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "azureDockerRegistryPassword"
+      }
+    },
+    "dockerRegistryServerUrl": {
+      "value": "sndeuxfesacr001.azurecr.io"
+    },
+    "dockerRegistryServerUsername": {
+      "value": "9f9d7738-e643-4ad3-820b-b461583302a8"
+    },
+    "envCode": {
+      "value": "SND"
+    },
+    "privateSigningKey": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "testOpenidTokenServicePrivateKey"
+      }
+    },
+    "publicSigningKey": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "testOpenidTokenServicePublicKey"
+      }
+    },
+    "serviceBasicAuthPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "testOpenidTokenServiceBasicAuthPassword"
+      }
+    },
+    "serviceBusSharedAccessKeyName": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "devServiceBusSharedAccessKeyName"
+      }
+    },
+    "serviceBusSharedAccessKey": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "devServiceBusSharedAccessKey"
+      }
+    },
+    "serviceCapacity": {
+      "value": "1"
+    },
+    "serviceCode": {
+      "value": "IMP"
+    },
+    "serviceSKU": {
+      "value": "P3v2"
+    }
+  }
+}

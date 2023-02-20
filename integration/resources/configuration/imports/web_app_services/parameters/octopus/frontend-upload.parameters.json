@@ -1,0 +1,143 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "blueGreen": {
+      "value": "#{blueGreen | ToLower}"
+    },
+    "containerRepository": {
+       "value": "#{containerRepository}"
+    },
+    "dateCreated": {
+      "value": "#{format-DateTag}"
+    },
+    "dnsSuffix": {
+      "value": "#{dnsZone}"
+    },
+    "dockerRegistryPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "opsImpAzureDockerRegistryPassword"
+      }
+    },
+    "dockerRegistryServerUrl": {
+      "value": "opsimpfesacr001.azurecr.io"
+    },
+    "dockerRegistryServerUsername": {
+      "value": "OPSIMPFESACR001"
+    },
+    "enableCHEDADocImprovements": {
+      "value": "#{enableCHEDADocImprovements}"
+    },
+    "envCode": {
+      "value": "#{env | ToLower}"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "healthcheckMaxFailures": {
+      "value": 5
+    },
+    "feedbackSurveyLink": {
+      "value": "#{feedbackSurveyLink}"
+    },
+    "googleTagManagerID": {
+      "value": "#{googleTagManagerID}"
+    },
+    "hexEncryptionKey": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "hexEncryptionKey"
+      }
+    },
+    "nodeOptions": {
+      "value": "--max-http-header-size=12000"
+    },
+    "permissionsServiceBasicAuthPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "permissionsBasicAuthPassword"
+      }
+    },
+    "proxyHost": {
+      "value": "imports-proxy-#{blueGreen | ToLower}"
+    },
+    "serviceCode": {
+      "value": "#{proj}"
+    },
+    "containerStartTimeLimit": {
+      "value": "#{containerStartTimeLimit}"
+    },
+    "serviceName": {
+      "value": "frontend-upload-#{blueGreen | ToLower}-#{env | ToLower}"
+    },
+    "servicePlanGroup": {
+      "value": "#{appPlanNameFrontend1}"
+    },
+    "serviceUser": {
+      "value": "importer"
+    },
+    "showTrainingBanner": {
+      "value": #{showTrainingBanner}
+    },
+    "version": {
+      "value": "#{dockerTag}"
+    },
+    "WebvNetResourceGroup": {
+      "value": "#{virtualNetworkResourceGroup}"
+    },
+    "WebvNetName": {
+      "value": "#{virtualNetworkName}"
+    },
+    "WebSubnetName-reference-data-plan-1": {
+      "value": "#{referenceDataPlan1SubnetName}"
+    },
+    "WebSubnetName-reference-data-plan-2": {
+      "value": "#{referenceDataPlan2SubnetName}"
+    },
+    "WebSubnetName-low-traffic-plan-1": {
+      "value": "#{lowTrafficPlan1SubnetName}"
+    },
+    "WebSubnetName-high-traffic-plan-1": {
+      "value": "#{highTrafficPlan1SubnetName}"
+    },
+    "WebSubnetName-frontend-plan-1": {
+      "value": "#{frontendPlan1SubnetName}"
+    },
+    "WebSubnetName-soap-services-plan-1": {
+      "value": "#{soapServicePlan1SubnetName}"
+    },
+    "DeploymentSubnetResourceId": {
+      "value": ""
+    },
+    "sharedInfraResourceGroupName": {
+      "value": "#{if sharedInfraResourceGroupName}#{sharedInfraResourceGroupName}#{else}#{resourceGroupName}#{/if}"
+    },
+    "rtlDeploymentCheckSubnetResourceId": {
+      "value": "/subscriptions/fa6d4701-12be-41be-9c4d-ba3daf88ed8e/resourceGroups/OPSINFNETRGP001/providers/Microsoft.Network/virtualNetworks/OPSINFNETVNT001/subnets/OPSINFFESSUB001"
+    },
+    "redisHost": {
+      "value": "#{redisHost}"
+    },
+    "redisPort": {
+      "value": 6380
+    },
+    "redisPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "redisPassword"
+      }
+    },
+    "commodityBulkUploadTimeout": {
+      "value": #{commodityBulkUploadTimeout}
+    }
+  }
+}

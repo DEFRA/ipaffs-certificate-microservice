@@ -1,0 +1,36 @@
+{
+  "_class" : "hudson.model.AllView",
+  "description" : null,
+  "jobs" : [
+    {
+      "_class" : "org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject",
+      "name" : "my-microservice",
+      "url" : "https://jenkins.url/job/my-microservice/"
+    },
+    {
+      "_class" : "org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject",
+      "name" : "frontend-my",
+      "url" : "https://jenkins.url/job/frontend-my/"
+    },
+    {
+      "_class" : "org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject",
+      "name" : "permissions",
+      "url" : "https://jenkins.url/job/frontend-my/"
+    },
+    {
+      "_class" : "org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject",
+      "name" : "frontend-auth",
+      "url" : "https://jenkins.url/job/frontend-auth/"
+    },
+    {
+      "_class" : "org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject",
+      "name" : "openid-token-microservice",
+      "url" : "https://jenkins.url/job/openid-token-microservice/"
+    }
+  ],
+  "name" : "all",
+  "property" : [
+
+  ],
+  "url" : "https://jenkins.url/view/all/"
+}

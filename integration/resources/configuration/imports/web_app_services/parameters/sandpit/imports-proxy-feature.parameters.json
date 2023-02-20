@@ -1,0 +1,279 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "azureADClientID": {
+      "value": "ee55e17d-f6c8-40df-9d8f-19a7d9f5bd8b"
+    },
+    "azureADClientSecret": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "azureADClientSecret"
+      }
+    },
+    "azureADTenantID": {
+      "value": "526e1181-9d1f-4f48-bbed-4b0d2f09c645"
+    },
+    "b2bCustomerOrganisationId": {
+      "value": "767ceb6a-2144-e911-a96c-000d3a29b5de"
+    },
+    "b2bCustomerUserId": {
+      "value": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+    },
+    "containerStartTimeLimit": {
+      "value": "230"
+    },
+    "b2cClientID": {
+      "value": "ebe090d6-689e-4bc7-baed-74e0485eaf8c"
+    },
+    "b2cClientSecret": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "b2cClientSecretImportsProxyFeature"
+      }
+    },
+    "b2cEnrollmentAddress": {
+      "value": "https://customer-microservice-{0}.azurewebsites.net"
+    },
+    "b2cEnrollmentEmployeeRoleId": {
+      "value": "1eb54ab1-58b7-4d14-bf39-4f3e402616e8"
+    },
+    "b2cEnrollmentServiceId": {
+      "value": "29072a8c-73b6-e811-a954-000d3a29b5de"
+    },
+    "b2cGatewayHost": {
+      "value": "https://imports-proxy-feature.azurewebsites.net"
+    },
+    "b2cIdentityServiceID": {
+      "value": "8b5214ee-62b6-e811-a954-000d3a29b5de"
+    },
+    "b2cJourneyName": {
+      "value": "chemicals"
+    },
+    "b2cLogoutRedirectUri": {
+      "value": "https://www.ete.access.service.gov.uk/signout"
+    },
+    "b2cPolicyID": {
+      "value": "B2C_1A_eux_scp_signup_signin_roles_dynx"
+    },
+    "b2cTenantID": {
+      "value": "131a35fb-0422-49c9-8753-15217cec5411"
+    },
+    "b2cTenantName": {
+      "value": "dcidmtest"
+    },
+    "b2cUserAuthorizationUri": {
+      "value": "https://idm-dev-public.azure.defra.cloud/authentication/auth"
+    },
+    "b2cUserManagementUri": {
+      "value": "https://idm-dev-public.azure.defra.cloud/account-management/me"
+    },
+    "containerRepository": {
+      "value": "imports-release"
+    },
+    "cookiePassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "proxyCookiePassword"
+      }
+    },
+    "customerDynamicsApiVersion": {
+      "value": "v9.0"
+    },
+    "customerDynamicsAuthUrl": {
+      "value": "https://login.microsoftonline.com/6f504113-6b64-43f2-ade9-242e05780007/oauth2/token"
+    },
+    "customer-dynamics-client-id-secret-pairs": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "customer-dynamics-client-id-secret-pairs-snd"
+      }
+    },
+    "customerDynamicsOrgAdminRole": {
+      "value": "a3217e78-dd9b-e811-a94f-000d3a3a8543"
+    },
+    "customerDynamicsResourceUrl": {
+      "value": "https://defra-custmstr-eue-dev.api.crm4.dynamics.com"
+    },
+    "customerServiceAuthPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "customer-microserviceBasicAuthPassword"
+      }
+    },
+    "dateCreated": {
+      "value": ""
+    },
+    "deployEnvironment": {
+      "value": "Sandpit"
+    },
+    "dockerRegistryPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "azureDockerRegistryPassword"
+      }
+    },
+    "dockerRegistryServerUrl": {
+      "value": "sndeuxfesacr001.azurecr.io"
+    },
+    "dockerRegistryServerUsername": {
+      "value": "9f9d7738-e643-4ad3-820b-b461583302a8"
+    },
+    "envCode": {
+      "value": "SND"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "healthcheckMaxFailures": {
+      "value": 5
+    },
+    "eventHubEnvironment": {
+      "value": "SANDPIT"
+    },
+    "eventHubKeyName": {
+      "value": "QRADAR_APP"
+    },
+    "eventHubKeyValue": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "snd-eventHubKey-development"
+      }
+    },
+    "eventHubName": {
+      "value": "insights-application-logs"
+    },
+    "eventHubNamespace": {
+      "value": "SNDIMPSOCENS001"
+    },
+    "frontendUrlTemplate": {
+      "value": "https://frontend-{0}-{1}.azurewebsites.net"
+    },
+    "googleScriptHashToken": {
+      "value": "JPUgeN21I9Yj/+AOpHUjiIRgGUP2TQLD79revtpUM84="
+    },
+    "googleTagManagerID": {
+      "value": "GTM-NHS2VQP"
+    },
+    "inactiveTimeoutInSeconds": {
+      "value": "1200"
+    },
+    "jwtAudience": {
+      "value": "a2617985-5645-47ec-8912-7a943b3895ba"
+    },
+    "jwtPrivateKey": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "proxyJwtPrivateKey-snd"
+      }
+    },
+    "jwtValidForInSeconds": {
+      "value": "28800"
+    },
+    "monitoringType": {
+      "value": "event-hub"
+    },
+    "proxyAddress": {
+      "value": "https://imports-proxy.azurewebsites.net"
+    },
+    "proxyExternalAddressB2B": {
+      "value": "https://imports-proxy-feature.azurewebsites.net"
+    },
+    "proxyExternalAddressB2C": {
+      "value": "https://imports-proxy-feature.azurewebsites.net"
+    },
+    "serviceCode": {
+      "value": "IMP"
+    },
+    "serviceName": {
+      "value": "imports-proxy-feature"
+    },
+    "servicePlanGroup": {
+      "value": "services-general"
+    },
+    "serviceUrlTemplate": {
+      "value": "https://{0}-microservice-{1}.azurewebsites.net"
+    },
+    "tradeApplicationUrl": {
+      "value": "https://dev-delegation.trade.azure.defra.cloud/Trade-Application?serviceId=8b5214ee-62b6-e811-a954-000d3a29b5de&redirectTo="
+    },
+    "version": {
+      "value": "1.0"
+    },
+    "WebvNetResourceGroup": {
+      "value": ""
+    },
+    "WebvNetName": {
+      "value": ""
+    },
+    "WebSubnetName-reference-data-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-reference-data-plan-2": {
+      "value": ""
+    },
+    "WebSubnetName-low-traffic-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-high-traffic-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-frontend-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-soap-services-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-enotification-plan-1": {
+      "value": ""
+    },
+    "DeploymentSubnetResourceId": {
+      "value": ""
+    },
+    "sharedInfraResourceGroupName": {
+      "value": ""
+    },
+    "rtlDeploymentCheckSubnetResourceId": {
+      "value": "/subscriptions/fa6d4701-12be-41be-9c4d-ba3daf88ed8e/resourceGroups/OPSINFNETRGP001/providers/Microsoft.Network/virtualNetworks/OPSINFNETVNT001/subnets/OPSINFFESSUB001"
+    },
+    "jedisPoolMaxIdle": {
+      "value": 200
+    },
+    "jedisPoolMaxTotal": {
+      "value": 256
+    },
+    "jedisPoolMaxWait": {
+      "value": 10000
+    },
+    "jedisPoolMinIdle": {
+      "value": 3
+    },
+    "redisConfig": {
+      "value": {
+        "resourceGroup": "SNDIMPINFRGP001",
+        "cacheName": "SNDIMPRDS001",
+        "port": 6380,
+        "isEnabled": "true"
+      }
+    },
+    "redisCacheKey": {
+      "value": ""
+    }
+  }
+}

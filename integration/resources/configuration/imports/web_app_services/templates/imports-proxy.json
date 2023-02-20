@@ -1,0 +1,811 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "azureADClientID": {
+      "type": "string"
+    },
+    "azureADClientSecret": {
+      "type": "securestring"
+    },
+    "azureADTenantID": {
+      "type": "string"
+    },
+    "b2bCustomerOrganisationId": {
+      "type": "string"
+    },
+    "b2bCustomerUserId": {
+      "type": "string"
+    },
+    "b2cClientID": {
+      "type": "string"
+    },
+    "b2cClientSecret": {
+      "type": "securestring"
+    },
+    "b2cEnrollmentAddress": {
+      "type": "string"
+    },
+    "b2cEnrollmentEmployeeRoleId": {
+      "type": "string"
+    },
+    "b2cEnrollmentServiceId": {
+      "type": "string"
+    },
+    "b2cGatewayHost": {
+      "type": "string"
+    },
+    "b2cIdentityServiceID": {
+      "type": "string"
+    },
+    "b2cJourneyName": {
+      "type": "string"
+    },
+    "b2cLogoutRedirectUri": {
+      "type": "string"
+    },
+    "b2cPolicyID": {
+      "type": "string"
+    },
+    "b2cTenantID": {
+      "type": "string"
+    },
+    "b2cTenantName": {
+      "type": "string"
+    },
+    "b2cUserAuthorizationUri": {
+      "type": "string"
+    },
+    "b2cUserManagementUri": {
+      "type": "string"
+    },
+    "blueGreen": {
+      "type": "string"
+    },
+    "containerStartTimeLimit": {
+      "type": "string"
+    },
+    "containerRepository": {
+      "type": "string"
+    },
+    "cookiePassword": {
+      "type": "securestring"
+    },
+    "customerDynamicsApiVersion": {
+      "type": "string"
+    },
+    "customerDynamicsAuthUrl": {
+      "type": "string"
+    },
+    "customer-dynamics-client-id-secret-pairs": {
+      "type": "securestring"
+    },
+    "customerDynamicsOrgAdminRole": {
+      "type": "string"
+    },
+    "customerDynamicsResourceUrl": {
+      "type": "string"
+    },
+    "customerServiceAuthPassword": {
+      "type": "securestring"
+    },
+    "dateCreated": {
+      "type": "string"
+    },
+    "deployEnvironment": {
+      "type": "string"
+    },
+    "dnsSuffix": {
+      "type": "string"
+    },
+    "dockerRegistryPassword": {
+      "type": "securestring"
+    },
+    "dockerRegistryServerUrl": {
+      "type": "string"
+    },
+    "dockerRegistryServerUsername": {
+      "type": "string"
+    },
+    "envCode": {
+      "type": "string"
+    },
+    "envSuffix": {
+      "type": "string"
+    },
+    "healthcheckMaxFailures": {
+      "type": "int"
+    },
+    "eventHubEnvironment": {
+      "type": "string"
+    },
+    "eventHubKeyName": {
+      "type": "string"
+    },
+    "eventHubKeyValue": {
+      "type": "string"
+    },
+    "eventHubName": {
+      "type": "string"
+    },
+    "eventHubNamespace": {
+      "type": "string"
+    },
+    "frontendUrlTemplate": {
+      "type": "string"
+    },
+    "googleScriptHashToken": {
+      "type": "string"
+    },
+    "googleTagManagerID": {
+      "type": "string"
+    },
+    "inactiveTimeoutInSeconds": {
+      "type": "string"
+    },
+    "jedisPoolMaxIdle": {
+      "type": "int"
+    },
+    "jedisPoolMaxTotal": {
+      "type": "int"
+    },
+    "jedisPoolMaxWait": {
+      "type": "int"
+    },
+    "jedisPoolMinIdle": {
+      "type": "int"
+    },
+    "jwtAudience": {
+      "type": "string"
+    },
+    "jwtPrivateKey": {
+      "type": "securestring"
+    },
+    "jwtValidForInSeconds": {
+      "type": "string"
+    },
+    "monitoringType": {
+      "type": "string"
+    },
+    "proxyExternalAddressB2B": {
+      "type": "string"
+    },
+    "proxyExternalAddressB2C": {
+      "type": "string"
+    },
+    "proxyHost": {
+      "type": "string"
+    },
+    "redisConfig": {
+      "type": "object"
+    },
+    "serviceCode": {
+      "type": "string"
+    },
+    "serviceName": {
+      "type": "string"
+    },
+    "servicePlanGroup": {
+      "type": "string"
+    },
+    "serviceUrlTemplate": {
+      "type": "string"
+    },
+    "tradeApplicationUrl": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "WebvNetResourceGroup": {
+      "type": "string"
+    },
+    "WebvNetName": {
+      "type": "string"
+    },
+    "WebSubnetName-reference-data-plan-1": {
+      "type": "string"
+    },
+    "WebSubnetName-reference-data-plan-2": {
+      "type": "string"
+    },
+    "WebSubnetName-low-traffic-plan-1": {
+      "type": "string"
+    },
+    "WebSubnetName-high-traffic-plan-1": {
+      "type": "string"
+    },
+    "WebSubnetName-frontend-plan-1": {
+      "type": "string"
+    },
+    "WebSubnetName-soap-services-plan-1": {
+      "type": "string"
+    },
+    "WebSubnetName-enotification-plan-1": {
+      "type": "string"
+    },
+    "SEC_SUB_ID": {
+      "type": "string"
+    },
+    "AgwVnetResourceGroupName": {
+      "type": "string"
+    },
+    "AgwVnetName": {
+      "type": "string"
+    },
+    "B2CAgwSubnetName": {
+      "type": "string"
+    },
+    "B2BAgwSubnetName": {
+      "type": "string"
+    },
+    "APIAgwSubnetName": {
+      "type": "string"
+    },
+    "TestingAgwSubnetName": {
+      "type": "string"
+    },
+    "DeploymentSubnetResourceId": {
+      "type": "string"
+    },
+    "sharedInfraResourceGroupName": {
+      "type": "string"
+    },
+    "rtlDeploymentCheckSubnetResourceId": {
+      "type": "string"
+    },
+    "redisCacheKey": {
+      "type": "securestring"
+    }
+  },
+  "variables": {
+    "appInsightsName": "[concat('insights-',if(empty(parameters('sharedInfraResourceGroupName')), resourceGroup().name, parameters('sharedInfraResourceGroupName')), if(not(empty(parameters('blueGreen'))), concat('-', parameters('blueGreen')),''))]",
+    "dockerCustomImageName": "[concat(parameters('dockerRegistryServerUrl'), '/', parameters('containerRepository'), '/', 'imports-proxy', ':', parameters('version'))]",
+    "proxyUrl": "[concat('https://', parameters('proxyHost'), parameters('dnsSuffix'))]",
+    "servicePlanName": "[if(empty(parameters('blueGreen')), concat(parameters('servicePlanGroup'), '-', parameters('envSuffix')), parameters('servicePlanGroup'))]",
+    "ipSecurityRestrictions": "[if(equals(parameters('envSuffix'), 'vnet'), union(variables('vnetIpSecurityRestrictions'), variables('commonIpSecurityRestrictions')), union(variables('commonIpSecurityRestrictions'), variables('rtlIpSecurityRestrictions')))]",
+    "vnetIpSecurityRestrictions":
+        [
+          {
+              "ipAddress": "195.89.171.5/32",
+              "action": "Allow",
+              "tag": "Default",
+              "priority": 120,
+              "name": "KainosVPN1",
+              "description": "Allow access from Kainos VPN1"
+          },
+          {
+              "ipAddress": "195.89.171.144/32",
+              "action": "Allow",
+              "tag": "Default",
+              "priority": 121,
+              "name": "KainosVPN2",
+              "description": "Allow access from Kainos VPN2"
+          },
+          {
+              "ipAddress": "62.254.63.52/32",
+              "action": "Allow",
+              "tag": "Default",
+              "priority": 122,
+              "name": "KainosVPN3",
+              "description": "Allow access from Kainos VPN3"
+          },
+          {
+              "vnetSubnetResourceId": "[if(empty(parameters('DeploymentSubnetResourceId')), resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-soap-services-plan-1')), parameters('DeploymentSubnetResourceId'))]",
+              "action": "Allow",
+              "tag": "Default",
+              "priority": 107,
+              "name": "AllowDeploymentChecks"
+          }
+        ],
+    "rtlIpSecurityRestrictions":
+        [
+            {
+                "vnetSubnetResourceId": "[parameters('rtlDeploymentCheckSubnetResourceId')]",
+                "action": "Allow",
+                "tag": "Default",
+                "priority": 109,
+                "name": "AllowRtlDeploymentChecks"
+            }
+        ],
+"commonIpSecurityRestrictions":
+    [
+        {
+          "vnetSubnetResourceId": "[resourceId(parameters('SEC_SUB_ID'), parameters('AgwVnetResourceGroupName'), 'Microsoft.Network/virtualNetworks/subnets', parameters('AgwVnetName'), parameters('B2CAgwSubnetName'))]",
+          "action": "Allow",
+          "tag": "Default",
+          "priority": 125,
+          "name": "AllowB2CAppGateway"
+        },
+        {
+          "vnetSubnetResourceId": "[resourceId(parameters('SEC_SUB_ID'), parameters('AgwVnetResourceGroupName'), 'Microsoft.Network/virtualNetworks/subnets', parameters('AgwVnetName'), parameters('B2BAgwSubnetName'))]",
+          "action": "Allow",
+          "tag": "Default",
+          "priority": 126,
+          "name": "AllowB2BAppGateway"
+        },
+        {
+          "vnetSubnetResourceId": "[resourceId(parameters('SEC_SUB_ID'), parameters('AgwVnetResourceGroupName'), 'Microsoft.Network/virtualNetworks/subnets', parameters('AgwVnetName'), parameters('APIAgwSubnetName'))]",
+          "action": "Allow",
+          "tag": "Default",
+          "priority": 127,
+          "name": "AllowAPIAppGateway"
+        },
+        {
+          "vnetSubnetResourceId": "[resourceId(parameters('SEC_SUB_ID'), parameters('AgwVnetResourceGroupName'), 'Microsoft.Network/virtualNetworks/subnets', parameters('AgwVnetName'), parameters('TestingAgwSubnetName'))]",
+          "action": "Allow",
+          "tag": "Default",
+          "priority": 128,
+          "name": "AllowTestingAppGateway"
+        },
+        {
+            "vnetSubnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-reference-data-plan-1'))]",
+            "action": "Allow",
+            "tag": "Default",
+            "priority": 101,
+            "name": "AllowReferenceDataPlan1"
+        },
+        {
+            "vnetSubnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-reference-data-plan-2'))]",
+            "action": "Allow",
+            "tag": "Default",
+            "priority": 102,
+            "name": "AllowReferenceDataPlan2"
+        },
+        {
+            "vnetSubnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-low-traffic-plan-1'))]",
+            "action": "Allow",
+            "tag": "Default",
+            "priority": 103,
+            "name": "AllowLowTrafficPlan1"
+        },
+        {
+            "vnetSubnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-high-traffic-plan-1'))]",
+            "action": "Allow",
+            "tag": "Default",
+            "priority": 104,
+            "name": "AllowHighTrafficPlan1"
+        },
+        {
+            "vnetSubnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-frontend-plan-1'))]",
+            "action": "Allow",
+            "tag": "Default",
+            "priority": 105,
+            "name": "AllowFrontendPlan1"
+        },
+        {
+            "vnetSubnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-soap-services-plan-1'))]",
+            "action": "Allow",
+            "tag": "Default",
+            "priority": 106,
+            "name": "AllowSoapServicesPlan1"
+        },
+        {
+            "vnetSubnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-enotification-plan-1'))]",
+            "action": "Allow",
+            "tag": "Default",
+            "priority": 108,
+            "name": "AllowEnotificationPlan1"
+        },
+        {
+            "ipAddress": "Any",
+            "action": "Deny",
+            "priority": 2147483647,
+            "name": "Deny all",
+            "description": "Deny all access"
+        }
+    ]
+},
+  "resources": [
+    {
+      "name": "[parameters('serviceName')]",
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2020-12-01",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "Name": "[parameters('serviceName')]",
+        "ServiceCode": "[parameters('serviceCode')]",
+        "ServiceName": "[concat('EUX Imports:', parameters('serviceName'))]",
+        "ServiceType": "LOB",
+        "CreationDateTime": "[parameters('dateCreated')]",
+        "Environment": "[parameters('envCode')]",
+        "Tier": "WEB",
+        "Region": "[resourceGroup().location]"
+      },
+      "properties": {
+        "name": "[parameters('serviceName')]",
+        "serverFarmId": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', variables('servicePlanName'))]",
+        "siteConfig": {
+          "linuxFxVersion": "[concat('DOCKER|', variables('dockerCustomImageName'))]",
+          "httpLoggingEnabled": true,
+          "logsDirectorySizeLimit": 35,
+          "detailedErrorLoggingEnabled": false,
+          "publishingUsername": "[parameters('serviceName')]",
+          "appSettings": [
+            {
+              "name": "WEBSITE_VNET_ROUTE_ALL",
+              "value": "[if(empty(parameters('WebvNetResourceGroup')), '0', '1')]"
+            },
+            {
+              "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+              "value": "[reference(resourceId(if(empty(parameters('sharedInfraResourceGroupName')), resourceGroup().name, parameters('sharedInfraResourceGroupName')), 'Microsoft.Insights/components', variables('appInsightsName')), '2015-05-01').ConnectionString]"
+            },
+            {
+              "name": "AUTOMATIC_TRANSITION_ENABLED",
+              "value": "false"
+            },
+            {
+              "name": "AZURE_AD_CLIENT_ID",
+              "value": "[parameters('azureADClientID')]"
+            },
+            {
+              "name": "AZURE_AD_CLIENT_SECRET",
+              "value": "[parameters('azureADClientSecret')]"
+            },
+            {
+              "name": "AZURE_AD_LOGOUT_REDIRECT_URI",
+              "value": ""
+            },
+            {
+              "name": "AZURE_AD_TENANT_ID",
+              "value": "[parameters('azureADTenantID')]"
+            },
+            {
+              "name": "B2B_CUSTOMER_ORGANISATION_ID",
+              "value": "[parameters('b2bCustomerOrganisationId')]"
+            },
+            {
+              "name": "B2B_CUSTOMER_USER_ID",
+              "value": "[parameters('b2bCustomerUserId')]"
+            },
+            {
+              "name": "B2C_CLIENT_ID",
+              "value": "[parameters('b2cClientID')]"
+            },
+            {
+              "name": "B2C_CLIENT_SECRET",
+              "value": "[parameters('b2cClientSecret')]"
+            },
+            {
+              "name": "B2C_ENROLLMENT_ADDRESS",
+              "value": "[parameters('b2cEnrollmentAddress')]"
+            },
+            {
+              "name": "B2C_ENROLLMENT_EMPLOYEE_ROLE_ID",
+              "value": "[parameters('b2cEnrollmentEmployeeRoleId')]"
+            },
+            {
+              "name": "B2C_ENROLLMENT_SERVICE_ID",
+              "value": "[parameters('b2cEnrollmentServiceId')]"
+            },
+            {
+              "name": "B2C_GATEWAY_HOST",
+              "value": "[parameters('b2cGatewayHost')]"
+            },
+            {
+              "name": "B2C_IDENTITY_SERVICE_ID",
+              "value": "[parameters('b2cIdentityServiceID')]"
+            },
+            {
+              "name": "B2C_JOURNEY_NAME",
+              "value": "[parameters('b2cJourneyName')]"
+            },
+            {
+              "name": "B2C_LOGOUT_REDIRECT_URI",
+              "value": "[parameters('b2cLogoutRedirectUri')]"
+            },
+            {
+              "name": "B2C_POLICY_ID",
+              "value": "[parameters('b2cPolicyID')]"
+            },
+            {
+              "name": "B2C_TENANT_ID",
+              "value": "[parameters('b2cTenantID')]"
+            },
+            {
+              "name": "B2C_TENANT_NAME",
+              "value": "[parameters('b2cTenantName')]"
+            },
+            {
+              "name": "B2C_USER_AUTHORIZATION_URI",
+              "value": "[parameters('b2cUserAuthorizationUri')]"
+            },
+            {
+              "name": "B2C_USER_MANAGEMENT_URI",
+              "value": "[parameters('b2cUserManagementUri')]"
+            },
+            {
+              "name": "BCP_ADMIN_URL_TEMPLATE",
+              "value": "bcpadmin"
+            },
+            {
+              "name": "BORDER_NOTIFICATION_URL_TEMPLATE",
+              "value": "bordernotification"
+            },
+            {
+              "name": "CHECKS_URL_TEMPLATE",
+              "value": "checks"
+            },
+            {
+              "name": "CONTROL_URL_TEMPLATE",
+              "value": "control"
+            },
+            {
+              "name": "COOKIE_PASSWORD",
+              "value": "[parameters('cookiePassword')]"
+            },
+            {
+              "name": "CUSTOMER_DYNAMICS_API_VERSION",
+              "value": "[parameters('customerDynamicsApiVersion')]"
+            },
+            {
+              "name": "CUSTOMER_DYNAMICS_AUTH_URL",
+              "value": "[parameters('customerDynamicsAuthUrl')]"
+            },
+            {
+              "name": "CUSTOMER_DYNAMICS_CLIENT_ID_SECRET_PAIRS",
+              "value": "[parameters('customer-dynamics-client-id-secret-pairs')]"
+            },
+            {
+              "name": "CUSTOMER_DYNAMICS_ORG_ADMIN_ROLE",
+              "value": "[parameters('customerDynamicsOrgAdminRole')]"
+            },
+            {
+              "name": "CUSTOMER_DYNAMICS_RESOURCE_URL",
+              "value": "[parameters('customerDynamicsResourceUrl')]"
+            },
+            {
+              "name": "CUSTOMER_SERVICE_AUTH_PASSWORD",
+              "value": "[parameters('customerServiceAuthPassword')]"
+            },
+            {
+              "name": "CUSTOMER_SERVICE_USER",
+              "value": "importer"
+            },
+            {
+              "name": "DATE_DEPLOYED",
+              "value": "[parameters('dateCreated')]"
+            },
+            {
+              "name": "DECISION_URL_TEMPLATE",
+              "value": "decision"
+            },
+            {
+              "name": "DEPLOYMENT_ENVIRONMENT",
+              "value": "[parameters('deployEnvironment')]"
+            },
+            {
+              "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
+              "value": "[parameters('dockerRegistryPassword')]"
+            },
+            {
+              "name": "DOCKER_REGISTRY_SERVER_URL",
+              "value": "[parameters('dockerRegistryServerUrl')]"
+            },
+            {
+              "name": "DOCKER_REGISTRY_SERVER_USERNAME",
+              "value": "[parameters('dockerRegistryServerUsername')]"
+            },
+            {
+              "name": "ENABLE_REDIS_SESSIONS",
+              "value": "[parameters('redisConfig').isEnabled]"
+            },
+            {
+              "name": "EVENT_HUB_ENVIRONMENT",
+              "value": "[parameters('eventHubEnvironment')]"
+            },
+            {
+              "name": "EVENT_HUB_KEY_NAME",
+              "value": "[parameters('eventHubKeyName')]"
+            },
+            {
+              "name": "EVENT_HUB_KEY_VALUE",
+              "value": "[parameters('eventHubKeyValue')]"
+            },
+            {
+              "name": "EVENT_HUB_NAME",
+              "value": "[parameters('eventHubName')]"
+            },
+            {
+              "name": "EVENT_HUB_NAMESPACE",
+              "value": "[parameters('eventHubNamespace')]"
+            },
+            {
+              "name": "FAILURE_RATE_THRESHOLD",
+              "value": "50"
+            },
+            {
+              "name": "FRONTEND_URL_TEMPLATE",
+              "value": "[parameters('frontendUrlTemplate')]"
+            },
+            {
+              "name": "GOOGLE_SCRIPT_HASH_TOKEN",
+              "value": "[parameters('googleScriptHashToken')]"
+            },
+            {
+              "name": "GOOGLE_TAG_MANAGER_ID",
+              "value": "[parameters('googleTagManagerID')]"
+            },
+            {
+              "name": "INACTIVE_TIMEOUT_IN_SECONDS",
+              "value": "[parameters('inactiveTimeoutInSeconds')]"
+            },
+            {
+              "name": "JEDIS_POOL_MAX_IDLE",
+              "value": "[parameters('jedisPoolMaxIdle')]"
+            },
+            {
+              "name": "JEDIS_POOL_MAX_TOTAL",
+              "value": "[parameters('jedisPoolMaxTotal')]"
+            },
+            {
+              "name": "JEDIS_POOL_MAX_WAIT",
+              "value": "[parameters('jedisPoolMaxWait')]"
+            },
+            {
+              "name": "JEDIS_POOL_MIN_IDLE",
+              "value": "[parameters('jedisPoolMinIdle')]"
+            },
+            {
+              "name": "JWT_AUDIENCE",
+              "value": "[parameters('jwtAudience')]"
+            },
+            {
+              "name": "JWT_KEY_PRIVATE_B64",
+              "value": "[parameters('jwtPrivateKey')]"
+            },
+            {
+              "name": "JWT_VALID_FOR_IN_SECONDS",
+              "value": "[parameters('jwtValidForInSeconds')]"
+            },
+            {
+              "name": "MIN_NUMBER_OF_CALLS",
+              "value": "10"
+            },
+            {
+              "name": "MONITORING_TYPE",
+              "value": "[parameters('monitoringType')]"
+            },
+            {
+              "name": "NOTIFICATION_URL_TEMPLATE",
+              "value": "notification"
+            },
+            {
+              "name": "PERMITTED_CALLS_WHEN_HALF_OPEN",
+              "value": "10"
+            },
+            {
+              "name": "PROXY_ADDRESS",
+              "value": "[variables('proxyUrl')]"
+            },
+            {
+              "name": "PROXY_EXTERNAL_ADDRESS_B2B",
+              "value": "[parameters('proxyExternalAddressB2B')]"
+            },
+            {
+              "name": "PROXY_EXTERNAL_ADDRESS_B2C",
+              "value": "[parameters('proxyExternalAddressB2C')]"
+            },
+            {
+              "name": "REDIS_HOST",
+              "value": "[concat(parameters('redisConfig').cacheName, '.redis.cache.windows.net')]"
+            },
+            {
+              "name": "REDIS_PASSWORD",
+              "value": "[if(equals(parameters('envSuffix'), 'vnet'), parameters('redisCacheKey'), listKeys(resourceId(parameters('redisConfig').resourceGroup, 'Microsoft.Cache/Redis', parameters('redisConfig').cacheName), providers('Microsoft.Cache', 'redis').apiVersions[0]).primaryKey)]"
+            },
+            {
+              "name": "REDIS_PORT",
+              "value": "[parameters('redisConfig').port]"
+            },
+            {
+              "name": "SERVICE_PORT",
+              "value": "8080"
+            },
+            {
+              "name": "WEBSITES_PORT",
+              "value": "8080"
+            },
+            {
+              "name": "SERVICE_URL_TEMPLATE",
+              "value": "[parameters('serviceUrlTemplate')]"
+            },
+            {
+              "name": "SLIDING_WINDOW_SIZE",
+              "value": "20"
+            },
+            {
+              "name": "SLOW_CALL_DURATION_THRESHOLD",
+              "value": "3000"
+            },
+            {
+              "name": "SLOW_CALL_RATE_THRESHOLD",
+              "value": "50"
+            },
+            {
+              "name": "TRADE_APPLICATION_URL",
+              "value": "[parameters('tradeApplicationUrl')]"
+            },
+            {
+              "name": "UPLOAD_URL_TEMPLATE",
+              "value": "upload"
+            },
+            {
+              "name": "WAIT_DURATION_IN_OPEN_STATE",
+              "value": "300000"
+            },
+            {
+              "name": "WEBSITES_CONTAINER_START_TIME_LIMIT",
+              "value": "[parameters('containerStartTimeLimit')]"
+            },
+            {
+              "name": "WEBSITE_HEALTHCHECK_MAXPINGFAILURES",
+              "value": "[parameters('healthcheckMaxFailures')]"
+            }
+          ],
+          "alwaysOn": true,
+          "ftpsState": "Disabled",
+          "healthCheckPath": "/admin/health-check"
+        },
+        "clientAffinityEnabled": false,
+        "httpsOnly": true
+      },
+      "resources": [
+        {
+          "type": "config",
+          "name": "web",
+          "condition": "[not(empty(parameters('WebvNetResourceGroup')))]",
+          "apiVersion": "2020-06-01",
+          "location": "[resourceGroup().location]",
+          "tags": {
+            "Name": "[concat(parameters('serviceName'), '/', 'web')]",
+            "ServiceCode": "[parameters('serviceCode')]",
+            "ServiceName": "[concat(parameters('serviceName'), ' Site Config')]",
+            "ServiceType": "LOB",
+            "CreationDateTime": "[parameters('dateCreated')]",
+            "Environment": "[parameters('envCode')]",
+            "Tier": "WEB",
+            "Region": "[resourceGroup().location]"
+          },
+          "scale": null,
+          "properties": {
+            "httpLoggingEnabled": true,
+            "logsDirectorySizeLimit": 35,
+            "detailedErrorLoggingEnabled": false,
+            "publishingUsername": "[parameters('serviceName')]",
+            "alwaysOn": true,
+            "ftpsState": "Disabled",
+            "healthCheckPath": "/admin/health-check",
+            "ipSecurityRestrictions": "[variables('ipSecurityRestrictions')]",
+            "scmIpSecurityRestrictions": [
+              {
+                "ipAddress": "0.0.0.0/0",
+                "action": "Deny",
+                "priority": 1000,
+                "name": "Deny all",
+                "description": "Deny all access"
+              }
+            ],
+            "scmIpSecurityRestrictionsUseMain": false
+          },
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', parameters('serviceName'))]"
+          ]
+        },
+        {
+          "type": "networkConfig",
+          "name": "VirtualNetwork",
+          "condition": "[not(empty(parameters('WebvNetResourceGroup')))]",
+          "apiVersion": "2020-12-01",
+          "properties": {
+            "subnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-frontend-plan-1'))]",
+            "swiftSupported": true
+          },
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', parameters('serviceName'))]"
+          ]
+        }
+      ]
+    }
+  ]
+}

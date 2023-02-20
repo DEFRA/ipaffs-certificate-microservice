@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "dateCreated": {
+      "value": "#{format-DateTag}"
+    },
+    "ServiceCode": {
+      "value":"IMP"
+    },
+    "ServiceType":{
+      "value":"LOB"
+    },
+    "Tier":{
+      "value":"Dash Board"
+    },
+    "envCode": {
+      "value": "#{env | ToLower}"
+    },
+    "blueGreen": {
+      "value": "#{blueGreen | ToLower}"
+    },
+    "serviceBusNamespaceName": {
+      "value": "#{serviceBusNamespaceName}"
+    }
+  }
+}

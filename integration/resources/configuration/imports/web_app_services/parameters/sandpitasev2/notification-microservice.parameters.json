@@ -1,0 +1,272 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "azureSearchApiVersion": {
+      "value": "2019-05-06"
+    },
+    "azureSearchIndexSuffix": {
+      "value": "notifications-index"
+    },
+    "azureSearchServiceAPIKey": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "imports-azure-search-query-shared-s2"
+      }
+    },
+    "azureSearchServiceAdminAPIKey": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "imports-azure-search-admin-shared-s2"
+      }
+    },
+    "azureSearchServiceName": {
+      "value": "imports-azure-search-shared-s2"
+    },
+    "blueGreen": {
+      "value": ""
+    },
+    "containerRepository": {
+      "value": "imports-release"
+    },
+    "databaseName": {
+      "value": "notification-microservice"
+    },
+    "dateCreated": {
+      "value": ""
+    },
+    "dbLoginTimeout": {
+      "value": "15"
+    },
+    "dbSocketTimeout": {
+      "value": "10000"
+    },
+    "dnsCacheTtl": {
+      "value": "20"
+    },
+    "dnsSuffix": {
+      "value": ".azurewebsites.net"
+    },
+    "dockerRegistryPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "azureDockerRegistryPassword"
+      }
+    },
+    "dockerRegistryServerUrl": {
+      "value": "sndeuxfesacr001.azurecr.io"
+    },
+    "dockerRegistryServerUsername": {
+      "value": "9f9d7738-e643-4ad3-820b-b461583302a8"
+    },
+    "enableDelegationOfAuthority": {
+      "value": "true"
+    },
+    "envCode": {
+      "value": "SND"
+    },
+    "containerStartTimeLimit": {
+      "value": "230"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "healthcheckMaxFailures": {
+      "value": 5
+    },
+    "euImportIpaffsDynamicsIntegration": {
+      "value": true
+    },
+    "eventHubEnvironment": {
+      "value": "SANDPIT"
+    },
+    "eventHubKeyName": {
+      "value": "QRADAR_APP"
+    },
+    "eventHubKeyValue": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "snd-eventHubKey-development"
+      }
+    },
+    "eventHubName": {
+      "value": "insights-application-logs"
+    },
+    "eventHubNamespace": {
+      "value": "SNDIMPSOCENS001"
+    },
+    "hikariDebugLevel": {
+      "value": "ERROR"
+    },
+    "hikariLeakDetectionThreshold": {
+      "value": "2000"
+    },
+    "hikariConnectionTimeout": {
+      "value": "15000"
+    },
+    "hikariValidationTimeout": {
+      "value": "5000"
+    },
+    "javaToolOptions": {
+      "value": "-Xmx512m"
+    },
+    "maximumRecordsRetrievable": {
+      "value": "201"
+    },
+    "monitoringType": {
+      "value": "event-hub"
+    },
+    "permissionsServiceBasicAuthPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "permissionsBasicAuthPassword"
+      }
+    },
+    "proxyHost": {
+      "value": "imports-proxy-static"
+    },
+    "readOnlyDatabase": {
+      "value": false
+    },
+    "recreateAzureSearchIndex": {
+      "value": "true"
+    },
+    "riskLockingSla": {
+      "value": "2"
+    },
+    "serviceBasicAuthPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "notification-microserviceBasicAuthPassword"
+      }
+    },
+    "serviceCode": {
+      "value": "IMP"
+    },
+    "serviceDBHost": {
+      "value": "sndimpdbssqa001.database.windows.net"
+    },
+    "serviceDBPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "notification-microserviceDatabasePassword"
+      }
+    },
+    "serviceDBPasswordAD": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "notification-microserviceDatabasePasswordAD-snd"
+      }
+    },
+    "serviceDBPasswordNew": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "notification-microserviceDatabasePassword-snd"
+      }
+    },
+    "serviceDBUsername": {
+      "value": "notificationServiceUser"
+    },
+    "serviceDBUsernameAD": {
+      "value": "SA-AZURE-IMP-SQL-NOTIF-SND@Defra.onmicrosoft.com"
+    },
+    "serviceName": {
+      "value": "notification-microservice"
+    },
+    "servicePlanGroup": {
+      "value": "high-traffic-plan-1"
+    },
+    "testEndpointsEnabled": {
+      "value": false
+    },
+    "threadPoolKeepAliveSeconds": {
+      "value": "10"
+    },
+    "threadPoolQueueCapacity": {
+      "value": "100"
+    },
+    "tracesNtIntegration": {
+      "value": true
+    },
+    "tradePlatformIntegration": {
+      "value": true
+    },
+    "topicName" : {
+      "value" : "notification-topic"
+    },
+    "topicConfig": {
+      "value": {
+        "apiVersion": "2017-04-01",
+        "name": "SNDIMPINFSBS002-dev",
+        "sasPolicy": "RootManageSharedAccessKey",
+        "resourceGroup": "SNDIMPINFRGP001"
+      }
+    },
+    "version": {
+      "value": "1.0"
+    },
+    "WebvNetResourceGroup": {
+      "value": "SNDINFNETRGP001"
+    },
+    "WebvNetName": {
+      "value": "SNDINFNETVNT001"
+    },
+    "WebSubnetName-reference-data-plan-1": {
+      "value": "SNDIMPWEBSUB011"
+    },
+    "WebSubnetName-reference-data-plan-2": {
+      "value": "SNDIMPWEBSUB012"
+    },
+    "WebSubnetName-low-traffic-plan-1": {
+      "value": "SNDIMPWEBSUB013"
+    },
+    "WebSubnetName-high-traffic-plan-1": {
+      "value": "SNDIMPWEBSUB014"
+    },
+    "WebSubnetName-frontend-plan-1": {
+      "value": "SNDIMPWEBSUB015"
+    },
+    "WebSubnetName-soap-services-plan-1": {
+      "value": "SNDIMPWEBSUB016"
+    },
+    "DeploymentSubnetResourceId": {
+      "value": "/subscriptions/f1489724-a9dc-48a7-8d68-e47e21c8f9a5/resourceGroups/APSINFNETRGP001/providers/Microsoft.Network/virtualNetworks/APSINFNETVNT001/subnets/APSINFBESSUB001"
+    },
+    "rtlDeploymentCheckSubnetResourceId": {
+      "value": ""
+    },
+    "sharedInfraResourceGroupName": {
+      "value": ""
+    },
+    "maxCommodityLines": {
+      "value": 500
+    },
+    "chedppTempPodRemovalUtcDate": {
+      "value": "2022/01/01T00:00:00Z"
+    },
+    "chedppArticle72TransitionDateTime": {
+      "value": "2024-07-01T00:00:00+01:00"
+    },
+    "chedppEuHarmonisationTransitionDateTime": {
+      "value": "2022-07-01T00:00:00+01:00"
+    }
+  }
+}

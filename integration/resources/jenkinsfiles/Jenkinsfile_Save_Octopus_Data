@@ -1,0 +1,34 @@
+@Library('pipeline-library') _
+
+pipeline {
+    agent {label 'master'}
+    options {
+        ansiColor('xterm')
+        timestamps()
+        disableConcurrentBuilds()
+    }
+    environment {
+      ENVIRONMENT = "octopus"
+    }
+
+    stages {
+
+      stage('GetOctopusProject') {
+          steps {
+              withCredentials([string(credentialsId: 'OctopusApiKey', variable: 'octopusApiKey')]) {
+                  octopusGetProjects("${octopusApiKey}", "DEFRA-EUX-IMP-AZURE-STORAGE DEFRA-EUX-IMP-AZURE-SEARCH DEFRA-EUX-IMP-SERVICE-BUS DEFRA-EUX-IMP-APP-SERVICE-PLANS DEFRA-EUX-IMP-LOGIC-APPS DEFRA-EUX-IMP-LOGIC-APP-TRADE BLUE-GREEN-DEFRA-EUX-IMP-SQL BLUE-GREEN-DEFRA-EUX-IMP-DATABASE-CONFIGURATION BLUE-GREEN-DEFRA-EUX-IMP-APPLICATION-INSIGHTS BLUE-GREEN-DEFRA-EUX-IMP-SERVICE-DEPLOYMENT DEFRA-EUX-IMP-FUNCTION-APP DEFRA-EUX-IMP-DASHBOARDS BLUE-GREEN-DEFRA-EUX-IMP-ALERTS BLUE-GREEN-DEFRA-EUX-IMP-RELEASE TRAINING-DEFRA-EUX-IMP-RELEASE")
+              }
+          }
+      }
+
+
+    }
+
+    post {
+        always {
+          step([$class: 'WsCleanup'])
+        }
+    }
+}
+
+

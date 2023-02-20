@@ -1,0 +1,83 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "containerRepository": {
+      "value": "imports-release"
+    },
+    "dateCreated": {
+      "value": ""
+    },
+    "dnsSuffix": {
+      "value": ".azurewebsites.net"
+    },
+    "dockerRegistryPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "azureDockerRegistryPassword"
+      }
+    },
+    "dockerRegistryServerUrl": {
+      "value": "sndeuxfesacr001.azurecr.io"
+    },
+    "dockerRegistryServerUsername": {
+      "value": "9f9d7738-e643-4ad3-820b-b461583302a8"
+    },
+    "containerStartTimeLimit": {
+      "value": "230"
+    },
+    "envCode": {
+      "value": "SND"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "healthcheckMaxFailures": {
+      "value": 5
+    },
+    "javaToolOptions": {
+      "value": "-Xmx512m"
+    },
+    "serviceCode": {
+      "value": "IMP"
+    },
+    "serviceName": {
+      "value": "rds-wiremock-microservice"
+    },
+    "servicePlanGroup": {
+      "value": "services-general"
+    },
+    "version": {
+      "value": "1.0"
+    },
+    "WebvNetResourceGroup": {
+      "value": ""
+    },
+    "WebvNetName": {
+      "value": ""
+    },
+    "WebSubnetName-reference-data-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-reference-data-plan-2": {
+      "value": ""
+    },
+    "WebSubnetName-low-traffic-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-high-traffic-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-frontend-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-soap-services-plan-1": {
+      "value": ""
+    },
+    "DeploymentSubnetResourceId": {
+      "value": ""
+    }
+  }
+}

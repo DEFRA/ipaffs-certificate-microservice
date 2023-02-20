@@ -1,0 +1,57 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "auditingResourceGroup": {
+            "value": "#{loggingResourceGroup}"
+        },
+        "auditingStorageAccountName": {
+            "value": "#{loggingStorageAccount}"
+        },
+        "auditingSubscriptionId": {
+            "value": "#{loggingSubscriptionId}"
+        },
+        "dateCreated": {
+            "value": "#{format-DateTag}"
+        },
+        "envCode": {
+            "value": "PRE"
+        },
+        "serviceCode": {
+            "value": "IMP"
+        },
+        "redisCacheName": {
+            "value": "PREIMPRDS001"
+        },
+        "redisCacheSkuCapacity": {
+            "value": 1
+        },
+        "redisCacheCapacitySkuFamily": {
+            "value": "P"
+        },
+        "redisCacheCapacitySkuName": {
+            "value": "Premium"
+        },
+        "redisVirtualNetworkResourceGroupName": {
+            "value": "PREINFNETRGP001"
+        },
+        "redisVirtualNetworkName": {
+            "value": "PREINFNETVNT001"
+        },
+        "redisSubnetName": {
+            "value": "PREIMPREDSUB001"
+        },
+        "redisFirewallSettings": {
+            "value": {
+              "FrontendSubnetStartIP": "10.201.28.193",
+              "FrontendSubnetEndIP": "10.201.28.222"
+            }
+        },
+        "redisFirewallSettings2": {
+            "value": {
+              "FrontendSubnetStartIP": "10.201.22.225",
+              "FrontendSubnetEndIP": "10.201.22.254"
+            }
+        }
+    }
+}

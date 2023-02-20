@@ -1,0 +1,40 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "dateCreated": {
+            "value": "#{format-DateTag}"
+        },
+        "envCode": {
+            "value": "#{env | ToLower}"
+        },
+        "tradeServiceBusConnectionString": {
+            "reference": {
+                "keyVault": {
+                    "id": "#{keyVaultId}"
+                },
+                "secretName": "tradeServiceBusLogicAppConnnectionString-#{env | ToLower}"
+            }
+        },
+        "apiConnectionNameTradeASB": {
+            "value": "#{apiConnectionNameTradeASB}"
+        },
+        "sourceTopicName": {
+            "value": "#{sourceTopicName}"
+        },
+        "serviceCode": {
+            "value": "#{proj}"
+        },
+        "logicAppName": {
+            "value": "#{logicAppName}"
+        },
+        "serviceBusConfig": {
+            "value": {
+                "apiVersion": "2015-08-01",
+                "name": "#{serviceBusNamespaceName}",
+                "resourceGroup": "#{ResourceGroupName}",
+                "sasPolicy": "RootManageSharedAccessKey"
+            }
+        }
+    }
+}

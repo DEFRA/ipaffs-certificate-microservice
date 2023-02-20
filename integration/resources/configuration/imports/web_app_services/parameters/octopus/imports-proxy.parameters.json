@@ -1,0 +1,306 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "azureADClientID": {
+      "value": "#{azureADClientId}"
+    },
+    "azureADClientSecret": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "azureADClientSecret-#{env | ToLower}"
+      }
+    },
+    "azureADTenantID": {
+      "value": "#{azureADTenantID}"
+    },
+    "b2bCustomerOrganisationId": {
+      "value": "#{b2bCustomerOrganisationId}"
+    },
+    "b2bCustomerUserId": {
+      "value": "#{b2bCustomerUserId}"
+    },
+    "b2cClientID": {
+      "value": "#{b2cClientId}"
+    },
+    "b2cClientSecret": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "b2cClientSecretImportsProxyOcto-#{env | ToLower}"
+      }
+    },
+    "b2cEnrollmentAddress": {
+      "value": "#{b2cEnrollmentAddressUrl}"
+    },
+    "b2cEnrollmentEmployeeRoleId": {
+      "value": "#{b2cEnrollmentEmployeeRoleIdOcto}"
+    },
+    "b2cEnrollmentServiceId": {
+      "value": "#{b2cEnrollmentServiceIdOcto}"
+    },
+    "b2cGatewayHost": {
+      "value": "#{b2cGateWayHost}"
+    },
+    "b2cIdentityServiceID": {
+      "value": "#{b2cIdentityServiceId}"
+    },
+    "b2cJourneyName": {
+      "value": "chemicals"
+    },
+    "b2cLogoutRedirectUri": {
+      "value": "#{b2cLogoutRedirectUri}"
+    },
+    "b2cPolicyID": {
+      "value": "#{b2cPolicyId}"
+    },
+    "b2cTenantID": {
+      "value": "#{b2cTenantId}"
+    },
+    "b2cTenantName": {
+      "value": "#{b2cTenantName}"
+    },
+    "b2cUserAuthorizationUri": {
+      "value": "#{b2cAuthUrl}/authentication/auth"
+    },
+    "b2cUserManagementUri": {
+      "value": "#{b2cAuthUrl}/account-management/me"
+    },
+    "blueGreen": {
+      "value": "#{blueGreen | ToLower}"
+    },
+    "containerRepository": {
+      "value": "#{containerRepository}"
+    },
+    "cookiePassword": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "proxyCookiePassword-#{env | ToLower}"
+      }
+    },
+    "customerDynamicsApiVersion": {
+      "value": "v9.0"
+    },
+    "customerDynamicsAuthUrl": {
+      "value": "https://login.microsoftonline.com/#{customerServiceAuthUrl}/oauth2/token"
+    },
+    "customer-dynamics-client-id-secret-pairs": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "customer-dynamics-client-id-secret-pairs-#{env | ToLower}"
+      }
+    },
+    "customerDynamicsOrgAdminRole": {
+      "value": "#{customerDynamicsOrgAdminRole}"
+    },
+    "customerDynamicsResourceUrl": {
+      "value": "#{customerService}"
+    },
+    "customerServiceAuthPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "customer-microserviceBasicAuthPassword"
+      }
+    },
+    "dateCreated": {
+      "value": "#{format-DateTag}"
+    },
+    "deployEnvironment": {
+      "value": "#{deployEnvironment}"
+    },
+    "dnsSuffix": {
+      "value": "#{dnsZone}"
+    },
+    "dockerRegistryPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "opsImpAzureDockerRegistryPassword"
+      }
+    },
+    "dockerRegistryServerUrl": {
+      "value": "opsimpfesacr001.azurecr.io"
+    },
+    "dockerRegistryServerUsername": {
+      "value": "OPSIMPFESACR001"
+    },
+    "envCode": {
+      "value": "#{env | ToLower}"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "healthcheckMaxFailures": {
+      "value": 5
+    },
+    "eventHubEnvironment": {
+      "value": "#{env}-#{blueGreen}"
+    },
+    "eventHubKeyName": {
+      "value": "#{eventHubKeyName}"
+    },
+    "eventHubKeyValue": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "#{eventHubNamespace}-sastoken"
+      }
+    },
+    "eventHubName": {
+      "value": "#{eventHubName}"
+    },
+    "eventHubNamespace": {
+      "value": "#{eventHubNamespace}"
+    },
+    "frontendUrlTemplate": {
+      "value": "#{frontendURLTemplate}"
+    },
+    "googleScriptHashToken": {
+      "value": "#{googleScriptHashToken}"
+    },
+    "googleTagManagerID": {
+      "value": "#{googleTagManagerID}"
+    },
+    "inactiveTimeoutInSeconds": {
+      "value": "#{inactiveTimeoutInSeconds}"
+    },
+    "jwtAudience": {
+      "value": "#{proxyClientId}"
+    },
+    "jwtPrivateKey": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "proxyJwtPrivateKey-#{env | ToLower}"
+      }
+    },
+    "jwtValidForInSeconds": {
+      "value": "#{jwtValidForInSeconds}"
+    },
+    "monitoringType": {
+      "value": "event-hub"
+    },
+    "proxyExternalAddressB2B": {
+      "value": "#{proxyExternalAddressB2B}"
+    },
+    "proxyExternalAddressB2C": {
+      "value": "#{proxyExternalAddressB2C}"
+    },
+    "proxyHost": {
+      "value": "imports-proxy-#{blueGreen | ToLower}"
+    },
+    "serviceCode": {
+      "value": "#{proj}"
+    },
+    "containerStartTimeLimit": {
+      "value": "#{containerStartTimeLimit}"
+    },
+    "serviceName": {
+      "value": "imports-proxy-#{blueGreen | ToLower}-#{env | ToLower}"
+    },
+    "servicePlanGroup": {
+      "value": "#{appPlanNameFrontend1}"
+    },
+    "serviceUrlTemplate": {
+      "value": "#{serviceURLTemplate}"
+    },
+    "tradeApplicationUrl": {
+      "value": "#{tradeApplicationUrl}"
+    },
+    "version": {
+      "value": "#{dockerTag}"
+    },
+    "WebvNetResourceGroup": {
+      "value": "#{virtualNetworkResourceGroup}"
+    },
+    "WebvNetName": {
+      "value": "#{virtualNetworkName}"
+    },
+    "WebSubnetName-reference-data-plan-1": {
+      "value": "#{referenceDataPlan1SubnetName}"
+    },
+    "WebSubnetName-reference-data-plan-2": {
+      "value": "#{referenceDataPlan2SubnetName}"
+    },
+    "WebSubnetName-low-traffic-plan-1": {
+      "value": "#{lowTrafficPlan1SubnetName}"
+    },
+    "WebSubnetName-high-traffic-plan-1": {
+      "value": "#{highTrafficPlan1SubnetName}"
+    },
+    "WebSubnetName-frontend-plan-1": {
+      "value": "#{frontendPlan1SubnetName}"
+    },
+    "WebSubnetName-soap-services-plan-1": {
+      "value": "#{soapServicePlan1SubnetName}"
+    },
+    "WebSubnetName-enotification-plan-1": {
+      "value": "#{enotificationPlan1SubnetName}"
+    },
+    "DeploymentSubnetResourceId": {
+      "value": ""
+    },
+    "SEC_SUB_ID": {
+      "value": "#{SEC_SUB_ID}"
+    },
+    "AgwVnetResourceGroupName": {
+      "value": "#{AgwVnetResourceGroupName}"
+    },
+    "AgwVnetName": {
+      "value": "#{AgwVnetName}"
+    },
+    "B2CAgwSubnetName": {
+      "value": "#{B2CAgwSubnetName}"
+    },
+    "B2BAgwSubnetName": {
+      "value": "#{B2BAgwSubnetName}"
+    },
+    "APIAgwSubnetName": {
+      "value": "#{APIAgwSubnetName}"
+    },
+    "TestingAgwSubnetName": {
+      "value": "#{TestingAgwSubnetName}"
+    },
+    "sharedInfraResourceGroupName": {
+      "value": "#{if sharedInfraResourceGroupName}#{sharedInfraResourceGroupName}#{else}#{resourceGroupName}#{/if}"
+    },
+    "rtlDeploymentCheckSubnetResourceId": {
+      "value": "/subscriptions/fa6d4701-12be-41be-9c4d-ba3daf88ed8e/resourceGroups/OPSINFNETRGP001/providers/Microsoft.Network/virtualNetworks/OPSINFNETVNT001/subnets/OPSINFFESSUB001"
+    },
+    "jedisPoolMaxIdle": {
+      "value": 200
+    },
+    "jedisPoolMaxTotal": {
+      "value": 256
+    },
+    "jedisPoolMaxWait": {
+      "value": 10000
+    },
+    "jedisPoolMinIdle": {
+      "value": 3
+    },
+    "redisConfig": {
+      "value": {
+        "resourceGroup": "#{redisResourceGroupName}",
+        "cacheName": "#{redisCacheName}",
+        "port": 6380,
+        "isEnabled": "#{enableRedisSessions}"
+      }
+    },
+    "redisCacheKey": {
+      "value": ""
+    }
+  }
+}

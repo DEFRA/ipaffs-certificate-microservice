@@ -1,0 +1,75 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "dateCreated": {
+      "value": "#{format-DateTag}"
+    },
+    "envCode": {
+      "value": "#{env | ToLower}"
+    },
+    "ServiceCode":{
+      "value":"IMP"
+    },
+    "Tier":{
+      "value":"Web"
+    },
+    "ServiceType":{
+       "value":"LOB"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "serviceCapacity": {
+      "value": "#{soapServicePlan1ServiceCapacity}"
+    },
+    "servicePlanGroup": {
+      "value": "#{appPlanNameSoapService}"
+    },
+    "serviceSKU": {
+      "value": "#{soapServicePlan1ServiceSKU}"
+    },
+    "serviceCapacityMax": {
+      "value": "#{if soapServicePlan1ServiceCapacityMax}#{soapServicePlan1ServiceCapacityMax}#{else}#{defaultServiceCapacityMax}#{/if}"
+    },
+    "autoscaleEnabled": {
+      "value": "#{if soapServicePlan1AutoscaleEnabled}#{soapServicePlan1AutoscaleEnabled}#{else}#{defaultAutoscaleEnabled}#{/if}"
+    },
+    "scaleActionIncreaseValue": {
+      "value": "#{if soapServicePlan1ScaleActionIncreaseValue}#{soapServicePlan1ScaleActionIncreaseValue}#{else}#{defaultScaleActionIncreaseValue}#{/if}"
+    },
+    "scaleActionIncreaseCooldown": {
+      "value": "#{if soapServicePlan1ScaleActionIncreaseCooldown}#{soapServicePlan1ScaleActionIncreaseCooldown}#{else}#{defaultScaleActionIncreaseCooldown}#{/if}"
+    },
+    "metricTriggerIncreaseStatistic": {
+      "value": "#{if soapServicePlan1MetricTriggerIncreaseStatistic}#{soapServicePlan1MetricTriggerIncreaseStatistic}#{else}#{defaultMetricTriggerIncreaseStatistic}#{/if}"
+    },
+    "metricTriggerIncreaseTreshold": {
+      "value": "#{if soapServicePlan1MetricTriggerIncreaseTreshold }#{soapServicePlan1MetricTriggerIncreaseTreshold }#{else}#{defaultMetricTriggerIncreaseTreshold }#{/if}"
+    },
+    "metricTriggerIncreaseTimeGrain": {
+      "value": "#{if soapServicePlan1MetricTriggerIncreaseTimeGrain}#{soapServicePlan1MetricTriggerIncreaseTimeGrain}#{else}#{defaultMetricTriggerIncreaseTimeGrain}#{/if}"
+    },
+    "metricTriggerIncreaseTimeWindow": {
+      "value": "#{if soapServicePlan1MetricTriggerIncreaseTimeWindow}#{soapServicePlan1MetricTriggerIncreaseTimeWindow}#{else}#{defaultMetricTriggerIncreaseTimeWindow}#{/if}"
+    },
+    "scaleActionDecreaseValue": {
+      "value": "#{if soapServicePlan1ScaleActionDecreaseValue}#{soapServicePlan1ScaleActionDecreaseValue}#{else}#{defaultScaleActionDecreaseValue}#{/if}"
+    },
+    "scaleActionDecreaseCooldown": {
+      "value": "#{if soapServicePlan1ScaleActionDecreaseCooldown}#{soapServicePlan1ScaleActionDecreaseCooldown}#{else}#{defaultScaleActionDecreaseCooldown}#{/if}"
+    },
+    "metricTriggerDecreaseStatistic": {
+      "value": "#{if soapServicePlan1MetricTriggerDecreaseStatistic}#{soapServicePlan1MetricTriggerDecreaseStatistic}#{else}#{defaultMetricTriggerDecreaseStatistic}#{/if}"
+    },
+    "metricTriggerDecreaseTreshold": {
+      "value": "#{if soapServicePlan1MetricTriggerDecreaseTreshold }#{soapServicePlan1MetricTriggerDecreaseTreshold }#{else}#{defaultMetricTriggerDecreaseTreshold }#{/if}"
+    },
+    "metricTriggerDecreaseTimeGrain": {
+      "value": "#{if soapServicePlan1MetricTriggerDecreaseTimeGrain}#{soapServicePlan1MetricTriggerDecreaseTimeGrain}#{else}#{defaultMetricTriggerDecreaseTimeGrain}#{/if}"
+    },
+    "metricTriggerDecreaseTimeWindow": {
+      "value": "#{if soapServicePlan1MetricTriggerDecreaseTimeWindow}#{soapServicePlan1MetricTriggerDecreaseTimeWindow}#{else}#{defaultMetricTriggerDecreaseTimeWindow}#{/if}"
+    }
+  }
+}

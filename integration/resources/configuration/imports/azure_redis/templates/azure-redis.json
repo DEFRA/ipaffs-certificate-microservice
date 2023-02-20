@@ -1,0 +1,158 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "2.0.0.0",
+  "parameters": {
+    "auditingResourceGroup": {
+      "type": "string"
+    },
+    "auditingStorageAccountName": {
+      "type": "string"
+    },
+    "auditingSubscriptionId": {
+      "type": "string"
+    },
+    "dateCreated": {
+      "type": "string"
+    },
+    "envCode": {
+      "type": "string"
+    },
+    "serviceCode": {
+      "type": "string"
+    },
+    "redisCacheName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the Azure Redis Cache to create."
+      }
+    },
+    "redisCacheSkuCapacity": {
+      "type": "int",
+      "allowedValues": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "defaultValue": 1,
+      "metadata": {
+        "description": "The size of the new Azure Redis Cache instance. Valid family and capacity combinations are (C0..C6, P1..P4)."
+      }
+    },
+    "redisSubnetName": {
+      "type": "string"
+    },
+    "redisCacheCapacitySkuFamily": {
+      "type": "string"
+    },
+    "redisCacheCapacitySkuName": {
+      "type": "string"
+    },
+    "redisVirtualNetworkResourceGroupName": {
+      "type": "string"
+    },
+    "redisVirtualNetworkName": {
+      "type": "string"
+    },
+    "redisFirewallSettings": {
+      "defaultValue": {},
+      "type": "object"
+    },
+    "redisFirewallSettings2": {
+      "defaultValue": {},
+      "type": "object"
+    }
+  },
+  "variables": {
+    "location": "[resourceGroup().location]",
+    "subnetId": "[resourceId(parameters('redisVirtualNetworkResourceGroupName'),'Microsoft.Network/virtualNetworks/subnets', parameters('redisVirtualNetworkName'), parameters('redisSubnetName'))]"
+  },
+  "resources": [
+    {
+      "name": "[parameters('redisCacheName')]",
+      "type": "Microsoft.Cache/Redis",
+      "apiVersion": "2022-06-01",
+      "location": "[variables('location')]",
+      "tags": {
+        "Name": "[parameters('redisCacheName')]",
+        "ServiceCode": "[parameters('serviceCode')]",
+        "ServiceName": "[parameters('redisCacheName')]",
+        "ServiceType": "LOB",
+        "CreationDateTime": "[parameters('dateCreated')]",
+        "Environment": "[parameters('envCode')]",
+        "Tier": "Cache",
+        "Region": "[variables('location')]"
+      },
+      "properties": {
+        "redisConfiguration": {},
+        "minimumTlsVersion": "1.2",
+        "redisVersion": "6.0",
+        "enableNonSslPort": false,
+        "sku": {
+          "capacity": "[parameters('redisCacheSkuCapacity')]",
+          "family": "[parameters('redisCacheCapacitySkuFamily')]",
+          "name": "[parameters('redisCacheCapacitySkuName')]"
+        },
+        "subnetId": "[if(empty(parameters('redisSubnetName')), json('null'), variables('subnetId'))]"
+      },
+      "resources": [
+        {
+          "type": "providers/diagnosticSettings",
+          "name": "[concat('Microsoft.Insights/', parameters('redisCacheName'), 'SendToStorage')]",
+          "apiVersion": "2017-05-01-preview",
+          "Location": "[variables('location')]",
+          "properties": {
+            "storageAccountId": "[resourceId(parameters('auditingSubscriptionId'),parameters('auditingResourceGroup'),'Microsoft.Storage/storageAccounts/', parameters('auditingStorageAccountName'))]",
+            "metrics": [
+              {
+                "category": "AllMetrics",
+                "enabled": true,
+                "retentionPolicy": {
+                  "days": 90,
+                  "enabled": true
+                },
+                "timeGrain": null
+              }
+            ],
+            "logs": []
+          },
+          "dependsOn": [
+            "[resourceId('Microsoft.Cache/Redis', parameters('redisCacheName'))]"
+          ]
+        }
+      ],
+      "dependsOn": []
+    },
+    {
+      "type": "Microsoft.Cache/Redis/firewallRules",
+      "apiVersion": "2021-06-01",
+      "name": "[concat(parameters('redisCacheName'), '/allowRule1')]",
+      "dependsOn": [
+         "[resourceId('Microsoft.Cache/Redis', parameters('redisCacheName'))]"
+      ],
+      "properties": {
+        "startIP": "[parameters('redisfirewallSettings').FrontendSubnetStartIP]",
+        "endIP": "[parameters('redisfirewallSettings').FrontendSubnetEndIP]"
+      }
+    },
+    {
+      "type": "Microsoft.Cache/Redis/firewallRules",
+      "apiVersion": "2021-06-01",
+      "name": "[concat(parameters('redisCacheName'), '/allowRule2')]",
+      "dependsOn": [
+         "[resourceId('Microsoft.Cache/Redis', parameters('redisCacheName'))]"
+      ],
+      "properties": {
+        "startIP": "[parameters('redisfirewallSettings2').FrontendSubnetStartIP]",
+        "endIP": "[parameters('redisfirewallSettings2').FrontendSubnetEndIP]"
+      }
+    }
+  ],
+  "outputs": {
+    "redisPrimaryKey": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.Cache/Redis', parameters('redisCacheName')), '2021-06-01').primaryKey]"
+    }
+  }
+}

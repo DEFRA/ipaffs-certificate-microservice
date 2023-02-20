@@ -1,0 +1,59 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "blueGreen": {
+          "defaultValue": "",
+          "type": "string"
+        },
+        "scheduledQueryRules": {
+          "type": "array"
+        },
+        "envCode": {
+          "defaultValue": "",
+          "type": "string"
+        }
+    },
+    "variables": {
+        "insightsName": "[if(empty(parameters('blueGreen')), concat('insights-',resourceGroup().name), concat('insights-',resourceGroup().name, '-', parameters('blueGreen')))]",
+        "insightsID": "[concat('/subscriptions/',subscription().subscriptionId,'/resourceGroups/',resourceGroup().name,'/providers/microsoft.insights/components/',variables('insightsName'))]",
+        "actionGroupIdPrefix": "[concat('/subscriptions/',subscription().subscriptionId,'/resourceGroups/',resourceGroup().name,'/providers/microsoft.insights/actiongroups/')]"
+    },
+    "resources": [
+        {
+            "type": "microsoft.insights/scheduledqueryrules",
+            "apiVersion": "2018-04-16",
+            "name": "[concat('ipaffs-',toLower(parameters('envCode')),'-',parameters('scheduledQueryRules')[copyIndex()].name,'-',parameters('blueGreen'))]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "description": "[concat('[',parameters('envCode'),'] ',parameters('scheduledQueryRules')[copyIndex()].description)]",
+                "enabled": "[parameters('scheduledQueryRules')[copyIndex()].alertEnabled]",
+                "source": {
+                    "query": "[parameters('scheduledQueryRules')[copyIndex()].query]",
+                    "authorizedResources": [],
+                    "dataSourceId": "[variables('insightsId')]",
+                    "queryType": "ResultCount"
+                },
+                "schedule": {
+                    "frequencyInMinutes": "[parameters('scheduledQueryRules')[copyIndex()].frequencyInMinutes]",
+                    "timeWindowInMinutes": "[parameters('scheduledQueryRules')[copyIndex()].timeWindowInMinutes]"
+                },
+                "action": {
+                    "severity": "[parameters('scheduledQueryRules')[copyIndex()].severity]",
+                    "aznsAction": {
+                        "actionGroup": ["[concat(variables('actionGroupIdPrefix'),parameters('scheduledQueryRules')[copyIndex()].actionGroupName)]", "[concat(variables('actionGroupIdPrefix'),parameters('envCode'),'-HYPERCARE-TEAM')]"]
+                    },
+                    "trigger": {
+                        "thresholdOperator": "[parameters('scheduledQueryRules')[copyIndex()].triggerThresholdOperator]",
+                        "threshold": "[parameters('scheduledQueryRules')[copyIndex()].triggerThreshold]"
+                    },
+                    "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction"
+                }
+            },
+            "copy": {
+                "name": "alertscopy",
+                "count": "[length(parameters('scheduledQueryRules'))]"
+            }
+        }
+    ]
+}

@@ -1,0 +1,203 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "authEnabled": {
+      "value": false
+    },
+    "blueGreen": {
+      "value": ""
+    },
+    "containerRepository": {
+      "value": "imports-release"
+    },
+    "databaseName": {
+      "value": "enotification-event-microservice"
+    },
+    "dateCreated": {
+      "value": ""
+    },
+    "dbLoginTimeout": {
+      "value": "15"
+    },
+    "dbSocketTimeout": {
+      "value": "10000"
+    },
+    "dnsCacheTtl": {
+      "value": "20"
+    },
+    "containerStartTimeLimit": {
+      "value": "230"
+    },
+    "dnsSuffix": {
+      "value": ".azurewebsites.net"
+    },
+    "jwtAudience": {
+      "value": "a2617985-5645-47ec-8912-7a943b3895ba"
+    },
+    "jwtPrivateKey": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "proxyJwtPrivateKey-snd"
+      }
+    },
+    "dockerRegistryPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "azureDockerRegistryPassword"
+      }
+    },
+    "dockerRegistryServerUrl": {
+      "value": "sndeuxfesacr001.azurecr.io"
+    },
+    "dockerRegistryServerUsername": {
+      "value": "9f9d7738-e643-4ad3-820b-b461583302a8"
+    },
+    "envCode": {
+      "value": "SND"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "healthcheckMaxFailures": {
+      "value": 5
+    },
+    "hikariDebugLevel": {
+      "value": "DEBUG"
+    },
+    "hikariLeakDetectionThreshold": {
+      "value": "2000"
+    },
+    "hikariConnectionTimeout": {
+      "value": "15000"
+    },
+    "hikariValidationTimeout": {
+      "value": "5000"
+    },
+    "javaToolOptions": {
+      "value": "-Xmx512m"
+    },
+    "permissionsServiceBasicAuthPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "permissionsBasicAuthPassword"
+      }
+    },
+    "proxyHost": {
+      "value": "imports-proxy"
+    },
+    "serviceBasicAuthPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "enotification-event-microserviceBasicAuthPassword"
+      }
+    },
+    "serviceCode": {
+      "value": "IMP"
+    },
+    "serviceDBHost": {
+      "value": "sndimpdbssqa001.database.windows.net"
+    },
+    "serviceDBPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "enotification-event-microserviceDatabasePassword"
+      }
+    },
+    "serviceDBPasswordAD": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "readOnlyDatabasePasswordAD-snd"
+      }
+    },
+    "serviceDBPasswordNew": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "enotification-event-microserviceDatabasePassword-snd"
+      }
+    },
+    "serviceDBUsername": {
+      "value": "enotificationEventServiceUser"
+    },
+    "serviceDBUsernameAD": {
+      "value": "SA-AZURE-IMP-SQL-READO-SND@Defra.onmicrosoft.com"
+    },
+    "serviceName": {
+      "value": "enotification-event-microservice"
+    },
+    "servicePlanGroup": {
+      "value": "services-general"
+    },
+    "serviceUser": {
+      "value": "importer"
+    },
+    "version": {
+      "value": "1.0"
+    },
+    "WebvNetResourceGroup": {
+      "value": ""
+    },
+    "WebvNetName": {
+      "value": ""
+    },
+    "WebSubnetName-reference-data-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-reference-data-plan-2": {
+      "value": ""
+    },
+    "WebSubnetName-low-traffic-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-high-traffic-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-frontend-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-soap-services-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-enotification-plan-1": {
+      "value": ""
+    },
+    "DeploymentSubnetResourceId": {
+      "value": ""
+    },
+    "sharedInfraResourceGroupName": {
+      "value": ""
+    },
+    "rtlDeploymentCheckSubnetResourceId": {
+      "value": "/subscriptions/fa6d4701-12be-41be-9c4d-ba3daf88ed8e/resourceGroups/OPSINFNETRGP001/providers/Microsoft.Network/virtualNetworks/OPSINFNETVNT001/subnets/OPSINFFESSUB001"
+    },
+    "testEndpointsEnabled": {
+      "value": true
+    },
+    "SEC_SUB_ID": {
+      "value": "b04fc5a2-4f88-4869-a284-30f418edf4eb"
+    },
+    "AgwVnetResourceGroupName": {
+      "value": "SECINFNETRGP001"
+    },
+    "AgwVnetName": {
+      "value": "SECINFNETVNT001"
+    },
+    "B2CAgwSubnetName": {
+      "value": "SECIMPSNDSUB001"
+    }
+  }
+}

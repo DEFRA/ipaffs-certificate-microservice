@@ -1,0 +1,53 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "actionGroupName": {
+        "type": "string",
+        "metadata": {
+          "description": "Unique name (within the Resource Group) for the Action group."
+        }
+      },
+      "actionGroupShortName": {
+        "type": "string",
+        "metadata": {
+          "description": "Short name (maximum 12 characters) for the Action group."
+        }
+      },
+      "emailReceivers": {
+          "type": "array",
+          "metadata": {
+            "description": "The list of email receivers that are part of this action group."
+          },
+          "defaultValue": []
+      }
+    },
+    "resources": [
+      {
+        "type": "Microsoft.Insights/actionGroups",
+        "apiVersion": "2018-03-01",
+        "name": "[parameters('actionGroupName')]",
+        "location": "Global",
+        "properties": {
+          "groupShortName": "[parameters('actionGroupShortName')]",
+          "enabled": true,
+          "copy": [
+          {
+             "name": "emailReceivers",
+             "count": "[length(parameters('emailReceivers'))]",
+             "input": {
+                "name": "[parameters('emailReceivers')[copyIndex('emailReceivers')].name]",
+                "emailAddress": "[parameters('emailReceivers')[copyIndex('emailReceivers')].emailAddress]",
+                "useCommonAlertSchema": "[parameters('emailReceivers')[copyIndex('emailReceivers')].useCommonAlertSchema]"
+             }
+          }]
+        }
+      }
+    ],
+    "outputs":{
+        "actionGroupId":{
+            "type":"string",
+            "value":"[resourceId('Microsoft.Insights/actionGroups',parameters('actionGroupName'))]"
+        }
+    }
+  }

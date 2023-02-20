@@ -1,0 +1,75 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "dateCreated": {
+      "value": "#{format-DateTag}"
+    },
+    "envCode": {
+      "value": "#{env | ToLower}"
+    },
+    "ServiceCode":{
+      "value":"IMP"
+    },
+    "Tier":{
+      "value":"Web"
+    },
+    "ServiceType":{
+       "value":"LOB"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "serviceCapacity": {
+      "value": "#{frontendPlan1ServiceCapacity}"
+    },
+    "servicePlanGroup": {
+      "value": "#{appPlanNameFrontend1}"
+    },
+    "serviceSKU": {
+      "value": "#{frontendPlan1ServiceSKU}"
+    },
+    "serviceCapacityMax": {
+      "value": "#{if frontendPlan1ServiceCapacityMax}#{frontendPlan1ServiceCapacityMax}#{else}#{defaultServiceCapacityMax}#{/if}"
+    },
+    "autoscaleEnabled": {
+      "value": "#{if frontendPlan1AutoscaleEnabled}#{frontendPlan1AutoscaleEnabled}#{else}#{defaultAutoscaleEnabled}#{/if}"
+    },
+    "scaleActionIncreaseValue": {
+      "value": "#{if frontendPlan1ScaleActionIncreaseValue}#{frontendPlan1ScaleActionIncreaseValue}#{else}#{defaultScaleActionIncreaseValue}#{/if}"
+    },
+    "scaleActionIncreaseCooldown": {
+      "value": "#{if frontendPlan1ScaleActionIncreaseCooldown}#{frontendPlan1ScaleActionIncreaseCooldown}#{else}#{defaultScaleActionIncreaseCooldown}#{/if}"
+    },
+    "metricTriggerIncreaseStatistic": {
+      "value": "#{if frontendPlan1MetricTriggerIncreaseStatistic}#{frontendPlan1MetricTriggerIncreaseStatistic}#{else}#{defaultMetricTriggerIncreaseStatistic}#{/if}"
+    },
+    "metricTriggerIncreaseTreshold": {
+      "value": "#{if frontendPlan1MetricTriggerIncreaseTreshold }#{frontendPlan1MetricTriggerIncreaseTreshold }#{else}#{defaultMetricTriggerIncreaseTreshold }#{/if}"
+    },
+    "metricTriggerIncreaseTimeGrain": {
+      "value": "#{if frontendPlan1MetricTriggerIncreaseTimeGrain}#{frontendPlan1MetricTriggerIncreaseTimeGrain}#{else}#{defaultMetricTriggerIncreaseTimeGrain}#{/if}"
+    },
+    "metricTriggerIncreaseTimeWindow": {
+      "value": "#{if frontendPlan1MetricTriggerIncreaseTimeWindow}#{frontendPlan1MetricTriggerIncreaseTimeWindow}#{else}#{defaultMetricTriggerIncreaseTimeWindow}#{/if}"
+    },
+    "scaleActionDecreaseValue": {
+      "value": "#{if frontendPlan1ScaleActionDecreaseValue}#{frontendPlan1ScaleActionDecreaseValue}#{else}#{defaultScaleActionDecreaseValue}#{/if}"
+    },
+    "scaleActionDecreaseCooldown": {
+      "value": "#{if frontendPlan1ScaleActionDecreaseCooldown}#{frontendPlan1ScaleActionDecreaseCooldown}#{else}#{defaultScaleActionDecreaseCooldown}#{/if}"
+    },
+    "metricTriggerDecreaseStatistic": {
+      "value": "#{if frontendPlan1MetricTriggerDecreaseStatistic}#{frontendPlan1MetricTriggerDecreaseStatistic}#{else}#{defaultMetricTriggerDecreaseStatistic}#{/if}"
+    },
+    "metricTriggerDecreaseTreshold": {
+      "value": "#{if frontendPlan1MetricTriggerDecreaseTreshold }#{frontendPlan1MetricTriggerDecreaseTreshold }#{else}#{defaultMetricTriggerDecreaseTreshold }#{/if}"
+    },
+    "metricTriggerDecreaseTimeGrain": {
+      "value": "#{if frontendPlan1MetricTriggerDecreaseTimeGrain}#{frontendPlan1MetricTriggerDecreaseTimeGrain}#{else}#{defaultMetricTriggerDecreaseTimeGrain}#{/if}"
+    },
+    "metricTriggerDecreaseTimeWindow": {
+      "value": "#{if frontendPlan1MetricTriggerDecreaseTimeWindow}#{frontendPlan1MetricTriggerDecreaseTimeWindow}#{else}#{defaultMetricTriggerDecreaseTimeWindow}#{/if}"
+    }
+  }
+}

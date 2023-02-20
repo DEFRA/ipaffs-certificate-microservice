@@ -1,0 +1,164 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "blueGreen": {
+      "value": ""
+    },
+    "containerRepository": {
+      "value": "imports-release"
+    },
+    "countriesCacheTimeout": {
+      "value": "86400"
+    },
+    "dateCreated": {
+      "value": ""
+    },
+    "dnsSuffix": {
+      "value": ".azurewebsites.net"
+    },
+    "enableCHEDADocImprovements": {
+      "value": "ON"
+    },
+    "enableChedppRiskAssessmentOnSubmission": {
+      "value": "true"
+    },
+    "enableDatePicker": {
+      "value": "ON"
+    },
+    "enableEuChedRiskAssessment": {
+      "value": "ON"
+    },
+    "enableEuImportsHighRiskJourney": {
+      "value": "ON"
+    },
+    "enableNotificationArchive": {
+      "value": "ON"
+    },
+    "enablePostEuxSupport": {
+      "value": "ON 2021/01/01 00:00:00"
+    },
+    "dockerRegistryPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "azureDockerRegistryPassword"
+      }
+    },
+    "dockerRegistryServerUrl": {
+      "value": "sndeuxfesacr001.azurecr.io"
+    },
+    "dockerRegistryServerUsername": {
+      "value": "9f9d7738-e643-4ad3-820b-b461583302a8"
+    },
+    "envCode": {
+      "value": "SND"
+    },
+    "containerStartTimeLimit": {
+      "value": "230"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "healthcheckMaxFailures": {
+      "value": 5
+    },
+    "feedbackSurveyLink": {
+      "value": "https://www.smartsurvey.co.uk/s/7YJV5/"
+    },
+    "googleTagManagerID": {
+      "value": "GTM-NHS2VQP"
+    },
+    "hexEncryptionKey": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "hexEncryptionKey"
+      }
+    },
+    "nodeOptions": {
+      "value": "--max-http-header-size=12000"
+    },
+    "permissionsServiceBasicAuthPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "permissionsBasicAuthPassword"
+      }
+    },
+    "proxyHost": {
+      "value": "imports-proxy"
+    },
+    "serviceCode": {
+      "value": "IMP"
+    },
+    "serviceName": {
+      "value": "frontend-decision"
+    },
+    "servicePlanGroup": {
+      "value": "services-general-3"
+    },
+    "serviceUser": {
+      "value": "importer"
+    },
+    "tradePlatformAppId": {
+      "value": "15ea79e3-2c06-eb11-a813-000d3a2c3aed"
+    },
+    "tradePlatformBaseUrl": {
+      "value": "https://defra-trade-dev-plants-feature.crm4.dynamics.com/main.aspx"
+    },
+    "version": {
+      "value": "1.0"
+    },
+    "WebvNetResourceGroup": {
+      "value": ""
+    },
+    "WebvNetName": {
+      "value": ""
+    },
+    "WebSubnetName-reference-data-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-reference-data-plan-2": {
+      "value": ""
+    },
+    "WebSubnetName-low-traffic-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-high-traffic-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-frontend-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-soap-services-plan-1": {
+      "value": ""
+    },
+    "DeploymentSubnetResourceId": {
+      "value": ""
+    },
+    "sharedInfraResourceGroupName": {
+      "value": ""
+    },
+    "rtlDeploymentCheckSubnetResourceId": {
+      "value": "/subscriptions/fa6d4701-12be-41be-9c4d-ba3daf88ed8e/resourceGroups/OPSINFNETRGP001/providers/Microsoft.Network/virtualNetworks/OPSINFNETVNT001/subnets/OPSINFFESSUB001"
+    },
+    "redisHost": {
+      "value": "SNDIMPREC001.redis.cache.windows.net"
+    },
+    "redisPort": {
+      "value": 6379
+    },
+    "redisPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "redisPassword"
+      }
+    }
+  }
+}

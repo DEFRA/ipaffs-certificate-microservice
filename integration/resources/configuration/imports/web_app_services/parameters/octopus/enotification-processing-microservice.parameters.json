@@ -1,0 +1,180 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "blueGreen": {
+      "value": "#{blueGreen | ToLower}"
+    },
+    "commodityCodeMaxConcurrentCalls": {
+      "value": 3
+    },
+    "containerRepository": {
+      "value": "#{containerRepository}"
+    },
+    "dateCreated": {
+      "value": "#{format-DateTag}"
+    },
+    "dnsCacheTtl": {
+      "value": "#{dnsCacheTtl}"
+    },
+    "dnsSuffix": {
+      "value": "#{dnsZone}"
+    },
+    "dockerRegistryPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "opsImpAzureDockerRegistryPassword"
+      }
+    },
+    "dockerRegistryServerUrl": {
+      "value": "opsimpfesacr001.azurecr.io"
+    },
+    "dockerRegistryServerUsername": {
+      "value": "OPSIMPFESACR001"
+    },
+    "envCode": {
+      "value": "#{env | ToLower}"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "healthcheckMaxFailures": {
+      "value": 5
+    },
+    "javaToolOptions": {
+      "value": "-Xmx512m"
+    },
+    "jwtAudience": {
+      "value": "#{proxyClientId}"
+    },
+    "jwtPrivateKey": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "proxyJwtPrivateKey-#{env | ToLower}"
+      }
+    },
+    "permissionsServiceBasicAuthPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "permissionsBasicAuthPassword"
+      }
+    },
+    "proxyHost": {
+      "value": "imports-proxy-#{blueGreen | ToLower}"
+    },
+    "serviceCode": {
+      "value": "#{proj}"
+    },
+    "containerStartTimeLimit": {
+      "value": "#{containerStartTimeLimit}"
+    },
+    "serviceName": {
+      "value": "enotification-processing-microservice-#{env | ToLower}"
+    },
+    "servicePlanGroup": {
+      "value": "#{appPlanNameLowTraffic}"
+    },
+    "serviceUser": {
+      "value": "importer"
+    },
+    "testEndpointsEnabled": {
+      "value": false
+    },
+    "version": {
+      "value": "#{dockerTag}"
+    },
+    "WebvNetResourceGroup": {
+      "value": "#{virtualNetworkResourceGroup}"
+    },
+    "WebvNetName": {
+      "value": "#{virtualNetworkName}"
+    },
+    "WebSubnetName-reference-data-plan-1": {
+      "value": "#{referenceDataPlan1SubnetName}"
+    },
+    "WebSubnetName-reference-data-plan-2": {
+      "value": "#{referenceDataPlan2SubnetName}"
+    },
+    "WebSubnetName-low-traffic-plan-1": {
+      "value": "#{lowTrafficPlan1SubnetName}"
+    },
+    "WebSubnetName-high-traffic-plan-1": {
+      "value": "#{highTrafficPlan1SubnetName}"
+    },
+    "WebSubnetName-frontend-plan-1": {
+      "value": "#{frontendPlan1SubnetName}"
+    },
+    "WebSubnetName-soap-services-plan-1": {
+      "value": "#{soapServicePlan1SubnetName}"
+    },
+    "WebSubnetName-enotification-plan-1": {
+      "value": "#{enotificationPlan1SubnetName}"
+    },
+    "DeploymentSubnetResourceId": {
+      "value": ""
+    },
+    "sharedInfraResourceGroupName": {
+      "value": "#{if sharedInfraResourceGroupName}#{sharedInfraResourceGroupName}#{else}#{resourceGroupName}#{/if}"
+    },
+    "rtlDeploymentCheckSubnetResourceId": {
+      "value": "/subscriptions/fa6d4701-12be-41be-9c4d-ba3daf88ed8e/resourceGroups/OPSINFNETRGP001/providers/Microsoft.Network/virtualNetworks/OPSINFNETVNT001/subnets/OPSINFFESSUB001"
+    },
+    "serviceBusNamespaceName": {
+      "value": "#{serviceBusNamespaceName}"
+    },
+    "serviceBusNamespaceResourceGroup": {
+      "value": ""
+    },
+    "tradePlatformEhcUrl": {
+      "value": "#{tradePlatformEhcUrl}"
+    },
+    "tradePlatformAuthUrl": {
+      "value": "#{tradePlatformAuthUrl}"
+    },
+    "tradePlatformClientId": {
+      "value": "#{tradePlatformClientId}"
+    },
+    "tradePlatformClientSecret": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "trade-platform-client-secret-#{env | ToLower}"
+      }
+    },
+    "tradePlatformScope": {
+      "value": "#{tradePlatformScope}"
+    },
+    "tradePlatformSubscriptionKey": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "trade-platform-subscription-key-#{env | ToLower}"
+      }
+    },
+    "azureServiceBusSubmissionQueueName": {
+      "value": "#{enotificationSubmissionQueueName}"
+    },
+    "azureServiceBusProcessingStatusQueueName": {
+      "value": "enotification_event_queue"
+    },
+    "azureTradeServiceBusConnectionString": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "trade-platform-azure-service-bus-connection-string-#{env | ToLower}"
+      }
+    },
+    "chedppEuHarmonisationTransitionDateTime": {
+      "value": "2022-07-22T00:00:00+01:00"
+    }
+  }
+}

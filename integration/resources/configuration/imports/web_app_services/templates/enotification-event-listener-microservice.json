@@ -1,0 +1,420 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "blueGreen": {
+      "type": "string"
+    },
+    "containerRepository": {
+      "type": "string"
+    },
+    "dateCreated": {
+      "type": "string"
+    },
+    "dockerRegistryPassword": {
+      "type": "securestring"
+    },
+    "dockerRegistryServerUrl": {
+      "type": "string"
+    },
+    "dockerRegistryServerUsername": {
+      "type": "string"
+    },
+    "dnsSuffix": {
+      "type": "string"
+    },
+    "enotificationEventQueueName": {
+      "type": "string"
+    },
+    "envCode": {
+      "type": "string"
+    },
+    "envSuffix": {
+      "type": "string"
+    },
+    "proxyHost": {
+      "type": "string"
+    },
+    "serviceBusNamespaceName": {
+      "type": "string"
+    },
+    "serviceBusNamespaceResourceGroup": {
+      "type": "string"
+    },
+    "serviceCode": {
+      "type": "string"
+    },
+    "serviceName": {
+      "type": "string"
+    },
+    "servicePlanGroup": {
+      "type": "string"
+    },
+    "serviceStorageName": {
+      "type": "string"
+    },
+    "serviceSKU": {
+      "type": "string"
+    },
+    "sharedInfraResourceGroupName": {
+      "type": "string"
+    },
+    "rtlDeploymentCheckSubnetResourceId": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "WebvNetResourceGroup": {
+      "type": "string"
+    },
+    "WebvNetName": {
+      "type": "string"
+    },
+    "WebSubnetName-reference-data-plan-1": {
+      "type": "string"
+    },
+    "WebSubnetName-reference-data-plan-2": {
+      "type": "string"
+    },
+    "WebSubnetName-low-traffic-plan-1": {
+      "type": "string"
+    },
+    "WebSubnetName-high-traffic-plan-1": {
+      "type": "string"
+    },
+    "WebSubnetName-frontend-plan-1": {
+      "type": "string"
+    },
+    "WebSubnetName-soap-services-plan-1": {
+      "type": "string"
+    },
+    "WebSubnetName-enotification-plan-1": {
+      "type": "string"
+    },
+    "DeploymentSubnetResourceId": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "appInsightsName": "[concat('insights-',if(empty(parameters('sharedInfraResourceGroupName')), resourceGroup().name, parameters('sharedInfraResourceGroupName')), if(not(empty(parameters('blueGreen'))), concat('-', parameters('blueGreen')),''))]",
+    "dockerCustomImageName": "[concat(parameters('dockerRegistryServerUrl'), '/', parameters('containerRepository'), '/', 'enotification-event-listener-microservice', ':', parameters('version'))]",
+    "dockerRegistryServerUrl": "[concat('https://', parameters('dockerRegistryServerUrl'))]",
+    "envDomain": "[if(empty(parameters('blueGreen')), concat('-', parameters('envSuffix'),  parameters('dnsSuffix')), concat('-', parameters('blueGreen'), parameters('dnsSuffix')))]",
+    "enotificationEventQueueName": "[if(empty(parameters('blueGreen')), concat(parameters('enotificationEventQueueName'), '_', parameters('envSuffix')), parameters('enotificationEventQueueName'))]",
+    "functionAppStorageName": "[if(or(equals(parameters('envCode'), 'SND'), equals(parameters('envCode'), 'HFX')), parameters('serviceStorageName'), concat(parameters('serviceStorageName'), parameters('envSuffix')))]",
+    "functionAppStorageResourceGroup": "[if(or(equals(parameters('envCode'), 'SND'), equals(parameters('envCode'), 'HFX')),'SNDIMPINFRGP001', resourceGroup().name)]",
+    "servicePlanName": "[if(empty(parameters('blueGreen')), concat(parameters('servicePlanGroup'), '-', parameters('envSuffix')), parameters('servicePlanGroup'))]",
+    "ipSecurityRestrictions": "[if(equals(parameters('envSuffix'), 'vnet'), union(variables('vnetIpSecurityRestrictions'), variables('commonIpSecurityRestrictions')), union(variables('commonIpSecurityRestrictions'), variables('rtlIpSecurityRestrictions')))]",
+    "vnetIpSecurityRestrictions":
+        [
+          {
+              "ipAddress": "195.89.171.5/32",
+              "action": "Allow",
+              "tag": "Default",
+              "priority": 120,
+              "name": "KainosVPN1",
+              "description": "Allow access from Kainos VPN1"
+          },
+          {
+              "ipAddress": "195.89.171.144/32",
+              "action": "Allow",
+              "tag": "Default",
+              "priority": 121,
+              "name": "KainosVPN2",
+              "description": "Allow access from Kainos VPN2"
+          },
+          {
+              "ipAddress": "62.254.63.52/32",
+              "action": "Allow",
+              "tag": "Default",
+              "priority": 122,
+              "name": "KainosVPN3",
+              "description": "Allow access from Kainos VPN3"
+          },
+          {
+            "vnetSubnetResourceId": "[if(empty(parameters('DeploymentSubnetResourceId')), resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-soap-services-plan-1')), parameters('DeploymentSubnetResourceId'))]",
+            "action": "Allow",
+            "tag": "Default",
+            "priority": 107,
+            "name": "AllowDeploymentChecks"
+          }
+        ],
+    "rtlIpSecurityRestrictions":
+        [
+            {
+                "vnetSubnetResourceId": "[parameters('rtlDeploymentCheckSubnetResourceId')]",
+                "action": "Allow",
+                "tag": "Default",
+                "priority": 109,
+                "name": "AllowRtlDeploymentChecks"
+            }
+        ],
+    "commonIpSecurityRestrictions":
+        [
+            {
+                "vnetSubnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-reference-data-plan-1'))]",
+                "action": "Allow",
+                "tag": "Default",
+                "priority": 101,
+                "name": "AllowReferenceDataPlan1"
+            },
+            {
+                "vnetSubnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-reference-data-plan-2'))]",
+                "action": "Allow",
+                "tag": "Default",
+                "priority": 102,
+                "name": "AllowReferenceDataPlan2"
+            },
+            {
+                "vnetSubnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-low-traffic-plan-1'))]",
+                "action": "Allow",
+                "tag": "Default",
+                "priority": 103,
+                "name": "AllowLowTrafficPlan1"
+            },
+            {
+                "vnetSubnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-high-traffic-plan-1'))]",
+                "action": "Allow",
+                "tag": "Default",
+                "priority": 104,
+                "name": "AllowHighTrafficPlan1"
+            },
+            {
+                "vnetSubnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-frontend-plan-1'))]",
+                "action": "Allow",
+                "tag": "Default",
+                "priority": 105,
+                "name": "AllowFrontendPlan1"
+            },
+            {
+                "vnetSubnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-soap-services-plan-1'))]",
+                "action": "Allow",
+                "tag": "Default",
+                "priority": 106,
+                "name": "AllowSoapServicesPlan1"
+            },
+            {
+              "vnetSubnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-enotification-plan-1'))]",
+              "action": "Allow",
+              "tag": "Default",
+              "priority": 108,
+              "name": "AllowEnotificationPlan1"
+            },
+            {
+                "ipAddress": "Any",
+                "action": "Deny",
+                "priority": 2147483647,
+                "name": "Deny all",
+                "description": "Deny all access"
+            }
+        ]
+    },
+  "resources": [
+    {
+      "apiVersion": "2020-06-01",
+      "type": "Microsoft.Web/sites",
+      "name": "[parameters('serviceName')]",
+      "kind": "functionapp",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+         "[variables('functionAppStorageName')]"
+      ],
+      "tags": {
+        "Name": "[parameters('serviceName')]",
+        "ServiceCode": "[parameters('serviceCode')]",
+        "ServiceName": "[concat('EUX Imports:', parameters('serviceName'))]",
+        "ServiceType": "LOB",
+        "CreationDateTime": "[parameters('dateCreated')]",
+        "Environment": "[parameters('envCode')]",
+        "Tier": "WEB",
+        "Region": "[resourceGroup().location]"
+      },
+      "properties": {
+        "name": "[parameters('serviceName')]",
+        "serverFarmId": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', variables('servicePlanName'))]",
+        "siteConfig": {
+          "linuxFxVersion": "[concat('DOCKER|', variables('dockerCustomImageName'))]",
+          "httpLoggingEnabled": true,
+          "logsDirectorySizeLimit": 35,
+          "detailedErrorLoggingEnabled": false,
+          "publishingUsername": "[parameters('serviceName')]",
+          "appSettings": [
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(resourceId(if(empty(parameters('sharedInfraResourceGroupName')), resourceGroup().name, parameters('sharedInfraResourceGroupName')), 'Microsoft.Insights/components', variables('appInsightsName')), '2015-05-01').InstrumentationKey]"
+            },
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('functionAppStorageName'), ';AccountKey=', listKeys(resourceId(variables('functionAppStorageResourceGroup'), 'Microsoft.Storage/storageAccounts', variables('functionAppStorageName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]"
+            },
+            {
+              "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
+              "value": "[parameters('dockerRegistryPassword')]"
+            },
+            {
+              "name": "DOCKER_REGISTRY_SERVER_URL",
+              "value": "[variables('dockerRegistryServerUrl')]"
+            },
+            {
+              "name": "DOCKER_REGISTRY_SERVER_USERNAME",
+              "value": "[parameters('dockerRegistryServerUsername')]"
+            },
+            {
+              "name": "ENOTIFICATION_EVENT_QUEUE_NAME",
+              "value": "[variables('enotificationEventQueueName')]"
+            },
+            {
+              "name": "ENV_DOMAIN",
+              "value": "[variables('envDomain')]"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~3"
+            },
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "java"
+            },
+            {
+              "name": "PROTOCOL",
+              "value": "https"
+            },
+            {
+              "name": "SERVICE_BUS_CONNECTION_STRING",
+              "value": "[listKeys(resourceId(if(empty(parameters('sharedInfraResourceGroupName')), parameters('serviceBusNamespaceResourceGroup'), parameters('sharedInfraResourceGroupName')),'Microsoft.ServiceBus/namespaces/AuthorizationRules',parameters('serviceBusNamespaceName'),'RootManageSharedAccessKey'),'2017-04-01').primaryConnectionString]"
+            },
+            {
+              "name": "WEBSITE_VNET_ROUTE_ALL",
+              "value": "[if(empty(parameters('WebvNetResourceGroup')), '0', '1')]"
+            },
+            {
+              "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+              "value": "false"
+            },
+            {
+                "name": "AzureFunctionsWebHost__hostid",
+                "value": "[concat('enot-even-listener-ms-', parameters('envSuffix'))]"
+            }
+          ],
+          "alwaysOn": true,
+          "ftpsState": "Disabled"
+        },
+        "clientAffinityEnabled": false,
+        "httpsOnly": true
+      },
+      "resources": [
+        {
+          "type": "config",
+          "name": "web",
+          "condition": "[not(empty(parameters('WebvNetResourceGroup')))]",
+          "apiVersion": "2020-06-01",
+          "location": "[resourceGroup().location]",
+          "tags": {
+            "Name": "[concat(parameters('serviceName'), '/', 'web')]",
+            "ServiceCode": "[parameters('serviceCode')]",
+            "ServiceName": "[concat(parameters('serviceName'), ' Site Config')]",
+            "ServiceType": "LOB",
+            "CreationDateTime": "[parameters('dateCreated')]",
+            "Environment": "[parameters('envCode')]",
+            "Tier": "WEB",
+            "Region": "[resourceGroup().location]"
+          },
+          "scale": null,
+          "properties": {
+            "httpLoggingEnabled": true,
+            "logsDirectorySizeLimit": 35,
+            "detailedErrorLoggingEnabled": false,
+            "publishingUsername": "[parameters('serviceName')]",
+            "alwaysOn": true,
+            "ftpsState": "Disabled",
+            "ipSecurityRestrictions": "[variables('ipSecurityRestrictions')]",
+            "scmIpSecurityRestrictions": [
+              {
+                "ipAddress": "0.0.0.0/0",
+                "action": "Deny",
+                "priority": 1000,
+                "name": "Deny all",
+                "description": "Deny all access"
+              }
+            ],
+            "scmIpSecurityRestrictionsUseMain": false
+          },
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', parameters('serviceName'))]"
+          ]
+        },
+        {
+          "type": "networkConfig",
+          "name": "VirtualNetwork",
+          "condition": "[not(empty(parameters('WebvNetResourceGroup')))]",
+          "apiVersion": "2020-12-01",
+          "properties": {
+            "subnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-enotification-plan-1'))]",
+            "swiftSupported": true
+          },
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', parameters('serviceName'))]"
+          ]
+        }
+      ]
+    },
+    {
+      "apiVersion": "2018-07-01",
+      "type": "Microsoft.Storage/storageAccounts",
+      "condition": "[not(or(equals(parameters('envCode'), 'SND'), equals(parameters('envCode'), 'HFX')))]",
+      "name": "[variables('functionAppStorageName')]",
+      "sku": {
+        "name": "[parameters('serviceSKU')]"
+      },
+      "kind": "StorageV2",
+      "location": "[resourceGroup().location]",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "encryption": {
+          "services": {
+            "blob": {
+              "enabled": true
+            },
+            "file": {
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        },
+        "azureFilesAadIntegration": false
+      },
+      "resources": [
+        {
+          "name": "[concat(variables('functionAppStorageName'),'/','default')]",
+          "condition": "[not(or(equals(parameters('envCode'), 'SND'), equals(parameters('envCode'), 'HFX')))]",
+          "type": "Microsoft.Storage/storageAccounts/blobServices",
+          "dependsOn": [
+            "[variables('functionAppStorageName')]"
+          ],
+          "apiVersion": "2019-04-01",
+          "properties": {
+            "deleteRetentionPolicy": {
+              "enabled": true,
+              "days": 30
+            },
+            "containerDeleteRetentionPolicy": {
+            "enabled": true,
+            "days": 14
+            },
+            "changeFeed": {
+              "enabled": true
+            },
+            "restorePolicy": {
+              "enabled": true,
+              "days": 29
+            },
+            "isVersioningEnabled": true
+          }
+        }
+      ]
+    }
+  ]
+}

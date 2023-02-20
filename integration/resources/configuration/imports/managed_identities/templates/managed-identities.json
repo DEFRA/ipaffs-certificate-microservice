@@ -1,0 +1,102 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "dateCreated": {
+            "defaultValue": "[utcNow('yyyyMMdd')]",
+            "type": "string"
+        },
+        "env": {
+            "type": "string"
+        },
+        "keyVault": {
+            "type": "object"
+        }
+    },
+    "variables": {
+        "identityPrefix": "[toLower(concat(parameters('env'), '-', variables('serviceCode'), '-'))]",
+        "serviceCode": "IMP",
+        "userAssignedManagedIdentities": [
+            "secrets-keyvault"
+        ]
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+            "apiVersion": "2018-11-30",
+            "name": "[concat(variables('identityPrefix'), variables('userAssignedManagedIdentities')[copyIndex()])]",
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "Name": "[concat(variables('identityPrefix'), variables('userAssignedManagedIdentities')[copyIndex()])]",
+                "ServiceCode": "[variables('serviceCode')]",
+                "ServiceName": "EUX Imports",
+                "ServiceType": "LOB",
+                "CreationDateTime": "[parameters('dateCreated')]",
+                "Environment": "[toUpper(parameters('env'))]",
+                "Tier": "IDENTITY",
+                "Region": "[resourceGroup().location]"
+            },
+            "copy": { 
+                "name": "identityCopy",
+                "count": "[length(variables('userAssignedManagedIdentities'))]"
+            }
+
+        },
+        {
+            "name": "[concat('grant-', parameters('keyVault').name, '-', variables('identityPrefix'), '-secrets-keyvault')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "subscriptionId": "[parameters('keyVault').subscriptionId]",
+            "resourceGroup": "[parameters('keyVault').resourceGroup]",
+            "dependsOn": [
+                "identityCopy"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "expressionEvaluationOptions": {
+                    "scope": "Inner"
+                },
+                "parameters": {
+                    "identity": {
+                        "value": "[reference(concat('Microsoft.ManagedIdentity/userAssignedIdentities/', concat(variables('identityPrefix'), 'secrets-keyvault')), '2018-11-30', 'Full')]"
+                    },
+                    "keyVault": {
+                        "value": "[parameters('keyVault')]"
+                    }
+                },
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters":{
+                        "identity": {
+                            "type": "object"
+                        },
+                        "keyVault": {
+                            "type": "object"
+                        }
+                    },
+                    "variables": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.KeyVault/vaults/accessPolicies",
+                            "apiVersion": "2019-09-01",
+                            "name": "[concat(parameters('keyVault').name, '/add')]",
+                            "properties": {
+                                "accessPolicies": [
+                                    {
+                                        "objectId": "[parameters('identity').properties.principalId]",
+                                        "tenantId": "[parameters('identity').properties.tenantId]",
+                                        "permissions": {
+                                            "secrets": [ "get" ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+
+                }
+            }
+        }
+    ]
+}

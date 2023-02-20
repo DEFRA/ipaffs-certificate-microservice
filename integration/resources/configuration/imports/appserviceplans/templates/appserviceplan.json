@@ -1,0 +1,174 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "dateCreated": {
+      "type": "string"
+    },
+    "envCode": {
+      "type": "string"
+    },
+    "ServiceCode":{
+      "type":"string"
+    },
+    "Tier":{
+      "type":"string"
+    },
+    "ServiceType":{
+       "type":"string"
+    },
+    "envSuffix": {
+      "type": "string"
+    },
+    "serviceCapacity": {
+      "type": "string"
+    },
+    "serviceCapacityMax": {
+      "type": "string"
+    },
+    "servicePlanGroup": {
+      "type": "string"
+    },
+    "serviceSKU": {
+      "type": "string"
+    },
+    "autoscaleEnabled": {
+      "type": "string"
+    },
+    "scaleActionIncreaseValue": {
+      "type": "string"
+    },
+    "scaleActionIncreaseCooldown": {
+      "type": "string"
+    },
+    "metricTriggerIncreaseStatistic": {
+      "type": "string"
+    },
+    "metricTriggerIncreaseTreshold": {
+      "type": "string"
+    },
+    "metricTriggerIncreaseTimeGrain": {
+      "type": "string"
+    },
+    "metricTriggerIncreaseTimeWindow": {
+      "type": "string"
+    },
+    "scaleActionDecreaseValue": {
+      "type": "string"
+    },
+    "scaleActionDecreaseCooldown": {
+      "type": "string"
+    },
+    "metricTriggerDecreaseStatistic": {
+      "type": "string"
+    },
+    "metricTriggerDecreaseTreshold": {
+      "type": "string"
+    },
+    "metricTriggerDecreaseTimeGrain": {
+      "type": "string"
+    },
+    "metricTriggerDecreaseTimeWindow": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "servicePlanName": "[if(empty(parameters('envSuffix')), parameters('servicePlanGroup'), concat(parameters('servicePlanGroup'), '-', parameters('envSuffix')))]"
+  },
+  "resources": [
+    {
+      "name": "[variables('servicePlanName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2016-09-01",
+      "kind": "linux",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "Name": "[variables('servicePlanName')]",
+        "ServiceCode": "[parameters('ServiceCode')]",
+        "ServiceType": "[parameters('ServiceType')]",
+        "ServiceName": "[concat('EUX Imports:', variables('servicePlanName'))]",
+        "CreationDateTime": "[parameters('dateCreated')]",
+        "Environment": "[parameters('envCode')]",
+        "Tier": "[parameters('Tier')]",
+        "Region": "[resourceGroup().location]"
+      },
+      "properties": {
+        "targetWorkerSizeId": 0,
+        "reserved": true,
+        "zoneRedundant": "[if(or(equals(parameters('envCode'),'snd'), equals(parameters('envCode'),'tst')),'true','false')]"
+      },
+      "sku": {
+        "name": "[parameters('serviceSKU')]",
+        "capacity": "[parameters('serviceCapacity')]"
+      }
+    },
+    {
+      "type": "Microsoft.Insights/autoscalesettings",
+      "name": "[concat(variables('servicePlanName'), '-AutoScaleSetting')]",
+      "condition": "[not(empty(parameters('autoscaleEnabled')))]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('servicePlanName'))]"
+      ],
+      "apiVersion": "2014-04-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "profiles": [
+          {
+            "name": "DefaultAutoscaleProfile",
+            "capacity": {
+              "minimum": "[parameters('serviceCapacity')]",
+              "maximum": "[parameters('serviceCapacityMax')]",
+              "default": "[parameters('serviceCapacity')]"
+            },
+            "rules": [
+              {
+                "scaleAction": {
+                  "direction": "Increase",
+                  "type": "ChangeCount",
+                  "value": "[parameters('scaleActionIncreaseValue')]",
+                  "cooldown": "[parameters('scaleActionIncreaseCooldown')]"
+                },
+                "metricTrigger": {
+                  "metricName": "CpuPercentage",
+                  "metricNamespace": "microsoft.web/serverfarms",
+                  "metricResourceUri": "[resourceId('Microsoft.Web/serverfarms', variables('servicePlanName'))]",
+                  "operator": "GreaterThan",
+                  "statistic": "[parameters('metricTriggerIncreaseStatistic')]",
+                  "threshold": "[parameters('metricTriggerIncreaseTreshold')]",
+                  "timeAggregation": "Average",
+                  "timeGrain": "[parameters('metricTriggerIncreaseTimeGrain')]",
+                  "timeWindow": "[parameters('metricTriggerIncreaseTimeWindow')]",
+                  "Dimensions": [],
+                  "dividePerInstance": false
+                }
+              },
+              {
+                "scaleAction": {
+                  "direction": "Decrease",
+                  "type": "ChangeCount",
+                  "value": "[parameters('scaleActionDecreaseValue')]",
+                  "cooldown": "[parameters('scaleActionDecreaseCooldown')]"
+                },
+                "metricTrigger": {
+                  "metricName": "CpuPercentage",
+                  "metricNamespace": "microsoft.web/serverfarms",
+                  "metricResourceUri": "[resourceId('Microsoft.Web/serverfarms', variables('servicePlanName'))]",
+                  "operator": "LessThan",
+                  "statistic": "[parameters('metricTriggerDecreaseStatistic')]",
+                  "threshold": "[parameters('metricTriggerDecreaseTreshold')]",
+                  "timeAggregation": "Average",
+                  "timeGrain": "[parameters('metricTriggerDecreaseTimeGrain')]",
+                  "timeWindow": "[parameters('metricTriggerDecreaseTimeWindow')]",
+                  "Dimensions": [],
+                  "dividePerInstance": false
+                }
+              }
+            ]
+          }
+        ],
+        "enabled": "[bool(parameters('autoscaleEnabled'))]",
+        "targetResourceUri": "[resourceId('Microsoft.Web/serverFarms/', variables('servicePlanName'))]"
+      }
+    }
+  ]
+}

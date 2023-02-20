@@ -1,0 +1,211 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "blueGreen": {
+      "type": "string"
+    },
+    "containerStartTimeLimit": {
+      "type": "string"
+    },
+    "containerRepository": {
+      "type": "string"
+    },
+    "dateCreated": {
+      "type": "string"
+    },
+    "dnsCacheTtl": {
+      "type": "string"
+    },
+    "dnsSuffix": {
+      "type": "string"
+    },
+    "dockerRegistryPassword": {
+      "type": "securestring"
+    },
+    "dockerRegistryServerUrl": {
+      "type": "string"
+    },
+    "dockerRegistryServerUsername": {
+      "type": "string"
+    },
+    "envCode": {
+      "type": "string"
+    },
+    "envSuffix": {
+      "type": "string"
+    },
+    "healthcheckMaxFailures": {
+      "type": "int"
+    },
+    "javaToolOptions": {
+      "type": "string"
+    },
+    "permissionsServiceBasicAuthPassword": {
+      "type": "securestring"
+    },
+    "proxyHost": {
+      "type": "string"
+    },
+    "serviceCode": {
+      "type": "string"
+    },
+    "serviceName": {
+      "type": "string"
+    },
+    "servicePlanGroup": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "sharedInfraResourceGroupName": {
+      "type": "string"
+    },
+    "WebvNetResourceGroup": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "appInsightsName": "[concat('insights-',if(empty(parameters('sharedInfraResourceGroupName')), resourceGroup().name, parameters('sharedInfraResourceGroupName')), if(not(empty(parameters('blueGreen'))), concat('-', parameters('blueGreen')),''))]",
+    "dockerCustomImageName": "[concat(parameters('dockerRegistryServerUrl'), '/', parameters('containerRepository'), '/', 'antivirus-stub-microservice', ':', parameters('version'))]",
+    "envDomain": "[if(empty(parameters('blueGreen')), concat('-', parameters('envSuffix'),  parameters('dnsSuffix')), concat('-', parameters('blueGreen'), parameters('dnsSuffix')))]",
+    "proxyUrl": "[concat('https://', parameters('proxyHost'), parameters('dnsSuffix'))]",
+    "servicePlanName": "[if(empty(parameters('envSuffix')), parameters('servicePlanGroup'), concat(parameters('servicePlanGroup'), '-', parameters('envSuffix')))]"
+  },
+  "resources": [
+    {
+      "name": "[parameters('serviceName')]",
+      "type": "Microsoft.ContainerInstance/containerGroups",
+      "apiVersion": "2018-10-01",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "Name": "[parameters('serviceName')]",
+        "ServiceCode": "[parameters('serviceCode')]",
+        "ServiceName": "[concat('EUX Imports:', parameters('serviceName'))]",
+        "ServiceType": "LOB",
+        "CreationDateTime": "[parameters('dateCreated')]",
+        "Environment": "[parameters('envCode')]",
+        "Tier": "APPLICATION",
+        "Region": "[resourceGroup().location]"
+      },
+      "properties": {
+        "containers": [
+          {
+            "name": "[parameters('serviceName')]",
+            "properties": {
+              "image": "[variables('dockerCustomImageName')]",
+              "resources": {
+                "requests": {
+                  "cpu": 2,
+                  "memoryInGB": 1
+                }
+              },
+              "ports": [
+                {
+                  "port": 1443
+                },
+                {
+                  "port": 4000
+                }
+              ],
+              "environmentVariables": [
+                {
+                  "name": "WEBSITE_VNET_ROUTE_ALL",
+                  "value": "[if(empty(parameters('WebvNetResourceGroup')), '0', '1')]"
+                },
+                {
+                  "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+                  "value": "[reference(resourceId(if(empty(parameters('sharedInfraResourceGroupName')), resourceGroup().name, parameters('sharedInfraResourceGroupName')), 'Microsoft.Insights/components', variables('appInsightsName')), '2015-05-01').ConnectionString]"
+                },
+                {
+                  "name": "AUTOMATIC_TRANSITION_ENABLED",
+                  "value": "false"
+                },
+                {
+                  "name": "DATE_DEPLOYED",
+                  "value": "[parameters('dateCreated')]"
+                },
+                {
+                  "name": "DNS_CACHE_TTL",
+                  "value": "[parameters('dnsCacheTtl')]"
+                },
+                {
+                  "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
+                  "value": "[parameters('dockerRegistryPassword')]"
+                },
+                {
+                  "name": "DOCKER_REGISTRY_SERVER_URL",
+                  "value": "[parameters('dockerRegistryServerUrl')]"
+                },
+                {
+                  "name": "DOCKER_REGISTRY_SERVER_USERNAME",
+                  "value": "[parameters('dockerRegistryServerUsername')]"
+                },
+                {
+                  "name": "ENV_DOMAIN",
+                  "value": "[variables('envDomain')]"
+                },
+                {
+                  "name": "JAVA_TOOL_OPTIONS",
+                  "value": "[parameters('javaToolOptions')]"
+                },
+                {
+                  "name": "PERMISSIONS_SERVICE_PASSWORD",
+                  "value": "[parameters('permissionsServiceBasicAuthPassword')]"
+                },
+                {
+                  "name": "PROTOCOL",
+                  "value": "https"
+                },
+                {
+                  "name": "SECURITY_JWT_AUD",
+                  "value": "a2617985-5645-47ec-8912-7a943b3895ba"
+                },
+                {
+                  "name": "SECURITY_JWT_ISS",
+                  "value": "[variables('proxyUrl')]"
+                },
+                {
+                  "name": "SECURITY_JWT_JWKS",
+                  "value": "[concat(variables('proxyUrl'), '/common/discovery/keys')]"
+                },
+                {
+                  "name": "SERVICE_PORT",
+                  "value": "4000"
+                },
+                {
+                  "name": "WEBSITES_CONTAINER_START_TIME_LIMIT",
+                  "value": "[parameters('containerStartTimeLimit')]"
+                }
+              ]
+            }
+          }
+        ],
+        "imageRegistryCredentials": [
+          {
+            "server": "[parameters('dockerRegistryServerUrl')]",
+            "username": "[parameters('dockerRegistryServerUsername')]",
+            "password": "[parameters('dockerRegistryPassword')]"
+          }
+        ],
+        "osType": "Linux",
+        "ipAddress": {
+          "type": "Public",
+          "ports": [
+            {
+              "protocol": "Tcp",
+              "port": 1443
+            },
+            {
+              "protocol": "Tcp",
+              "port": 4000
+            }
+          ],
+          "dnsNameLabel": "[parameters('serviceName')]"
+        },
+        "restartPolicy": "OnFailure"
+      }
+    }
+  ]
+}

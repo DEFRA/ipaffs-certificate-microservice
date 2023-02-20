@@ -1,0 +1,1322 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "envCode": {
+      "type": "string"
+    },
+    "ServiceCode": {
+      "type":"string"
+    },
+    "ServiceType":{
+      "type":"string"
+    },
+    "Tier":{
+      "type":"string"
+    },
+    "dateCreated": {
+      "type": "string"
+    },
+    "blueGreen": {
+      "type": "string"
+    },
+    "serviceBusNamespaceName": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "insightsName": "[if(empty(parameters('blueGreen')), concat('insights-',resourceGroup().name), concat('insights-',resourceGroup().name, '-', parameters('blueGreen')))]",
+    "insightsId": "[concat('/subscriptions/',subscription().subscriptionId,'/resourceGroups/',resourceGroup().name,'/providers/microsoft.insights/components/',variables('insightsName'))]",
+    "dashboardName": "[concat('IPAFFS-', parameters('envCode'), '-App-dashboard')]",
+    "serviceBusId": "[concat('/subscriptions/',subscription().subscriptionId,'/resourceGroups/',resourceGroup().name, '/providers/Microsoft.ServiceBus/namespaces/',parameters('serviceBusNamespaceName'))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2019-01-01-preview",
+      "name": "[variables('dashboardName')]",
+      "type": "Microsoft.Portal/dashboards",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "Name": "[variables('dashboardName')]",
+        "Hidden-title": "[variables('dashboardName')]",
+        "ServiceName": "[concat('EUX Imports:', variables('dashboardName'))]",
+        "ServiceCode": "[parameters('ServiceCode')]",
+        "ServiceType": "[parameters('ServiceType')]",
+        "Tier": "[parameters('Tier')]",
+        "CreationDateTime": "[parameters('dateCreated')]",
+        "Environment": "[parameters('envCode')]",
+        "Region": "[resourceGroup().location]"
+      },
+      "properties": {
+        "lenses": {
+          "0": {
+            "order": 0,
+            "parts": {
+              "0": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "colSpan": 20,
+                  "rowSpan": 1
+                },
+                "metadata": {
+                  "inputs": [],
+                  "type": "Extension/HubsExtension/PartType/MarkdownPart",
+                  "settings": {
+                    "content": {
+                      "settings": {
+                        "content": "# Health",
+                        "title": "",
+                        "subtitle": "",
+                        "markdownSource": 1
+                      }
+                    }
+                  }
+                }
+              },
+              "1": {
+                "position": {
+                  "x": 0,
+                  "y": 1,
+                  "rowSpan": 4,
+                  "colSpan": 5
+                },
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "ComponentId",
+                      "value": {
+                        "SubscriptionId": "[subscription().subscriptionId]",
+                        "ResourceGroup": "[resourceGroup().name]",
+                        "Name": "[variables('insightsName')]"
+                      }
+                    },
+                    {
+                      "name": "Query",
+                      "value": "requests\n| union dependencies\n| summarize avgRequestDuration=avg(duration) by bin(timestamp, 1m) \n| render timechart \n"
+                    },
+                    {
+                      "name": "Dimensions",
+                      "value": {
+                        "xAxis": {
+                          "name": "timestamp",
+                          "type": "datetime"
+                        },
+                        "yAxis": [
+                          {
+                            "name": "avgRequestDuration",
+                            "type": "real"
+                          }
+                        ],
+                        "splitBy": [],
+                        "aggregation": "Sum"
+                      }
+                    },
+                    {
+                      "name": "Version",
+                      "value": "1.0"
+                    },
+                    {
+                      "name": "PartTitle",
+                      "value": "Average request duration"
+                    },
+                    {
+                      "name": "PartSubTitle",
+                      "value": "[variables('insightsName')]"
+                    },
+                    {
+                      "name": "resourceTypeMode",
+                      "value": "components"
+                    },
+                    {
+                      "name": "ControlType",
+                      "value": "AnalyticsChart"
+                    },
+                    {
+                      "name": "SpecificChart",
+                      "value": "Line"
+                    },
+                    {
+                      "name": "TimeRange",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "DashboardId",
+                      "isOptional": true
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/AnalyticsPart",
+                  "settings": {},
+                  "asset": {}
+                }
+              },
+              "2": {
+                "position": {
+                  "x": 5,
+                  "y": 1,
+                  "rowSpan": 4,
+                  "colSpan": 5
+                },
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "ComponentId",
+                      "value": {
+                        "SubscriptionId": "[subscription().subscriptionId]",
+                        "ResourceGroup": "[resourceGroup().name]",
+                        "Name": "[variables('insightsName')]"
+                      }
+                    },
+                    {
+                      "name": "Query",
+                      "value": "requests\n| summarize requests = count(appId) by bin(timestamp, 1m)\n| render timechart\n"
+                    },
+                    {
+                      "name": "Dimensions",
+                      "value": {
+                        "xAxis": {
+                          "name": "timestamp",
+                          "type": "datetime"
+                        },
+                        "yAxis": [
+                          {
+                            "name": "requests",
+                            "type": "long"
+                          }
+                        ],
+                        "splitBy": [],
+                        "aggregation": "Sum"
+                      }
+                    },
+                    {
+                      "name": "Version",
+                      "value": "1.0"
+                    },
+                    {
+                      "name": "PartTitle",
+                      "value": "Requests per second"
+                    },
+                    {
+                      "name": "PartSubTitle",
+                      "value": "[variables('insightsName')]"
+                    },
+                    {
+                      "name": "resourceTypeMode",
+                      "value": "components"
+                    },
+                    {
+                      "name": "ControlType",
+                      "value": "AnalyticsChart"
+                    },
+                    {
+                      "name": "SpecificChart",
+                      "value": "Line"
+                    },
+                    {
+                      "name": "TimeRange",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "DashboardId",
+                      "isOptional": true
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/AnalyticsPart",
+                  "settings": {},
+                  "asset": {}
+                }
+              },
+              "3": {
+                "position": {
+                  "x": 10,
+                  "y": 1,
+                  "rowSpan": 4,
+                  "colSpan": 5
+                },
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "ComponentId",
+                      "value": {
+                        "SubscriptionId": "[subscription().subscriptionId]",
+                        "ResourceGroup": "[resourceGroup().name]",
+                        "Name": "[variables('insightsName')]"
+                      }
+                    },
+                    {
+                      "name": "Query",
+                      "value": "requests\n| union dependencies\n| where timestamp > ago(1h) \n//| where resultCode startswith \"4\" or resultCode startswith \"5\"\n| where resultCode != \"404\"\n| summarize count() by bin(timestamp, 1m), resultCode\n| render piechart ;\n"
+                    },
+                    {
+                      "name": "Dimensions",
+                      "value": {
+                        "xAxis": {
+                          "name": "resultCode",
+                          "type": "string"
+                        },
+                        "yAxis": [
+                          {
+                            "name": "count_",
+                            "type": "long"
+                          }
+                        ],
+                        "splitBy": [],
+                        "aggregation": "Sum"
+                      }
+                    },
+                    {
+                      "name": "Version",
+                      "value": "1.0"
+                    },
+                    {
+                      "name": "PartTitle",
+                      "value": "Response code breakdown"
+                    },
+                    {
+                      "name": "PartSubTitle",
+                      "value": "[variables('insightsName')]"
+                    },
+                    {
+                      "name": "resourceTypeMode",
+                      "value": "components"
+                    },
+                    {
+                      "name": "ControlType",
+                      "value": "AnalyticsDonut"
+                    },
+                    {
+                      "name": "TimeRange",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "DashboardId",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "SpecificChart",
+                      "isOptional": true
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/AnalyticsPart",
+                  "settings": {
+                    "content": {
+                      "PartTitle": "Response code breakdown",
+                      "PartSubTitle": "[variables('insightsName')]",
+                      "Query": "requests\n| union dependencies\n| summarize count() by bin(timestamp, 1m), resultCode\n| render piechart ;\n",
+                      "ControlType": "FrameControlChart",
+                      "SpecificChart": "Donut"
+                    }
+                  },
+                  "asset": {
+                    "idInputName": "ComponentId",
+                    "type": "ApplicationInsights"
+                  }
+                }
+              },
+              "4": {
+                "position": {
+                  "x": 15,
+                  "y": 1,
+                  "rowSpan": 4,
+                  "colSpan": 5
+                },
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "ComponentId",
+                      "value": {
+                        "SubscriptionId": "[subscription().subscriptionId]",
+                        "ResourceGroup": "[resourceGroup().name]",
+                        "Name": "[variables('insightsName')]"
+                      }
+                    },
+                    {
+                      "name": "Query",
+                      "value": "requests\n| union dependencies\n| where resultCode startswith \"4\" or resultCode startswith \"5\"\n| where resultCode != \"404\"\n| summarize count() by bin(timestamp, 10m), resultCode\n"
+                    },
+                    {
+                      "name": "Dimensions",
+                      "value": {
+                        "xAxis": {
+                          "name": "timestamp",
+                          "type": "datetime"
+                        },
+                        "yAxis": [
+                          {
+                            "name": "count_",
+                            "type": "long"
+                          }
+                        ],
+                        "splitBy": [
+                          {
+                            "name": "resultCode",
+                            "type": "string"
+                          }
+                        ],
+                        "aggregation": "Sum"
+                      }
+                    },
+                    {
+                      "name": "Version",
+                      "value": "1.0"
+                    },
+                    {
+                      "name": "PartTitle",
+                      "value": "Error count"
+                    },
+                    {
+                      "name": "PartSubTitle",
+                      "value": "[variables('insightsName')]"
+                    },
+                    {
+                      "name": "resourceTypeMode",
+                      "value": "components"
+                    },
+                    {
+                      "name": "ControlType",
+                      "value": "AnalyticsChart"
+                    },
+                    {
+                      "name": "SpecificChart",
+                      "value": "Line"
+                    },
+                    {
+                      "name": "TimeRange",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "DashboardId",
+                      "isOptional": true
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/AnalyticsPart",
+                  "settings": {},
+                  "asset": {}
+                }
+              },
+              "5": {
+                "position": {
+                  "x": 0,
+                  "y": 5,
+                  "rowSpan": 1,
+                  "colSpan": 20
+                },
+                "metadata": {
+                  "inputs": [],
+                  "type": "Extension/HubsExtension/PartType/MarkdownPart",
+                  "settings": {
+                    "content": {
+                      "settings": {
+                        "content": "# Stats",
+                        "title": "",
+                        "subtitle": "",
+                        "markdownSource": 1
+                      }
+                    }
+                  }
+                }
+              },
+              "6": {
+                "position": {
+                  "x": 0,
+                  "y": 6,
+                  "rowSpan": 4,
+                  "colSpan": 5
+                },
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "ComponentId",
+                      "value": {
+                        "SubscriptionId": "[subscription().subscriptionId]",
+                        "ResourceGroup": "[resourceGroup().name]",
+                        "Name": "[variables('insightsName')]"
+                      }
+                    },
+                    {
+                      "name": "Query",
+                      "value": "customEvents\n| where customDimensions contains \"IPAFFS-PART1-COMPLETE\" or customDimensions contains \"IPAFFS-PART2-COMPLETE\" or customDimensions contains \"IPAFFS-PART3-COMPLETE\"\n| extend Data = todynamic(tostring(customDimensions.data))\n| extend Details = Data.details.transactioncode\n| summarize count() by startofday(timestamp), tostring(Details)\n| order by timestamp desc\n| render piechart\n"
+                    },
+                    {
+                      "name": "Dimensions",
+                      "value": {
+                        "xAxis": {
+                          "name": "Details",
+                          "type": "string"
+                        },
+                        "yAxis": [
+                          {
+                            "name": "count_",
+                            "type": "long"
+                          }
+                        ],
+                        "splitBy": [],
+                        "aggregation": "Sum"
+                      }
+                    },
+                    {
+                      "name": "Version",
+                      "value": "1.0"
+                    },
+                    {
+                      "name": "PartTitle",
+                      "value": "Notification breakdown"
+                    },
+                    {
+                      "name": "PartSubTitle",
+                      "value": "[variables('insightsName')]"
+                    },
+                    {
+                      "name": "resourceTypeMode",
+                      "value": "components"
+                    },
+                    {
+                      "name": "ControlType",
+                      "value": "AnalyticsDonut"
+                    },
+                    {
+                      "name": "TimeRange",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "DashboardId",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "SpecificChart",
+                      "isOptional": true
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/AnalyticsPart",
+                  "settings": {
+                    "content": {
+                      "PartTitle": "Notification breakdown",
+                      "PartSubTitle": "[variables('insightsName')]",
+                      "Query": "customEvents\n| where customDimensions contains \"IPAFFS-PART1-COMPLETE\" or customDimensions contains \"IPAFFS-PART2-COMPLETE\" or customDimensions contains \"IPAFFS-PART3-COMPLETE\"\n| extend Data = todynamic(tostring(customDimensions.data))\n| extend Details = Data.details.transactioncode\n| summarize count() by startofday(timestamp), tostring(Details)\n| order by timestamp desc\n| render piechart\n",
+                      "ControlType": "FrameControlChart",
+                      "SpecificChart": "Donut"
+                    }
+                  },
+                  "asset": {
+                    "idInputName": "ComponentId",
+                    "type": "ApplicationInsights"
+                  }
+                }
+              },
+              "7": {
+                "position": {
+                  "x": 5,
+                  "y": 6,
+                  "rowSpan": 4,
+                  "colSpan": 5
+                },
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "ComponentId",
+                      "value": {
+                        "SubscriptionId": "[subscription().subscriptionId]",
+                        "ResourceGroup": "[resourceGroup().name]",
+                        "Name": "[variables('insightsName')]"
+                      }
+                    },
+                    {
+                      "name": "Query",
+                      "value": "customEvents\n| where customDimensions contains \"IPAFFS-REENFORCED-CREATE\" or customDimensions contains \"IPAFFS-REENFORCED-REMOVE\"\n| extend Data = todynamic(tostring(customDimensions.data))\n| extend Details = Data.details.transactioncode\n| summarize count() by startofday(timestamp), tostring(Details)\n| order by timestamp desc\n| render piechart"
+                    },
+                    {
+                      "name": "Dimensions",
+                      "value": {
+                        "xAxis": {
+                          "name": "Details",
+                          "type": "string"
+                        },
+                        "yAxis": [
+                          {
+                            "name": "count_",
+                            "type": "long"
+                          }
+                        ],
+                        "splitBy": [],
+                        "aggregation": "Sum"
+                      }
+                    },
+                    {
+                      "name": "Version",
+                      "value": "1.0"
+                    },
+                    {
+                      "name": "PartTitle",
+                      "value": "Reenforced checks"
+                    },
+                    {
+                      "name": "PartSubTitle",
+                      "value": "[variables('insightsName')]"
+                    },
+                    {
+                      "name": "resourceTypeMode",
+                      "value": "components"
+                    },
+                    {
+                      "name": "ControlType",
+                      "value": "AnalyticsDonut"
+                    },
+                    {
+                      "name": "TimeRange",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "DashboardId",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "SpecificChart",
+                      "isOptional": true
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/AnalyticsPart",
+                  "settings": {},
+                  "asset": {}
+                }
+              },
+              "8": {
+                "position": {
+                  "x": 10,
+                  "y": 6,
+                  "rowSpan": 4,
+                  "colSpan": 5
+                },
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "ComponentId",
+                      "value": {
+                        "SubscriptionId": "[subscription().subscriptionId]",
+                        "ResourceGroup": "[resourceGroup().name]",
+                        "Name": "[variables('insightsName')]"
+                      }
+                    },
+                    {
+                      "name": "Query",
+                      "value": "customEvents\n| where customDimensions contains \"IPAFFS-BORDERNOTIFICATION-CREATE\" or customDimensions contains \"IPAFFS-BORDERNOTIFICATION-REMOVE\"\n| extend Data = todynamic(tostring(customDimensions.data))\n| extend Details = Data.details.transactioncode\n| summarize count() by startofday(timestamp), tostring(Details)\n| order by timestamp desc\n| render piechart"
+                    },
+                    {
+                      "name": "Dimensions",
+                      "value": {
+                        "xAxis": {
+                          "name": "Details",
+                          "type": "string"
+                        },
+                        "yAxis": [
+                          {
+                            "name": "count_",
+                            "type": "long"
+                          }
+                        ],
+                        "splitBy": [],
+                        "aggregation": "Sum"
+                      }
+                    },
+                    {
+                      "name": "Version",
+                      "value": "1.0"
+                    },
+                    {
+                      "name": "PartTitle",
+                      "value": "Border notifications"
+                    },
+                    {
+                      "name": "PartSubTitle",
+                      "value": "[variables('insightsName')]"
+                    },
+                    {
+                      "name": "resourceTypeMode",
+                      "value": "components"
+                    },
+                    {
+                      "name": "ControlType",
+                      "value": "AnalyticsDonut"
+                    },
+                    {
+                      "name": "TimeRange",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "DashboardId",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "SpecificChart",
+                      "isOptional": true
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/AnalyticsPart",
+                  "settings": {},
+                  "asset": {}
+                }
+              },
+              "9": {
+                "position": {
+                  "x": 15,
+                  "y": 6,
+                  "rowSpan": 4,
+                  "colSpan": 5
+                },
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "ComponentId",
+                      "value": {
+                        "SubscriptionId": "[subscription().subscriptionId]",
+                        "ResourceGroup": "[resourceGroup().name]",
+                        "Name": "[variables('insightsName')]"
+                      }
+                    },
+                    {
+                      "name": "Query",
+                      "value": "customEvents\n| where timestamp > ago(30d)\n| where customDimensions contains \"LOGIN\"\n| extend Data = todynamic(tostring(customDimensions.data))\n| extend Details = Data.details.transactionCode\n| summarize count() by startofday(timestamp), tostring(Details)\n| order by timestamp desc\n| render piechart\n"
+                    },
+                    {
+                      "name": "Dimensions",
+                      "value": {
+                        "xAxis": {
+                          "name": "Details",
+                          "type": "string"
+                        },
+                        "yAxis": [
+                          {
+                            "name": "count_",
+                            "type": "long"
+                          }
+                        ],
+                        "splitBy": [],
+                        "aggregation": "Sum"
+                      }
+                    },
+                    {
+                      "name": "Version",
+                      "value": "1.0"
+                    },
+                    {
+                      "name": "PartTitle",
+                      "value": "IPAFFS logins"
+                    },
+                    {
+                      "name": "PartSubTitle",
+                      "value": "[variables('insightsName')]"
+                    },
+                    {
+                      "name": "resourceTypeMode",
+                      "value": "components"
+                    },
+                    {
+                      "name": "ControlType",
+                      "value": "AnalyticsDonut"
+                    },
+                    {
+                      "name": "TimeRange",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "DashboardId",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "SpecificChart",
+                      "isOptional": true
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/AnalyticsPart",
+                  "settings": {
+                    "content": {
+                      "PartTitle": "IPAFFS logins",
+                      "PartSubTitle": "[variables('insightsName')]",
+                      "Query": "customEvents\n| where timestamp > ago(30d)\n| where customDimensions contains \"LOGIN\"\n| extend Data = todynamic(tostring(customDimensions.data))\n| extend Details = Data.details.transactioncode\n| summarize count() by startofday(timestamp), tostring(Details)\n| order by timestamp desc\n| render piechart\n",
+                      "ControlType": "FrameControlChart",
+                      "SpecificChart": "Donut"
+                    }
+                  },
+                  "asset": {
+                    "idInputName": "ComponentId",
+                    "type": "ApplicationInsights"
+                  }
+                }
+              },
+              "10": {
+                "position": {
+                  "x": 0,
+                  "y": 10,
+                  "colSpan": 20,
+                  "rowSpan": 1
+                },
+                "metadata": {
+                  "inputs": [],
+                  "type": "Extension/HubsExtension/PartType/MarkdownPart",
+                  "settings": {
+                    "content": {
+                      "settings": {
+                        "content": "\n# Dead Letter Queues",
+                        "title": "",
+                        "subtitle": "",
+                        "markdownSource": 1
+                      }
+                    }
+                  }
+                }
+              },
+              "11": {
+                "position": {
+                  "x": 0,
+                  "y": 11,
+                  "colSpan": 6,
+                  "rowSpan": 4
+                },
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "options",
+                      "value": {
+                        "chart": {
+                          "metrics": [
+                            {
+                              "resourceMetadata": {
+                                "id": "[variables('serviceBusId')]"
+                              },
+                              "name": "DeadletteredMessages",
+                              "aggregationType": 4,
+                              "namespace": "microsoft.servicebus/namespaces",
+                              "metricVisualization": {
+                                "displayName": "Count of dead-lettered messages in a Queue/Topic."
+                              }
+                            }
+                          ],
+                          "title": "Avg Count of dead-lettered messages in a Queue/Topic where EntityName = 'eu_health_cert'",
+                          "titleKind": 1,
+                          "visualization": {
+                            "chartType": 2,
+                            "legendVisualization": {
+                              "isVisible": true,
+                              "position": 2,
+                              "hideSubtitle": false
+                            },
+                            "axisVisualization": {
+                              "x": {
+                                "isVisible": true,
+                                "axisType": 2
+                              },
+                              "y": {
+                                "isVisible": true,
+                                "axisType": 1
+                              }
+                            }
+                          },
+                          "filterCollection": {
+                            "filters": [
+                              {
+                                "key": "EntityName",
+                                "operator": 0,
+                                "values": [
+                                  "eu_health_cert"
+                                ]
+                              }
+                            ]
+                          },
+                          "timespan": {
+                            "relative": {
+                              "duration": 86400000
+                            },
+                            "showUTCTime": false,
+                            "grain": 1
+                          }
+                        }
+                      },
+                      "isOptional": true
+                    },
+                    {
+                      "name": "sharedTimeRange",
+                      "isOptional": true
+                    }
+                  ],
+                  "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+                  "settings": {
+                    "content": {
+                      "options": {
+                        "chart": {
+                          "metrics": [
+                            {
+                              "resourceMetadata": {
+                                "id": "[variables('serviceBusId')]"
+                              },
+                              "name": "DeadletteredMessages",
+                              "aggregationType": 4,
+                              "namespace": "microsoft.servicebus/namespaces",
+                              "metricVisualization": {
+                                "displayName": "Count of dead-lettered messages in a Queue/Topic."
+                              }
+                            }
+                          ],
+                          "title": "eu_health_cert DLQ",
+                          "titleKind": 2,
+                          "visualization": {
+                            "chartType": 2,
+                            "legendVisualization": {
+                              "isVisible": true,
+                              "position": 2,
+                              "hideSubtitle": false
+                            },
+                            "axisVisualization": {
+                              "x": {
+                                "isVisible": true,
+                                "axisType": 2
+                              },
+                              "y": {
+                                "isVisible": true,
+                                "axisType": 1
+                              }
+                            },
+                            "disablePinning": true
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "filters": {
+                    "EntityName": {
+                      "model": {
+                        "operator": "equals",
+                        "values": [
+                          "eu_health_cert"
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              "12": {
+                "position": {
+                  "x": 6,
+                  "y": 11,
+                  "colSpan": 8,
+                  "rowSpan": 4
+                },
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "options",
+                      "value": {
+                        "chart": {
+                          "metrics": [
+                            {
+                              "resourceMetadata": {
+                                "id": "[variables('serviceBusId')]"
+                              },
+                              "name": "DeadletteredMessages",
+                              "aggregationType": 4,
+                              "namespace": "microsoft.servicebus/namespaces",
+                              "metricVisualization": {
+                                "displayName": "Count of dead-lettered messages in a Queue/Topic."
+                              }
+                            }
+                          ],
+                          "title": "Avg Count of dead-lettered messages in a Queue/Topic where EntityName = 'eu_notification'",
+                          "titleKind": 1,
+                          "visualization": {
+                            "chartType": 2,
+                            "legendVisualization": {
+                              "isVisible": true,
+                              "position": 2,
+                              "hideSubtitle": false
+                            },
+                            "axisVisualization": {
+                              "x": {
+                                "isVisible": true,
+                                "axisType": 2
+                              },
+                              "y": {
+                                "isVisible": true,
+                                "axisType": 1
+                              }
+                            }
+                          },
+                          "filterCollection": {
+                            "filters": [
+                              {
+                                "key": "EntityName",
+                                "operator": 0,
+                                "values": [
+                                  "eu_notification"
+                                ]
+                              }
+                            ]
+                          },
+                          "timespan": {
+                            "relative": {
+                              "duration": 86400000
+                            },
+                            "showUTCTime": false,
+                            "grain": 1
+                          }
+                        }
+                      },
+                      "isOptional": true
+                    },
+                    {
+                      "name": "sharedTimeRange",
+                      "isOptional": true
+                    }
+                  ],
+                  "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+                  "settings": {
+                    "content": {
+                      "options": {
+                        "chart": {
+                          "metrics": [
+                            {
+                              "resourceMetadata": {
+                                "id": "[variables('serviceBusId')]"
+                              },
+                              "name": "DeadletteredMessages",
+                              "aggregationType": 4,
+                              "namespace": "microsoft.servicebus/namespaces",
+                              "metricVisualization": {
+                                "displayName": "Count of dead-lettered messages in a Queue/Topic."
+                              }
+                            }
+                          ],
+                          "title": "eu_notification DLQ",
+                          "titleKind": 2,
+                          "visualization": {
+                            "chartType": 2,
+                            "legendVisualization": {
+                              "isVisible": true,
+                              "position": 2,
+                              "hideSubtitle": false
+                            },
+                            "axisVisualization": {
+                              "x": {
+                                "isVisible": true,
+                                "axisType": 2
+                              },
+                              "y": {
+                                "isVisible": true,
+                                "axisType": 1
+                              }
+                            },
+                            "disablePinning": true
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "filters": {
+                    "EntityName": {
+                      "model": {
+                        "operator": "equals",
+                        "values": [
+                          "eu_notification"
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+            }
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2019-01-01-preview",
+      "name": "[concat(variables('dashboardName'),'-events')]",
+      "type": "Microsoft.Portal/dashboards",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "Name": "[concat(variables('dashboardName'),'-events')]",
+        "Hidden-title": "[concat(variables('dashboardName'),'-events')]",
+        "ServiceName": "[concat('EUX Imports:', variables('dashboardName'))]",
+        "CreationDateTime": "[parameters('dateCreated')]",
+        "Environment": "[parameters('envCode')]",
+        "Region": "[resourceGroup().location]"
+      },
+      "properties": {
+        "lenses": {
+          "0": {
+            "order": 0,
+            "parts": {
+              "0": {
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "colSpan": 20,
+                  "rowSpan": 1
+                },
+                "metadata": {
+                  "inputs": [],
+                  "type": "Extension/HubsExtension/PartType/MarkdownPart",
+                  "settings": {
+                    "content": {
+                      "settings": {
+                        "content": "# IPAFFS Protective monitoring events (past 24h)\n",
+                        "title": "",
+                        "subtitle": "",
+                        "markdownSource": 1
+                      }
+                    }
+                  }
+                }
+              },
+              "1": {
+                "position": {
+                  "x": 0,
+                  "y": 1,
+                  "colSpan": 7,
+                  "rowSpan": 6
+                },
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "ComponentId",
+                      "value": {
+                        "SubscriptionId": "[subscription().subscriptionId]",
+                        "ResourceGroup": "[resourceGroup().name]",
+                        "Name": "[variables('insightsName')]"
+                      },
+                      "isOptional": true
+                    },
+                    {
+                     "name": "Dimensions",
+                     "isOptional": true
+                    },
+                    {
+                     "name": "Query",
+                     "value": "customEvents\n| where customDimensions contains \"IPAFFS\"\n| extend Data = todynamic(tostring(customDimensions.data))\n| extend Details = substring(Data.details.transactioncode,7)\n| summarize count() by Details\n| project Details, Count = count_\n",
+                     "isOptional": true
+                    } ,
+                    {
+                     "name": "PartTitle",
+                     "value": "Analytics",
+                     "isOptional": true
+                    },
+                    {
+                     "name": "PartSubTitle",
+                     "value": "[variables('insightsName')]",
+                     "isOptional": true
+                    },
+                    {
+                     "name": "Version",
+                     "value": "1.0",
+                     "isOptional": true
+                    },
+                    {
+                     "name": "resourceTypeMode",
+                     "value": "components",
+                     "isOptional": true
+                    },
+                    {
+                     "name": "TimeRange",
+                     "value": "P1D",
+                     "isOptional": true
+                    },
+                    {
+                     "name": "DashboardId",
+                     "isOptional": true
+                    },
+                    {
+                     "name": "ControlType",
+                     "value": "AnalyticsGrid",
+                     "isOptional": true
+                    },
+                    {
+                     "name": "SpecificChart",
+                     "isOptional": true
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/AnalyticsPart",
+                  "settings": {
+                    "content": {
+                     "PartTitle": "All Events",
+                     "PartSubTitle": "[variables('insightsName')]",
+                     "Query": "customEvents\n| where customDimensions contains \"IPAFFS\"\n| extend Data = todynamic(tostring(customDimensions.data))\n| extend Details = substring(Data.details.transactioncode,7)\n| summarize count() by Details\n| order by count_ desc\n| project Details, Count = count_\n",
+                     "GridColumnsWidth": {
+                      "Details": "291px",
+                      "Count": "289px"
+                    }
+                  }
+                 }
+                }
+              },
+              "2": {
+                "position": {
+                  "x": 7,
+                  "y": 1,
+                  "rowSpan": 6,
+                  "colSpan": 13
+                },
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "ComponentId",
+                      "value": {
+                        "SubscriptionId": "[subscription().subscriptionId]",
+                        "ResourceGroup": "[resourceGroup().name]",
+                        "Name": "[variables('insightsName')]"
+                      },
+                      "isOptional": true
+                    },
+                    {
+                      "name": "Dimensions",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "Query",
+                      "value": "customEvents\n| where customDimensions contains \"IPAFFS\"\n| extend Data = todynamic(tostring(customDimensions.data))\n| extend Details = substring(Data.details.transactioncode,7)\n| project timestamp, Details, operation_Id, Data\n| order by timestamp desc\n",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "PartTitle",
+                      "value": "Analytics",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "PartSubTitle",
+                      "value": "[variables('insightsName')]",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "PartId",
+                      "value": "01ca461f-744f-43de-92d4-7725792a25dc",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "Version",
+                      "value": "1.0",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "resourceTypeMode",
+                      "value": "components",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "TimeRange",
+                      "value": "P1D",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "DashboardId",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "ControlType",
+                      "value": "AnalyticsGrid",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "SpecificChart",
+                      "isOptional": true
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/AnalyticsPart",
+                  "settings": {
+                    "content": {
+                      "PartTitle": "All-EVENTS-LOG",
+                      "PartSubTitle": "[variables('insightsName')]",
+                      "GridColumnsWidth": {
+                        "Data": "531px",
+                        "operation_Id": "194px",
+                        "Details": "268px"
+                      }
+                    }
+                  }
+                }
+              },
+              "3": {
+                "position": {
+                  "x": 0,
+                  "y": 7,
+                  "rowSpan": 4,
+                  "colSpan": 20
+                },
+                "metadata": {
+                  "inputs": [
+                    {
+                      "name": "ComponentId",
+                      "value": {
+                        "SubscriptionId": "[subscription().subscriptionId]",
+                        "ResourceGroup": "[resourceGroup().name]",
+                        "Name": "[variables('insightsName')]"
+                      },
+                      "isOptional": true
+                    },
+                    {
+                      "name": "Dimensions",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "Query",
+                      "value": "customEvents\n| where customDimensions contains \"IPAFFS\"\n| extend Data = todynamic(tostring(customDimensions.data))\n| extend Details = substring(Data.details.transactioncode,7)\n| extend Priority = Data.priority\n//| where Priority != \"0\"\n| project timestamp, Details, operation_Id, Priority, Data\n| order by timestamp desc\n",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "PartTitle",
+                      "value": "Analytics",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "PartSubTitle",
+                      "value": "[variables('insightsName')]",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "Version",
+                      "value": "1.0",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "resourceTypeMode",
+                      "value": "components",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "TimeRange",
+                      "value": "P1D",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "DashboardId",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "ControlType",
+                      "value": "AnalyticsGrid",
+                      "isOptional": true
+                    },
+                    {
+                      "name": "SpecificChart",
+                      "isOptional": true
+                    }
+                  ],
+                  "type": "Extension/AppInsightsExtension/PartType/AnalyticsPart",
+                  "settings": {
+                    "content": {
+                      "PartTitle": "High Priority Events",
+                      "PartSubTitle": "[variables('insightsName')]",
+                      "Query": "customEvents\n| where customDimensions contains \"IPAFFS\"\n| extend Data = todynamic(tostring(customDimensions.data))\n| extend Details = substring(Data.details.transactioncode,7)\n| extend Priority = Data.priority\n| where Priority != \"0\"\n| project timestamp, Details, operation_Id, Priority, Data\n| order by timestamp desc\n",
+                      "GridColumnsWidth": {
+                        "Data": "995px"
+                      }
+                    }
+                  },
+                  "asset": {
+                    "idInputName": "ComponentId",
+                    "type": "ApplicationInsights"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

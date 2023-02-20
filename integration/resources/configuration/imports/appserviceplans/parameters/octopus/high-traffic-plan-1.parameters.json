@@ -1,0 +1,75 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "dateCreated": {
+      "value": "#{format-DateTag}"
+    },
+    "envCode": {
+      "value": "#{env | ToLower}"
+    },
+    "ServiceCode":{
+      "value":"IMP"
+    },
+    "Tier":{
+      "value":"Web"
+    },
+    "ServiceType":{
+       "value":"LOB"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "serviceCapacity": {
+      "value": "#{highTrafficPlan1ServiceCapacity}"
+    },
+    "servicePlanGroup": {
+      "value": "#{appPlanNameHighTraffic}"
+    },
+    "serviceSKU": {
+      "value": "#{highTrafficPlan1ServiceSKU}"
+    },
+    "serviceCapacityMax": {
+      "value": "#{if highTrafficPlan1ServiceCapacityMax}#{highTrafficPlan1ServiceCapacityMax}#{else}#{defaultServiceCapacityMax}#{/if}"
+    },
+    "autoscaleEnabled": {
+      "value": "#{if highTrafficPlan1AutoscaleEnabled}#{highTrafficPlan1AutoscaleEnabled}#{else}#{defaultAutoscaleEnabled}#{/if}"
+    },
+    "scaleActionIncreaseValue": {
+      "value": "#{if highTrafficPlan1ScaleActionIncreaseValue}#{highTrafficPlan1ScaleActionIncreaseValue}#{else}#{defaultScaleActionIncreaseValue}#{/if}"
+    },
+    "scaleActionIncreaseCooldown": {
+      "value": "#{if highTrafficPlan1ScaleActionIncreaseCooldown}#{highTrafficPlan1ScaleActionIncreaseCooldown}#{else}#{defaultScaleActionIncreaseCooldown}#{/if}"
+    },
+    "metricTriggerIncreaseStatistic": {
+      "value": "#{if highTrafficPlan1MetricTriggerIncreaseStatistic}#{highTrafficPlan1MetricTriggerIncreaseStatistic}#{else}#{defaultMetricTriggerIncreaseStatistic}#{/if}"
+    },
+    "metricTriggerIncreaseTreshold": {
+      "value": "#{if highTrafficPlan1MetricTriggerIncreaseTreshold }#{highTrafficPlan1MetricTriggerIncreaseTreshold }#{else}#{defaultMetricTriggerIncreaseTreshold }#{/if}"
+    },
+    "metricTriggerIncreaseTimeGrain": {
+      "value": "#{if highTrafficPlan1MetricTriggerIncreaseTimeGrain}#{highTrafficPlan1MetricTriggerIncreaseTimeGrain}#{else}#{defaultMetricTriggerIncreaseTimeGrain}#{/if}"
+    },
+    "metricTriggerIncreaseTimeWindow": {
+      "value": "#{if highTrafficPlan1MetricTriggerIncreaseTimeWindow}#{highTrafficPlan1MetricTriggerIncreaseTimeWindow}#{else}#{defaultMetricTriggerIncreaseTimeWindow}#{/if}"
+    },
+    "scaleActionDecreaseValue": {
+      "value": "#{if highTrafficPlan1ScaleActionDecreaseValue}#{highTrafficPlan1ScaleActionDecreaseValue}#{else}#{defaultScaleActionDecreaseValue}#{/if}"
+    },
+    "scaleActionDecreaseCooldown": {
+      "value": "#{if highTrafficPlan1ScaleActionDecreaseCooldown}#{highTrafficPlan1ScaleActionDecreaseCooldown}#{else}#{defaultScaleActionDecreaseCooldown}#{/if}"
+    },
+    "metricTriggerDecreaseStatistic": {
+      "value": "#{if highTrafficPlan1MetricTriggerDecreaseStatistic}#{highTrafficPlan1MetricTriggerDecreaseStatistic}#{else}#{defaultMetricTriggerDecreaseStatistic}#{/if}"
+    },
+    "metricTriggerDecreaseTreshold": {
+      "value": "#{if highTrafficPlan1MetricTriggerDecreaseTreshold }#{highTrafficPlan1MetricTriggerDecreaseTreshold }#{else}#{defaultMetricTriggerDecreaseTreshold }#{/if}"
+    },
+    "metricTriggerDecreaseTimeGrain": {
+      "value": "#{if highTrafficPlan1MetricTriggerDecreaseTimeGrain}#{highTrafficPlan1MetricTriggerDecreaseTimeGrain}#{else}#{defaultMetricTriggerDecreaseTimeGrain}#{/if}"
+    },
+    "metricTriggerDecreaseTimeWindow": {
+      "value": "#{if highTrafficPlan1MetricTriggerDecreaseTimeWindow}#{highTrafficPlan1MetricTriggerDecreaseTimeWindow}#{else}#{defaultMetricTriggerDecreaseTimeWindow}#{/if}"
+    }
+  }
+}

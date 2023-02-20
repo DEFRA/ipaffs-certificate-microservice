@@ -1,0 +1,146 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "b2bCustomerUserId": {
+      "value": "79f6dc68-2144-e911-a96a-000d3a29ba60"
+    },
+    "blueGreen": {
+      "value": "#{blueGreen | ToLower}"
+    },
+    "containerRepository": {
+      "value": "#{containerRepository}"
+    },
+    "dateCreated": {
+      "value": "#{format-DateTag}"
+    },
+    "dockerRegistryPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "opsImpAzureDockerRegistryPassword"
+      }
+    },
+    "dockerRegistryServerUrl": {
+      "value": "opsimpfesacr001.azurecr.io"
+    },
+    "dockerRegistryServerUsername": {
+      "value": "OPSIMPFESACR001"
+    },
+    "dnsSuffix": {
+      "value": "#{dnsZone}"
+    },
+    "enableEuChedRiskAssessment": {
+      "value": "#{enableEuChedRiskAssessment}"
+    },
+    "envCode": {
+      "value": "#{env | ToLower}"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "jwtAudience": {
+      "value": "#{proxyClientId}"
+    },
+    "jwtPrivateKey": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "proxyJwtPrivateKey-#{env | ToLower}"
+      }
+    },
+    "notificationSearchBatchSize" : {
+      "value": "#{notificationSearchBatchSize}"
+    },
+    "proxyHost": {
+      "value": "imports-proxy-#{blueGreen | ToLower}"
+    },
+    "riskEngineProtocol": {
+      "value": "#{riskEngineProtocol}"
+    },
+    "riskEngineUrl": {
+      "value": "#{riskEngineUrl}"
+    },
+    "riskInterfaceCronSchedule" : {
+      "value": "#{riskInterfaceCronSchedule}"
+    },
+    "serviceCode": {
+      "value": "IMP"
+    },
+    "serviceName": {
+      "value": "risk-interface-microservice-#{env | ToLower}"
+    },
+    "servicePlanGroup": {
+      "value": "#{appPlanNameLowTraffic}"
+    },
+    "serviceStorageName": {
+      "value": "#{riskInterfaceStorageName}"
+    },
+    "serviceSKU": {
+      "value": "#{riskInterfaceStoragSKU}"
+    },
+    "tradePlatformAuthUrl": {
+      "value": "#{tradePlatformAuthUrl}"
+    },
+    "tradePlatformClientId": {
+      "value": "#{tradePlatformClientId}"
+    },
+    "tradePlatformClientSecret": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "trade-platform-client-secret-#{env | ToLower}"
+      }
+    },
+    "tradePlatformScope": {
+      "value": "#{tradePlatformScope}"
+    },
+    "tradePlatformSubscriptionKey": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "trade-platform-subscription-key-#{env | ToLower}"
+      }
+    },
+    "version": {
+      "value": "#{dockerTag}"
+    },
+    "WebvNetResourceGroup": {
+      "value": "#{virtualNetworkResourceGroup}"
+    },
+    "WebvNetName": {
+      "value": "#{virtualNetworkName}"
+    },
+    "WebSubnetName-reference-data-plan-1": {
+      "value": "#{referenceDataPlan1SubnetName}"
+    },
+    "WebSubnetName-reference-data-plan-2": {
+      "value": "#{referenceDataPlan2SubnetName}"
+    },
+    "WebSubnetName-low-traffic-plan-1": {
+      "value": "#{lowTrafficPlan1SubnetName}"
+    },
+    "WebSubnetName-high-traffic-plan-1": {
+      "value": "#{highTrafficPlan1SubnetName}"
+    },
+    "WebSubnetName-frontend-plan-1": {
+      "value": "#{frontendPlan1SubnetName}"
+    },
+    "WebSubnetName-soap-services-plan-1": {
+      "value": "#{soapServicePlan1SubnetName}"
+    },
+    "DeploymentSubnetResourceId": {
+      "value": ""
+    },
+    "sharedInfraResourceGroupName": {
+      "value": "#{if sharedInfraResourceGroupName}#{sharedInfraResourceGroupName}#{else}#{resourceGroupName}#{/if}"
+    },
+    "rtlDeploymentCheckSubnetResourceId": {
+      "value": "/subscriptions/fa6d4701-12be-41be-9c4d-ba3daf88ed8e/resourceGroups/OPSINFNETRGP001/providers/Microsoft.Network/virtualNetworks/OPSINFNETVNT001/subnets/OPSINFFESSUB001"
+    }
+  }
+}

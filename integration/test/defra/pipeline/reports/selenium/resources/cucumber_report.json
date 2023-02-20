@@ -1,0 +1,1111 @@
+[
+  {
+    "line": 2,
+    "elements": [
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 4081520357,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hooks.setScenario(Scenario)"
+            }
+          },
+          {
+            "result": {
+              "duration": 9151651541,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HooksTagged.createNewCVEDANotificationWithDecision()"
+            }
+          }
+        ],
+        "line": 5,
+        "name": "Official veterinarian assess notification and mark as destroyed",
+        "description": "",
+        "id": "selenium-sanity-test-|-official-veterinarian-checks;official-veterinarian-assess-notification-and-mark-as-destroyed",
+        "after": [
+          {
+            "result": {
+              "duration": 275402926,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hooks.tearDownBrowser(Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 16394761586,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "I am signed in with LVU credentials",
+            "match": {
+              "arguments": [
+                {
+                  "val": "LVU",
+                  "offset": 20
+                }
+              ],
+              "location": "SignInStepDefs.iAmSignedWithCredentials(UserType)"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 906678263,
+              "status": "passed"
+            },
+            "line": 7,
+            "name": "I type a reference number",
+            "match": {
+              "location": "NotificationsDashboardStepDefs.iTypeReferenceNumber()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 862774262,
+              "status": "passed"
+            },
+            "line": 8,
+            "name": "I click search button",
+            "match": {
+              "location": "NotificationsDashboardStepDefs.iClickSearchButton()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 811047644,
+              "status": "passed"
+            },
+            "line": 9,
+            "name": "I open notification from the table on OV home page",
+            "match": {
+              "location": "NotificationsDashboardStepDefs.iOpenNotificationFromTheTableOnOVPage()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 513321568,
+              "status": "passed"
+            },
+            "line": 10,
+            "name": "I select if consignment left country: It has been destroyed",
+            "match": {
+              "arguments": [
+                {
+                  "val": "It has been destroyed",
+                  "offset": 38
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.iSelectIfConsignmentLeftCountry(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 944221247,
+              "status": "passed"
+            },
+            "line": 11,
+            "name": "I fill destruction date with \u00272018-01-22\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "2018-01-22",
+                  "offset": 30
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.iFillDestructionDate(SimpleDate)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 163255371,
+              "status": "passed"
+            },
+            "line": 12,
+            "name": "the notification reference number is displayed",
+            "match": {
+              "location": "GenericStepDefs.theNotificationReferenceNumberIsDisplayed()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 107651844,
+              "error_message": "org.junit.ComparisonFailure: expected:\u003c[tru]e\u003e but was:\u003c[fals]e\u003e\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)\n\tat sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)\n\tat uk.gov.defra.tracesx.selenium.stepdefs.GenericStepDefs.theVersionNumberIsDisplayed(GenericStepDefs.java:129)\n\tat ✽.And the notification version number INVALID is displayed(/home/jenkinsagent/SeleniumBrowserStack41773/integration/src/test/resources/features/OfficialVetAssessment.feature:13)\n",
+              "status": "failed"
+            },
+            "line": 13,
+            "name": "the notification version number INVALID is displayed",
+            "match": {
+              "arguments": [
+                {
+                  "val": "INVALID",
+                  "offset": 32
+                }
+              ],
+              "location": "GenericStepDefs.theVersionNumberIsDisplayed(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 14,
+            "name": "I click save on control consignment leave page",
+            "match": {
+              "location": "ConsignmentLeaveControlStepDefs.clickSaveAndContinue()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 15,
+            "name": "The Notification dashboard page for OV is open",
+            "match": {
+              "location": "ConsignmentLeaveControlStepDefs.notificationPageIsOpen()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 16,
+            "name": "I type a reference number",
+            "match": {
+              "location": "NotificationsDashboardStepDefs.iTypeReferenceNumber()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 17,
+            "name": "I click search button",
+            "match": {
+              "location": "NotificationsDashboardStepDefs.iClickSearchButton()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 18,
+            "name": "I open notification from the table on OV home page",
+            "match": {
+              "location": "NotificationsDashboardStepDefs.iOpenNotificationFromTheTableOnOVPage()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 19,
+            "name": "consignment leave answer is selected to: It has been destroyed",
+            "match": {
+              "arguments": [
+                {
+                  "val": "It has been destroyed",
+                  "offset": 41
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.checkConsignmentDecision(String)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "embeddings": [
+              {
+                "data": "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EREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmGAQgREREREUmmTgYg69atg8zCQuHPo00bLFy0CPn5+VVWj0+fPvh86VKd0hYWFuKll19GQGBgldVfZuGiReg/YECVlKVLn/Tpt1SqcgyIiIiIqObUqgBk2vTpOqe1tbVFdlYWsrOy8Cg1FRs2bMA2Pz98Om9eNbZQvcLCQhw7dgzFxcU1Uj8RERERUV1QKwKQ9PR0DBs+HNu3b69QflNTU/Tr2xczZszA3r17q7h1RERERERUVWo8AAkLC8Ow4cMRWAWXLpWUlMDCwkL+ecuWLRgwcCCcGjeGs4sLxvv6IiEhQSHPho0b0bZdO9ja2aFjp05YtWoVioqKVJYfHByMho0a4b/ffacwff78+XB0cgIAjB49GjILC6xZs0apDhtbW3h7e+PEiRNq+1BaWooVK1fC1c0NDRs1wqRJk5Cenq6QRlu/Ll68iCFDh8LB0RGubm6Y+eGHSE5Jkc9PTEzEq+PGwdnFBW3atsX6DRuU2pGWlgbfCRNg37AhXN3csHr1agghVI6dun5pa6dPnz6YN28eZrz7LhydnHD8+HGdx4CIiIiI6ihRg84EBIjGTZoIc5lM/qeLb775Rji7uMg/5+fnC/8zZ4Sbu7vYuWuXfPqWLVtEcHCwyMrKEvfu3RO9evcWEydOlM9fs2aNcHN3F6f9/UVOTo7wP3NG9OrdW5w9e1YIIURvHx+x5PPPhRBChIeHi8ZNmojVq1erbFNWVpYwl8nEyVOnFKavWbNGuLm5idP+/iI9PV34+fkJG1tbcezYMZXlfLZwoXBzdxf+Z86IjIwMsW3bNmFhaSn69e+vU78KCgpEU2dnsXjJEpGdnS1u3bolZs+eLRISEuR9srSyEtt37BBZWVli1+7dwlwmk/f52TQZGRni5KlTopmrq1ixcqVe/dI2/r19fEQjBwexdu1akZqaqtcYEBEREVHdVGMByNatWxUCD30DEFV5hw0bJu7du6c231dffSU8vbyEEEJkZGQI+4YNhZ+fn9r0ZQHI3bt3hZu7u/hs4UK1aVUFIGV1bN26VSHtBzNnCu8ePZTKyM7OFrZ2duK3335TmD7e11fjwXf5fqWlpQlzmUz8vmeP2j5NmjRJYZpXhw5i1apVCmnKBwpCCLFx40bRsFEjUVBQoHe/VLWzrJ5Ro0YppKnoGBARERFR3WBU02dgKsrW1haxMTHyzw8fPsS6devQo2dPBJw5g1atWiEmJgYbf/oJ4eHhuH//PmJjY+H09FKp8PBw5OXloVevXhrrSUhIwMhRo5Camoo3Jk3Sq41ldfTu3Vthep8+fbBp0ybk5eXBzMxMPv3OnTsoKChAz549FdK3bNkSDx8+lH/W1C8bGxvMnTsXU6dOxZ49ezB27FiMHjUKJiYm8vxu7u4K5dvY2CAnN1exzlatFD739vFBbm4u7ty9i8dpaTr1S1M7y3h16KDwWdcxICIiIqK6qcbuAXn99ddx6NAhWFpaVkl5jRs3xpo1a2Bra4vNmzfj8ePH6N+/P6KiojBt6lTs+f13LFm8WO9y/fz8MG7cOPTs2RPvvf++0n0QVUmXsnXp16KFCxF6+TI6d+qE5cuXo0vXrgr3XhgYGFR52yvSTgAwNjZW+Fyd40tERERENa9Gb0Lv26cPjhw+jPbt21dpuXn5+Thz5gxSHz3CNj8/jBw5Eq1atUJpaak8jaenJ+rXr4/z589rLOuVsWOxeNEi/Pfbb3Hx4kVs/OknndtRVkdQUJDC9MDAQLRv317h7AcAtGjRAiYmJggJCVGYfufOHfn/2voFPLkZ383NDXPnzsWFkBAUFhbq/YSxO7dvK3w+f+4czMzM0NzdXad+6dJOVXQZAyIiIiKqu2r8KVheXl44cvgwfHx8KlVOckoKPlu4EElJSXhj0iQ4OTlBCIF9+/cjPz8fV65cwa9btiApKQkPHjyApaUl5s6Zg4WLFuFMQADy8vIQGBSE3j4+OHfunLxcVzc3AECrVq3wydy5WLRoEWJjY5XqNzMzg7GxMW7fvo3i4mIUFRXJ61i0aBH8z5xBRkYGtm3bBj8/PyxT8aI/mUyGGTNmYPGSJQgKCkJWVhZ27tqFAwcOyNNo61dISAh69uyJU6dPIy8vD6GhoXj8+LHSZVfa/LVvH3bt3o2srCwEBAa0BgYkAAAgAElEQVRixYoVmDlzJkxNTXXql7Z2qqPLGBARERFRHVaTN6A8a+q0aTqlU3UTurOLixg1erQICgqSp1u/YYNo07atsLaxEd49eoj9+/eLXr17i7CwMIU0Hm3aCCtra9He01MsX7FCFBQUCCEUn4IlhBCFhYWiW7duSjdOl1m7dq1wdHIS1jY2Yu/evSrr6Natm9onYAkhRHFxsVi6bJlwadZM2DdsKF6fOFG89/77Cjdga+pXcXGxWPftt6Jzly7C2sZGeLRpI77++mt53mf7JIQQ/fr3V7jBvrePj/hg5kwx3tdX2Nnbi2aurmLlypWipKREIZ+2fmkbf1Vt0XUMiIiIiKhuMhCCF90TEREREZE0avwSLCIiIiIi+t/BAISIiIiIiCTDAISIiIiIiCTDAISIiIiIiCTDAISIiIiIiCRjVFMVyywsaqpqquOys7JquglEREREVEF8DC8REREREUmGl2AREREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQEREREZFkGIAQERER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Xr2K5JQUk5RFRERERGQODEDq6dy5cxgZHY2bN2/qTHd3d8ea1avh6empM71t27ZYvWoVnJycqj0ulUox7q238MvWrTj7zz84+88/+HnLFp2L1++1Zs0a3Lp1q25PhoiIiIjIzBiA1EN5eTliRo3CP//8ozO9SZMmyFyxAo8++qjecgICArD8m29gb1/5crw4bBjyf/8d8+bNQ48ePeDs7AxnZ2c888wzWL1qFbp37y5allqtxt9//133J0VEREREZEZchF4P/54wAb/++qtoelpaGoKCggwqa+DAgZg3bx4uXLiA92bMEM3XuHFjjBgxAvv27RPNc/nyZXh7extULxERERGRJTEAqaPFqan49ttvRdM/eP99o3ekGvvmmwblu3jxot50Nzc3o+olIiIiIrIUTsGqg1+2bcP06dNF02NjYxEfH2+Wuq9cuYLly5eLpru7u3P0g4iIiIhsFgMQI508eRJjxozBnTt3dKaH9umDhXq2460PQRDw2uuv4+zZs6J5nn/++Rpb/RIRERER2QoGIEa4evUqRo4ciStXruhM9/P1RUZGBho3bmyW+qdMmYIff/xRNN3R0RGTJk40S91ERERERKbAAMRA2tGHw0eOiOZZtmwZpFKpWer/eNYsLF22TG+epKQk+Pj4mKV+IiIiIiJTYABioPkLFiA7O1tvni/+3/8zS91ZK1cipZYDBsfHxeHNN94wS/1ERERERKbCAMRA+/fvrzXP8uXLsWfPHpPWe/jIEb2nrAOVwUdycrJJ6yUiIiIiMgcGICY2YeJE3L5922TlffTRR6KnrAPApEmTGHwQERER0QODAYiJFRQU1LpWw1C//fYbNmzYIJo+ZcoUfDxzpknqIiIiIiKyBAYgddS8eXPRtFmzZuHcuXP1ruO7774TTXvuuefw4Qcf1LsOIiIiIiJLYgBSB15eXtiVlyd64F9paSkSExPrXc/B338XTfvwgw943gcRERERPXAYgBhJKpVi7dq1eOSRR5A0e7ZovpXffYcdOTn1quvypUuibXjqqafqVTYRERERkTXYRAAi9k3+1atX61ReaWmp0XUZokmTJsjMzERnPz8AwNChQ9E7JEQ0/6RJk1BRUVHn+m6JLGaXyWR1LpOIiIiIyJpsIgBp2rSpzscvXryIW7duGV3e2bNnRdMcmzUzujytZcuW1Qg4UubNg7297m48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BoWFoaSkBN7e3kieO9egReX6KBQKJEybhqKiIkgkEmzauJHBBxERERGRFdhcAAJUnpI+Mjq6arvdkJAQjI+LQ2RkpFHlKJVKLE5NRc7dgw7lcjlWZmVx2hURERERkZXYZACilZ6ejviEBJSUlAAApFIpIiMj0TskBN4+PpBKJFUjGfn5+dCUlKBIpcKOnBwolUpoNBoAgEQiQUpyMrfaJSIiIiKyMpsOQIDKtRuLU1ORnp6O4uJio66VyWSIjY3F+Lg4HjJIRERERGQDbD4AuZdKpYJCqUROTg40Gg3UanXVNC25XA5XV1dIpVKEhIQgKjKSU62IiIiIiGzMAxWAEBERERHRg81mtuElIiIiIqKGjwEIERERERFZDAMQIiIiIiKyGAYgRERERERkMQxAiIiIiIjIYhiAEBERERGRxTAAISIiIiIii2EAQkREREREFsMAhIiIiIiILIYBCBERERERWYyDtSretmNnjcdCewdboSVERERERGQpHAEhIiIiIiKLYQBCREREREQWwwCEiIiIiIgshgEIERERERFZDAMQIiIiIiKyGAYgRERERERkMQxAiIiIiIjIYhiAEBERERGRxTAAISIiIiIii2EAQkREREREFsMAhIiIiIiILIYBCBERERERWQwDECIiIiIishgGIEREREREZDEMQIiIiIiIyGIYgBARERERkcUwACEiIiIiIothAEImtX3HDvj6+eFxX1/8sm2btZtDRERERDamQQUgeXl5cHZx0fnTslUrdPb3x+gxY5C1ciVu375t1bYKgoC9e/fiw48+QvcePXDz5k2rtscQhrQ5fupUnD59GmfOnMGUKVOs0ErjJSYmVr1PRkZH16usB/F1JSIiIrIkB2s3wFLKyspQVFSEoqIirF27FsnJyVj+zTfo0qWLVdpz4MAB9O3Xr+rfgiBYpR3GMKTNd+7c0Zve0D2IrysRERGRJTWoERBjHD9+HP0HDEBBQYG1m9KgpMybBy8vL3h5eWH+vHnWbg4RERER2ZgGHYD8tm8frpaWorSkBMVFRVi3di369e1blX716lW8/MoruHXrlhVb2bD0DQ3FsaNHcezoUfS7ZySAiIiIiAho4AGIlp2dHdzc3PDcc89h/fr1GDNmTFXasWPH8INCUeOa8+fPY/r06XjiySfh7uEBbx8fvDh8OLZu3aqzjitXruCDDz9E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\u003d\u003d",
+                "mime_type": "image/jpeg"
+              }
+            ],
+            "line": 20,
+            "name": "consignment destruction date is: \u00272018-01-22\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "2018-01-22",
+                  "offset": 34
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.consignmentDestructionIs(SimpleDate)"
+            },
+            "keyword": "And "
+          }
+        ],
+        "tags": [
+          {
+            "line": 4,
+            "name": "@CreateNewCVEDANotificationWithDecision"
+          },
+          {
+            "line": 4,
+            "name": "@Compatibility"
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 1585203102,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hooks.setScenario(Scenario)"
+            }
+          },
+          {
+            "result": {
+              "duration": 916738182,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HooksTagged.createNewCVEDPNotificationWithDecision()"
+            }
+          }
+        ],
+        "line": 23,
+        "name": "Official veterinarian assess notification and mark as destroyed",
+        "description": "",
+        "id": "selenium-sanity-test-|-official-veterinarian-checks;official-veterinarian-assess-notification-and-mark-as-destroyed",
+        "after": [
+          {
+            "result": {
+              "duration": 63419943,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hooks.tearDownBrowser(Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 15446788610,
+              "status": "passed"
+            },
+            "line": 24,
+            "name": "I am signed in with LVU credentials",
+            "match": {
+              "arguments": [
+                {
+                  "val": "LVU",
+                  "offset": 20
+                }
+              ],
+              "location": "SignInStepDefs.iAmSignedWithCredentials(UserType)"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 461558244,
+              "status": "passed"
+            },
+            "line": 25,
+            "name": "I type a reference number",
+            "match": {
+              "location": "NotificationsDashboardStepDefs.iTypeReferenceNumber()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 662525098,
+              "status": "passed"
+            },
+            "line": 26,
+            "name": "I click search button",
+            "match": {
+              "location": "NotificationsDashboardStepDefs.iClickSearchButton()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 695180271,
+              "status": "passed"
+            },
+            "line": 27,
+            "name": "I open notification from the table on OV home page",
+            "match": {
+              "location": "NotificationsDashboardStepDefs.iOpenNotificationFromTheTableOnOVPage()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 438108991,
+              "status": "passed"
+            },
+            "line": 28,
+            "name": "I select if consignment left country: No",
+            "match": {
+              "arguments": [
+                {
+                  "val": "No",
+                  "offset": 38
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.iSelectIfConsignmentLeftCountry(String)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 273327618,
+              "status": "passed"
+            },
+            "line": 29,
+            "name": "I select if consignment reach destination with following answer: No",
+            "match": {
+              "arguments": [
+                {
+                  "val": "No",
+                  "offset": 65
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.iSelectIfConsignmentReachedDestination(YesNo)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 229361818,
+              "status": "passed"
+            },
+            "line": 30,
+            "name": "I fill reason \"some test reason\" why consignment did not reach destination",
+            "match": {
+              "arguments": [
+                {
+                  "val": "some test reason",
+                  "offset": 15
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.iFillReasonWhyConsignmentDidNotReachDestination(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 103640535,
+              "status": "passed"
+            },
+            "line": 31,
+            "name": "the notification reference number is displayed",
+            "match": {
+              "location": "GenericStepDefs.theNotificationReferenceNumberIsDisplayed()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 94991914,
+              "status": "passed"
+            },
+            "line": 32,
+            "name": "the notification version number V1 is displayed",
+            "match": {
+              "arguments": [
+                {
+                  "val": "V1",
+                  "offset": 32
+                }
+              ],
+              "location": "GenericStepDefs.theVersionNumberIsDisplayed(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 98849424,
+              "status": "passed"
+            },
+            "line": 33,
+            "name": "the registered location for user is displayed",
+            "match": {
+              "location": "GenericStepDefs.theRegisteredUserLocationIsDisplayed()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 1045431163,
+              "status": "passed"
+            },
+            "line": 34,
+            "name": "I click save on control consignment leave page",
+            "match": {
+              "location": "ConsignmentLeaveControlStepDefs.clickSaveAndContinue()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 80688382,
+              "status": "passed"
+            },
+            "line": 35,
+            "name": "The Notification dashboard page for OV is open",
+            "match": {
+              "location": "ConsignmentLeaveControlStepDefs.notificationPageIsOpen()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 327560640,
+              "status": "passed"
+            },
+            "line": 36,
+            "name": "I type a reference number",
+            "match": {
+              "location": "NotificationsDashboardStepDefs.iTypeReferenceNumber()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 558211961,
+              "status": "passed"
+            },
+            "line": 37,
+            "name": "I click search button",
+            "match": {
+              "location": "NotificationsDashboardStepDefs.iClickSearchButton()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 579074208,
+              "status": "passed"
+            },
+            "line": 38,
+            "name": "I open notification from the table on OV home page",
+            "match": {
+              "location": "NotificationsDashboardStepDefs.iOpenNotificationFromTheTableOnOVPage()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 41247294,
+              "status": "passed"
+            },
+            "line": 39,
+            "name": "consignment leave answer is selected to: No",
+            "match": {
+              "arguments": [
+                {
+                  "val": "No",
+                  "offset": 41
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.checkConsignmentDecision(String)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 10239451499,
+              "status": "passed"
+            },
+            "line": 40,
+            "name": "consignment Did not reach destination",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Did not",
+                  "offset": 12
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.consignmentReachedDesitnation(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 41584794,
+              "status": "passed"
+            },
+            "line": 41,
+            "name": "the reason for not reaching destination is \"some test reason\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "some test reason",
+                  "offset": 44
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.checkReasonForNotReachingDestination(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 920671874,
+              "status": "passed"
+            },
+            "line": 42,
+            "name": "I click save on control consignment leave page",
+            "match": {
+              "location": "ConsignmentLeaveControlStepDefs.clickSaveAndContinue()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 61982739,
+              "status": "passed"
+            },
+            "line": 43,
+            "name": "The Notification dashboard page for OV is open",
+            "match": {
+              "location": "ConsignmentLeaveControlStepDefs.notificationPageIsOpen()"
+            },
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "line": 22,
+            "name": "@CreateNewCVEDPNotificationWithDecision"
+          },
+          {
+            "line": 22,
+            "name": "@Compatibility"
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 782094061,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hooks.setScenario(Scenario)"
+            }
+          },
+          {
+            "result": {
+              "duration": 1632971577,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HooksTagged.createNewCEDNotificationWithDecision()"
+            }
+          }
+        ],
+        "line": 46,
+        "name": "Official veterinarian assess notification and mark as destroyed",
+        "description": "",
+        "id": "selenium-sanity-test-|-official-veterinarian-checks;official-veterinarian-assess-notification-and-mark-as-destroyed",
+        "after": [
+          {
+            "result": {
+              "duration": 60170834,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hooks.tearDownBrowser(Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 14950481691,
+              "status": "passed"
+            },
+            "line": 47,
+            "name": "I am signed in with LVU credentials",
+            "match": {
+              "arguments": [
+                {
+                  "val": "LVU",
+                  "offset": 20
+                }
+              ],
+              "location": "SignInStepDefs.iAmSignedWithCredentials(UserType)"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 401354400,
+              "status": "passed"
+            },
+            "line": 48,
+            "name": "I type a reference number",
+            "match": {
+              "location": "NotificationsDashboardStepDefs.iTypeReferenceNumber()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 496049213,
+              "status": "passed"
+            },
+            "line": 49,
+            "name": "I click search button",
+            "match": {
+              "location": "NotificationsDashboardStepDefs.iClickSearchButton()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 511680847,
+              "status": "passed"
+            },
+            "line": 50,
+            "name": "I open notification from the table on OV home page",
+            "match": {
+              "location": "NotificationsDashboardStepDefs.iOpenNotificationFromTheTableOnOVPage()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 182363109,
+              "status": "passed"
+            },
+            "line": 51,
+            "name": "I select if consignment left country: Yes",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Yes",
+                  "offset": 38
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.iSelectIfConsignmentLeftCountry(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 162625765,
+              "status": "passed"
+            },
+            "line": 52,
+            "name": "I fill Identification with \"Test identification\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Identification",
+                  "offset": 7
+                },
+                {
+                  "val": "Test identification",
+                  "offset": 28
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.fillInputText(String,String)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 157084252,
+              "status": "passed"
+            },
+            "line": 53,
+            "name": "I fill Documentation with \"Test documentation\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Documentation",
+                  "offset": 7
+                },
+                {
+                  "val": "Test documentation",
+                  "offset": 27
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.fillInputText(String,String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 190586827,
+              "status": "passed"
+            },
+            "line": 54,
+            "name": "I fill country of redispatch with \"AF\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "AF",
+                  "offset": 35
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.fillCountryOfRedispatch(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 134233801,
+              "status": "passed"
+            },
+            "line": 55,
+            "name": "I choose Exit BIP on control consignment leave page \u0027GBFXT1\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "GBFXT1",
+                  "offset": 53
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.chooseExitBip(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 473018460,
+              "status": "passed"
+            },
+            "line": 56,
+            "name": "I fill leave date with \u00272018-01-22\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "2018-01-22",
+                  "offset": 24
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.fillLeaveDateWith(SimpleDate)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 144126623,
+              "status": "passed"
+            },
+            "line": 57,
+            "name": "I choose transport type on control consignment leave page \u0027Aeroplane\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Aeroplane",
+                  "offset": 59
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.chooseConsignment(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 804391303,
+              "status": "passed"
+            },
+            "line": 58,
+            "name": "I click save on control consignment leave page",
+            "match": {
+              "location": "ConsignmentLeaveControlStepDefs.clickSaveAndContinue()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 56097925,
+              "status": "passed"
+            },
+            "line": 59,
+            "name": "The Notification dashboard page for OV is open",
+            "match": {
+              "location": "ConsignmentLeaveControlStepDefs.notificationPageIsOpen()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 269682804,
+              "status": "passed"
+            },
+            "line": 60,
+            "name": "I type a reference number",
+            "match": {
+              "location": "NotificationsDashboardStepDefs.iTypeReferenceNumber()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 434756674,
+              "status": "passed"
+            },
+            "line": 61,
+            "name": "I click search button",
+            "match": {
+              "location": "NotificationsDashboardStepDefs.iClickSearchButton()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 388112669,
+              "status": "passed"
+            },
+            "line": 62,
+            "name": "I open notification from the table on OV home page",
+            "match": {
+              "location": "NotificationsDashboardStepDefs.iOpenNotificationFromTheTableOnOVPage()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 41645194,
+              "status": "passed"
+            },
+            "line": 63,
+            "name": "consignment leave answer is selected to: Yes",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Yes",
+                  "offset": 41
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.checkConsignmentDecision(String)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 52533718,
+              "status": "passed"
+            },
+            "line": 64,
+            "name": "consignment identification is filled with \"Test identification\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Test identification",
+                  "offset": 43
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.consignmentIdentificationIsFilledWith(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 37425083,
+              "status": "passed"
+            },
+            "line": 65,
+            "name": "consignment documentation is filled with \"Test documentation\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Test documentation",
+                  "offset": 42
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.consignmentDocumentationIsFilledWith(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 303305979,
+              "status": "passed"
+            },
+            "line": 66,
+            "name": "consignment leave place is selected to \u0027GBFXT1\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "GBFXT1",
+                  "offset": 40
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.consignmentLeavePlaceIsSelectedTo(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 122931975,
+              "status": "passed"
+            },
+            "line": 67,
+            "name": "consignment leave transport is: \u0027Aeroplane\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Aeroplane",
+                  "offset": 33
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.consignmentLeaveTransportType(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 298265468,
+              "status": "passed"
+            },
+            "line": 68,
+            "name": "consignment leave date is set to: \u00272018-01-22\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "2018-01-22",
+                  "offset": 35
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.consignmentLeaveDateIs(SimpleDate)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 146676328,
+              "status": "passed"
+            },
+            "line": 69,
+            "name": "consignment country of redispatchment is \"AF\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "AF",
+                  "offset": 42
+                }
+              ],
+              "location": "ConsignmentLeaveControlStepDefs.consignmentReDispatchmentCountryIs(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 69902356,
+              "status": "passed"
+            },
+            "line": 70,
+            "name": "the notification reference number is displayed",
+            "match": {
+              "location": "GenericStepDefs.theNotificationReferenceNumberIsDisplayed()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 65279946,
+              "status": "passed"
+            },
+            "line": 71,
+            "name": "the notification version number V1 is displayed",
+            "match": {
+              "arguments": [
+                {
+                  "val": "V1",
+                  "offset": 32
+                }
+              ],
+              "location": "GenericStepDefs.theVersionNumberIsDisplayed(String)"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 831285261,
+              "status": "passed"
+            },
+            "line": 72,
+            "name": "I click save on control consignment leave page",
+            "match": {
+              "location": "ConsignmentLeaveControlStepDefs.clickSaveAndContinue()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 38635886,
+              "status": "passed"
+            },
+            "line": 73,
+            "name": "The Notification dashboard page for OV is open",
+            "match": {
+              "location": "ConsignmentLeaveControlStepDefs.notificationPageIsOpen()"
+            },
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "line": 45,
+            "name": "@CreateNewCEDNotificationWithDecision"
+          },
+          {
+            "line": 45,
+            "name": "@Compatibility"
+          }
+        ]
+      }
+    ],
+    "name": "Selenium Sanity Test | Official veterinarian checks",
+    "description": "",
+    "id": "selenium-sanity-test-|-official-veterinarian-checks",
+    "keyword": "Feature",
+    "uri": "/home/jenkinsagent/SeleniumBrowserStack41773/integration/src/test/resources/features/OfficialVetAssessment.feature",
+    "tags": [
+      {
+        "line": 1,
+        "name": "@B2C"
+      },
+      {
+        "line": 1,
+        "name": "@Sanity"
+      },
+      {
+        "line": 1,
+        "name": "@Regression"
+      }
+    ]
+  }
+]

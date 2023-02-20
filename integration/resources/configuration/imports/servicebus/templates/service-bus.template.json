@@ -1,0 +1,572 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "env": {
+      "type": "string"
+    },
+    "ServiceCode": {
+      "type": "string"
+    },
+    "ServiceType": {
+      "type": "string"
+    },
+    "ServiceName": {
+      "type": "string"
+    },
+    "Tier": {
+      "type": "string"
+    },
+    "dateCreated": {
+      "type": "string"
+    },
+    "serviceBusLoggingResourceGroup": {
+      "type": "string"
+    },
+    "serviceBusLoggingStorageAccount": {
+      "type": "string"
+    },
+    "serviceBusLoggingSubscriptionId": {
+      "type": "string"
+    },
+    "serviceBusNamespaceName": {
+      "type": "string"
+    },
+    "serviceBusQueueNameNotification": {
+      "type": "string"
+    },
+    "serviceBusQueueNameTraces": {
+      "type": "string"
+    },
+    "serviceBusSku": {
+      "type": "string"
+    },
+    "serviceBusTradePlatformSubscriptionFilter": {
+      "type": "string"
+    },
+    "serviceBusDynamicsSubscriptionFilter": {
+      "type": "string"
+    },
+    "serviceBusDataAnalyticsSubscriptionFilter": {
+      "type": "string"
+    },
+    "serviceBusDynamicsChedsSubscriptionFilter": {
+      "type": "string"
+    },
+    "serviceBusZoneRedundant": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "sbVersion": "2022-01-01-preview",
+    "serviceBusTopicName": "notification-topic",
+    "serviceBusTradePlatformSubscriptionName": "trade-platform",
+    "serviceBusDynamicsSubscriptionName": "dynamics",
+    "serviceBusDataAnalyticsSubscriptionName": "data-analytics",
+    "serviceBusDynamicsChedsSubscriptionName": "dynamics-cheds"
+  },
+  "resources": [
+    {
+      "apiVersion": "[variables('sbVersion')]",
+      "name": "[parameters('serviceBusNamespaceName')]",
+      "type": "Microsoft.ServiceBus/namespaces",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "Name": "[parameters('serviceBusNamespaceName')]",
+        "ServiceCode": "[parameters('ServiceCode')]",
+        "ServiceName": "[parameters('ServiceName')]",
+        "ServiceType": "[parameters('ServiceType')]",
+        "CreationDateTime": "[parameters('dateCreated')]",
+        "Environment": "[parameters('env')]",
+        "Tier": "[parameters('Tier')]",
+        "Location": "[resourceGroup().location]"
+      },
+      "sku": {
+        "name": "[parameters('serviceBusSku')]"
+      },
+      "properties": {
+        "zoneRedundant": "[bool(parameters('serviceBusZoneRedundant'))]",
+        "minimumTlsVersion": "1.2"
+      },
+      "resources": [
+        {
+          "apiVersion": "[variables('sbVersion')]",
+          "name": "[parameters('serviceBusQueueNameTraces')]",
+          "type": "Queues",
+          "dependsOn": [
+            "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'))]"
+          ],
+          "properties": {
+            "maxSizeInMegabytes": "5120",
+            "requiresDuplicateDetection": "false",
+            "defaultMessageTimeToLive": "P14D",
+            "requiresSession": "true",
+            "enablePartitioning": "false",
+            "lockDuration": "PT30S"
+          },
+          "resources": [
+            {
+              "apiVersion": "[variables('sbVersion')]",
+              "name": "[concat('send_listen_', parameters('serviceBusQueueNameTraces'))]",
+              "type": "authorizationRules",
+              "dependsOn": [
+                "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'), '/queues/', parameters('serviceBusQueueNameTraces'))]"
+              ],
+              "properties": {
+                "rights": [
+                  "Send",
+                  "Listen"
+                ]
+              }
+            },
+            {
+              "apiVersion": "[variables('sbVersion')]",
+              "name": "[concat('listen_', parameters('serviceBusQueueNameTraces'))]",
+              "type": "authorizationRules",
+              "dependsOn": [
+                "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'), '/queues/', parameters('serviceBusQueueNameTraces'))]"
+              ],
+              "properties": {
+                "rights": [
+                  "Listen"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "apiVersion": "[variables('sbVersion')]",
+          "name": "[parameters('serviceBusQueueNameNotification')]",
+          "type": "queues",
+          "dependsOn": [
+            "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'))]"
+          ],
+          "properties": {
+            "maxSizeInMegabytes": "5120",
+            "requiresDuplicateDetection": "false",
+            "defaultMessageTimeToLive": "P14D",
+            "enablePartitioning": "false",
+            "lockDuration": "PT300S"
+          },
+          "resources": [
+            {
+              "apiVersion": "[variables('sbVersion')]",
+              "name": "[concat('send_', parameters('serviceBusQueueNameNotification'))]",
+              "type": "authorizationRules",
+              "dependsOn": [
+                "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'), '/queues/', parameters('serviceBusQueueNameNotification'))]"
+              ],
+              "properties": {
+                "rights": [
+                  "Send"
+                ]
+              }
+            },
+            {
+              "apiVersion": "[variables('sbVersion')]",
+              "name": "[concat('listen_', parameters('serviceBusQueueNameNotification'))]",
+              "type": "authorizationRules",
+              "dependsOn": [
+                "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'), '/queues/', parameters('serviceBusQueueNameNotification'))]"
+              ],
+              "properties": {
+                "rights": [
+                  "Listen"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "apiVersion": "[variables('sbVersion')]",
+          "name": "[concat(parameters('serviceBusNamespaceName'), '/enotification_event_queue')]",
+          "type": "Microsoft.ServiceBus/namespaces/queues",
+          "dependsOn": [
+            "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'))]"
+          ],
+          "properties": {
+            "maxSizeInMegabytes": "5120",
+            "requiresDuplicateDetection": "false",
+            "defaultMessageTimeToLive": "P14D",
+            "enablePartitioning": "false",
+            "lockDuration": "PT30S",
+            "maxDeliveryCount": "3"
+          },
+          "resources": [
+            {
+              "apiVersion": "[variables('sbVersion')]",
+              "name": "send_listen_notify_queue",
+              "type": "authorizationRules",
+              "dependsOn": [
+                "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'), '/Queues/enotification_event_queue')]"
+              ],
+              "properties": {
+                "rights": [
+                  "Send",
+                  "Listen"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "apiVersion": "[variables('sbVersion')]",
+          "name": "[concat(parameters('serviceBusNamespaceName'), '/notify_queue')]",
+          "type": "Microsoft.ServiceBus/namespaces/queues",
+          "dependsOn": [
+            "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'))]"
+          ],
+          "properties": {
+            "maxSizeInMegabytes": "5120",
+            "requiresDuplicateDetection": "false",
+            "defaultMessageTimeToLive": "P14D",
+            "enablePartitioning": "false",
+            "lockDuration": "PT30S",
+            "maxDeliveryCount": "3"
+          },
+          "resources": [
+            {
+              "apiVersion": "[variables('sbVersion')]",
+              "name": "send_listen_notify_queue",
+              "type": "authorizationRules",
+              "dependsOn": [
+                "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'), '/Queues/notify_queue')]"
+              ],
+              "properties": {
+                "rights": [
+                  "Send",
+                  "Listen"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "apiVersion": "[variables('sbVersion')]",
+          "name": "[concat(parameters('serviceBusNamespaceName'), '/risk_feedback_queue')]",
+          "type": "Microsoft.ServiceBus/namespaces/queues",
+          "dependsOn": [
+            "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'))]"
+          ],
+          "properties": {
+            "maxSizeInMegabytes": "5120",
+            "requiresDuplicateDetection": "false",
+            "defaultMessageTimeToLive": "P14D",
+            "enablePartitioning": "false",
+            "lockDuration": "PT30S",
+            "maxDeliveryCount": "3"
+          },
+          "resources": [
+            {
+              "apiVersion": "[variables('sbVersion')]",
+              "name": "send_listen_risk_feedback_queue",
+              "type": "authorizationRules",
+              "dependsOn": [
+                "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'), '/Queues/risk_feedback_queue')]"
+              ],
+              "properties": {
+                "rights": [
+                  "Send",
+                  "Listen"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "providers/diagnosticSettings",
+          "name": "[concat('Microsoft.Insights/', parameters('serviceBusNamespaceName'))]",
+          "dependsOn": [
+            "[resourceId('Microsoft.ServiceBus/namespaces', parameters('serviceBusNamespaceName'))]"
+          ],
+          "apiVersion": "2017-05-01-preview",
+          "properties": {
+            "name": "[parameters('serviceBusNamespaceName')]",
+            "storageAccountId": "[resourceId(parameters('serviceBusLoggingSubscriptionId'), parameters('serviceBusLoggingResourceGroup'), 'Microsoft.Storage/storageAccounts', parameters('serviceBusLoggingStorageAccount') )]",
+            "metrics": [
+              {
+                "category": "AllMetrics",
+                "enabled": true,
+                "retentionPolicy": {
+                  "enabled": true,
+                  "days": 90
+                }
+              }
+            ],
+            "logs": [
+              {
+                "category": "OperationalLogs",
+                "enabled": true,
+                "retentionPolicy": {
+                  "enabled": true,
+                  "days": 90
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "Microsoft.ServiceBus/namespaces/topics",
+          "apiVersion": "2021-06-01-preview",
+          "name": "[concat(parameters('serviceBusNamespaceName'), '/alvs_topic')]",
+          "dependsOn": [
+            "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'))]"
+          ],
+          "location": "North Europe",
+          "properties": {
+            "defaultMessageTimeToLive": "P14D",
+            "maxSizeInMegabytes": 5120,
+            "requiresDuplicateDetection": false,
+            "duplicateDetectionHistoryTimeWindow": "PT10M",
+            "enablePartitioning": false
+          }
+        },
+        {
+          "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
+          "apiVersion": "2021-06-01-preview",
+          "name": "[concat(parameters('serviceBusNamespaceName'), '/alvs_topic/alvs_central_store_sub')]",
+          "dependsOn": [
+            "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'))]",
+            "alvs_topic"
+          ],
+          "location": "North Europe",
+          "properties": {
+            "lockDuration": "PT30S",
+            "defaultMessageTimeToLive": "P14D",
+            "maxDeliveryCount": 3
+          }
+        },
+        {
+          "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
+          "apiVersion": "2021-06-01-preview",
+          "name": "[concat(parameters('serviceBusNamespaceName'), '/alvs_topic/alvs_temp_store_sub')]",
+          "location": "North Europe",
+          "dependsOn": [
+            "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'))]",
+            "alvs_topic"
+          ],
+          "properties": {
+            "lockDuration": "PT30S",
+            "defaultMessageTimeToLive": "P14D",
+            "maxDeliveryCount": 3
+          }
+        },
+        {
+          "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions/rules",
+          "apiVersion": "2021-06-01-preview",
+          "name": "[concat(parameters('serviceBusNamespaceName'), '/alvs_topic/alvs_temp_store_sub/Filter')]",
+          "location": "North Europe",
+          "dependsOn": [
+            "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'))]",
+            "alvs_topic",
+            "alvs_temp_store_sub"
+          ],
+          "properties": {
+            "action": {},
+            "filterType": "CorrelationFilter",
+            "correlationFilter": {
+              "properties": {
+                "messageType": "ALVSClearanceRequest"
+              }
+            }
+          }
+        },
+        {
+          "apiVersion": "2017-04-01",
+          "name": "[concat(parameters('serviceBusNamespaceName'), '/', variables('serviceBusTopicName'))]",
+          "type": "Microsoft.ServiceBus/namespaces/Topics",
+          "dependsOn": [
+            "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'))]"
+          ],
+          "properties": {
+            "path": "[variables('serviceBusTopicName')]"
+          },
+          "resources": [
+            {
+              "apiVersion": "2017-04-01",
+              "name": "[variables('serviceBusTradePlatformSubscriptionName')]",
+              "type": "Subscriptions",
+              "dependsOn": [
+                "[variables('serviceBusTopicName')]"
+              ],
+              "properties": {},
+              "resources": [
+                {
+                  "apiVersion": "2017-04-01",
+                  "name": "[concat(variables('serviceBusTradePlatformSubscriptionName'), '-filter')]",
+                  "type": "Rules",
+                  "dependsOn": [
+                    "[variables('serviceBusTradePlatformSubscriptionName')]"
+                  ],
+                  "properties": {
+                    "filterType": "SqlFilter",
+                    "sqlFilter": {
+                      "sqlExpression": "[parameters('serviceBusTradePlatformSubscriptionFilter')]",
+                      "requiresPreprocessing": "false"
+                    },
+                    "action": {
+                      "sqlExpression": "set FilterTag = 'true'"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "apiVersion": "2017-04-01",
+              "name": "[variables('serviceBusDynamicsSubscriptionName')]",
+              "type": "Subscriptions",
+              "dependsOn": [
+                "[variables('serviceBusTopicName')]",
+                "[parameters('serviceBusQueueNameNotification')]"
+              ],
+              "properties": {
+                "forwardTo": "[parameters('serviceBusQueueNameNotification')]"
+              },
+              "resources": [
+                {
+                  "apiVersion": "2017-04-01",
+                  "name": "[concat(variables('serviceBusDynamicsSubscriptionName'), '-filter')]",
+                  "type": "Rules",
+                  "dependsOn": [
+                    "[variables('serviceBusDynamicsSubscriptionName')]"
+                  ],
+                  "properties": {
+                    "filterType": "SqlFilter",
+                    "sqlFilter": {
+                      "sqlExpression": "[parameters('serviceBusDynamicsSubscriptionFilter')]",
+                      "requiresPreprocessing": "false"
+                    },
+                    "action": {
+                      "sqlExpression": "set FilterTag = 'true'"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "apiVersion": "2017-04-01",
+              "name": "[variables('serviceBusDataAnalyticsSubscriptionName')]",
+              "type": "Subscriptions",
+              "dependsOn": [
+                "[variables('serviceBusTopicName')]"
+              ],
+              "properties": {
+                "lockDuration": "PT30S",
+                "maxDeliveryCount": 3,
+                "defaultMessageTimeToLive": "P3D",
+                "deadLetteringOnFilterEvaluationExceptions": true,
+                "autoDeleteOnIdle": "P14D"
+              },
+              "resources": [
+                {
+                  "apiVersion": "2017-04-01",
+                  "name": "[concat(variables('serviceBusDataAnalyticsSubscriptionName'), '-filter')]",
+                  "type": "Rules",
+                  "dependsOn": [
+                    "[variables('serviceBusDataAnalyticsSubscriptionName')]"
+                  ],
+                  "properties": {
+                    "filterType": "SqlFilter",
+                    "sqlFilter": {
+                      "sqlExpression": "[parameters('serviceBusDataAnalyticsSubscriptionFilter')]",
+                      "requiresPreprocessing": "false"
+                    },
+                    "action": {
+                      "sqlExpression": "set FilterTag = 'true'"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "apiVersion": "2017-04-01",
+              "name": "[variables('serviceBusDynamicsChedsSubscriptionName')]",
+              "type": "Subscriptions",
+              "dependsOn": [
+                "[variables('serviceBusTopicName')]",
+                "[parameters('serviceBusQueueNameNotification')]"
+              ],
+              "properties": {
+                "forwardTo": "eu_notification"
+              },
+              "resources": [
+                {
+                  "apiVersion": "2017-04-01",
+                  "name": "[concat(variables('serviceBusDynamicsChedsSubscriptionName'), '-filter')]",
+                  "type": "Rules",
+                  "dependsOn": [
+                    "[variables('serviceBusDynamicsChedsSubscriptionName')]"
+                  ],
+                  "properties": {
+                    "filterType": "SqlFilter",
+                    "sqlFilter": {
+                      "sqlExpression": "[parameters('serviceBusDynamicsChedsSubscriptionFilter')]",
+                      "requiresPreprocessing": "false"
+                    },
+                    "action": {
+                      "sqlExpression": "set FilterTag = 'true'"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Microsoft.ServiceBus/namespaces/topics",
+          "apiVersion": "2021-06-01-preview",
+          "name": "[concat(parameters('serviceBusNamespaceName'), '/messaging_topic')]",
+          "dependsOn": [
+            "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'))]"
+          ],
+          "location": "North Europe",
+          "properties": {
+            "defaultMessageTimeToLive": "P14D",
+            "maxSizeInMegabytes": 5120,
+            "requiresDuplicateDetection": false,
+            "duplicateDetectionHistoryTimeWindow": "PT10M",
+            "enablePartitioning": false
+          }
+        },
+        {
+          "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
+          "apiVersion": "2021-06-01-preview",
+          "name": "[concat(parameters('serviceBusNamespaceName'), '/messaging_topic/commodity_file_upload')]",
+          "location": "North Europe",
+          "dependsOn": [
+            "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'))]",
+            "messaging_topic"
+          ],
+          "properties": {
+            "lockDuration": "PT30S",
+            "defaultMessageTimeToLive": "P14D",
+            "maxDeliveryCount": 3
+          }
+        },
+        {
+          "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions/rules",
+          "apiVersion": "2021-06-01-preview",
+          "name": "[concat(parameters('serviceBusNamespaceName'), '/messaging_topic/commodity_file_upload/Filter')]",
+          "location": "North Europe",
+          "dependsOn": [
+            "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'))]",
+            "messaging_topic",
+            "commodity_file_upload"
+          ],
+          "properties": {
+            "action": {},
+            "filterType": "CorrelationFilter",
+            "correlationFilter": {
+              "properties": {
+                "file_type": "commodity_data",
+                "event": "urn:message:IPAFFS.Messages.Events:FileUploaded"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+
+

@@ -1,0 +1,7 @@
+certificate-microservice:161
+imports-notification-schema:1.0.251
+notify-microservice:17
+soaprequest-microservice:140
+spring-boot-parent:2.0.224-512
+spring-boot-common-security:2.0.17-76
+spring-boot-common:2.0.25-100

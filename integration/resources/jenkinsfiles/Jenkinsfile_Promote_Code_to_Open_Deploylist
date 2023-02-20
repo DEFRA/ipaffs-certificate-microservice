@@ -1,0 +1,56 @@
+#!/usr/bin/env groovy
+
+@Library('pipeline-library') _
+
+import defra.pipeline.config.Config;
+import defra.pipeline.scanning.SecretScanning
+
+List<Map<String, String>> deployables = SecretScanning.getComponents(Config.getPropertyValue("secretscanningDeploymentList", this), this)
+
+SOURCE_REPOSITORY = 'https://giteux.azure.defra.cloud/imports/$SERVICE_NAME.git'
+
+pipeline {
+    agent {label 'master'}
+    options {
+        ansiColor('xterm')
+        timestamps()
+        disableConcurrentBuilds()
+    }
+    parameters {
+        string(name: 'BUILD_NUMBER_TAG', defaultValue: '127', description: 'Tag of source repository')
+        string(name: 'SERVICE_NAME', defaultValue: 'certificate-microservice-test', description: 'Service name for  source repository')
+        string(name: 'SET_VERSION', defaultValue: 'MAJOR.MINOR.PATCH', description: 'Code visible as this version in Github')
+    }
+
+    stages {
+        stage('Get service code') {
+            when {
+                expression {deployables.any({ deployable -> deployable['name'] == SERVICE_NAME && deployable['version'] == BUILD_NUMBER_TAG})}
+            }
+            steps {
+                dir('sourceRepository') {
+                    checkout([$class: 'GitSCM',
+                        branches: [[name: params.BUILD_NUMBER_TAG]],
+                        userRemoteConfigs: [[
+                        credentialsId: 'testcreds',
+                        refspec: '+refs/tags/*:refs/remotes/origin/tags/*',
+                        url: SOURCE_REPOSITORY]]
+                    ])
+                }
+            }
+        }
+        stage('Push code to github') {
+            when {
+                expression {deployables.any({ deployable -> deployable['name'] == SERVICE_NAME && deployable['version'] == BUILD_NUMBER_TAG})}
+            }
+            steps {
+                promoteToGithub('sourceRepository', 'ipaffs-$SERVICE_NAME', '.', 'defradigitalci', 'github.com/DEFRA/', params.SET_VERSION)
+            }
+        }
+    }
+    post {
+        always {
+            step([$class: 'WsCleanup'])
+        }
+    }
+}

@@ -1,0 +1,188 @@
+@Library('pipeline-library') _
+
+pipeline {
+    agent {label 'master'}
+    options {
+        ansiColor('xterm')
+        timestamps()
+        disableConcurrentBuilds()
+    }
+    parameters {
+      string(name: 'RELEASE_CANDIDATE', defaultValue: 'MAJOR.MINOR.PATCH', description: 'Release Candidate to be deployed above sandpit example: 3.4.2')
+      choice choices: ['BLUE', 'GREEN'], description: '', name: 'CHANNEL'
+      booleanParam(name: 'PROMOTE_DOCKER_IMAGES', defaultValue: true, description: 'Would you like to promote docker images to OPS ACR for this release?')
+      booleanParam(name: 'SAVE_OCTOPUS_PROJECTS', defaultValue: true, description: 'Would you like to save Octopus Projects definition and variable sets?')
+      booleanParam(name: 'PUSH_ARM_TEMPLATES_TO_VSTS', defaultValue: true, description: 'Would you like to push the current ARM Templates within pipeline-library/resources to VSTS for Octopus?')
+      string(name: 'ARM_TEMPLATE_BRANCH', defaultValue: 'master', description: 'Would you like to promote templates from a hotfix branch on the *pipeline-library* repository instead of master?')
+      booleanParam(name: 'TAG_LIBRARY', defaultValue: true, description: 'Would you like to tag the pipeline library code with the release version?')
+      booleanParam(name: 'TAG_SELENIUM', defaultValue: true, description: 'Would you like to tag all frontend repositories to match selenium tests to release?')
+      booleanParam(name: 'VERIFY_ADO_PACKAGE', defaultValue: true, description: 'Would you like use the ADO package verification pause step?')
+      booleanParam(name: 'CREATE_OCTOPUS_RELEASE', defaultValue: true, description: 'Would you like to create a release in octopus?')
+      booleanParam(name: 'CREATE_OCTOPUS_RELEASE_TRAINING', defaultValue: true, description: 'Would you like to create a training release in octopus?')
+      booleanParam(name: 'START_RELEASE', defaultValue: true, description: 'Would you like to deploy the release in octopus?')
+    }
+    environment {
+      ENVIRONMENT = "octopus"
+    }
+
+    stages {
+      stage('Promote Docker Images from SND ACR to OPS ACR') {
+        when {
+          expression { params.PROMOTE_DOCKER_IMAGES == true }
+        }
+        steps {
+          dockerLogin("Sandpit")
+          dockerLogin("${ENVIRONMENT}")
+          dockerPromoteToTest("${params.RELEASE_CANDIDATE}", "${ENVIRONMENT}")
+        }
+      }
+
+      stage('SaveOctopusProjects') {
+        when {
+          expression { params.SAVE_OCTOPUS_PROJECTS == true }
+        }
+        steps {
+          withCredentials([string(credentialsId: 'OctopusApiKey', variable: 'octopusApiKey')]) {
+            octopusGetProjects("${octopusApiKey}", "DEFRA-EUX-IMP-AZURE-STORAGE DEFRA-EUX-IMP-AZURE-SEARCH DEFRA-EUX-IMP-SERVICE-BUS DEFRA-EUX-IMP-APP-SERVICE-PLANS DEFRA-EUX-IMP-LOGIC-APPS DEFRA-EUX-IMP-LOGIC-APP-TRADE BLUE-GREEN-DEFRA-EUX-IMP-SQL BLUE-GREEN-DEFRA-EUX-IMP-DATABASE-CONFIGURATION BLUE-GREEN-DEFRA-EUX-IMP-APPLICATION-INSIGHTS BLUE-GREEN-DEFRA-EUX-IMP-SERVICE-DEPLOYMENT DEFRA-EUX-IMP-FUNCTION-APP DEFRA-EUX-IMP-DASHBOARDS BLUE-GREEN-DEFRA-EUX-IMP-ALERTS BLUE-GREEN-DEFRA-EUX-IMP-RELEASE TRAINING-DEFRA-EUX-IMP-RELEASE DEFRA-EUX-IMP-VERIFY-DEPLOYMENT")
+          }
+        }
+      }
+
+      stage('Push ARM Templates to AZURE DEVOPS') {
+        when {
+          expression { params.PUSH_ARM_TEMPLATES_TO_VSTS == true }
+        }
+        steps {
+          //check out latest pipeline-library master
+          git branch: "${ARM_TEMPLATE_BRANCH}", changelog: false, credentialsId: 'testcreds', poll: false, url: 'https://giteux.azure.defra.cloud/imports/pipeline-library.git'
+          //copy required code (here ARM templates) to VSTS repo and push to master
+          //can be used for other repos as well
+          armPromote('pipeline-library', '../../resources/configuration', 'DEFRA-EUX-IMP', 'app', 'defra-eux-imp-vsts', 'defradev.visualstudio.com/DEFRA-Infrastructure/_git', params.RELEASE_CANDIDATE)
+        }
+      }
+
+      stage('Tag Pipeline Library') {
+        when {
+          expression { params.TAG_LIBRARY == true }
+        }
+        steps {
+          withCredentials([string(credentialsId: 'JENKINS_GITLAB_TOKEN', variable: 'TOKEN')]) {
+            tagBranch("${RELEASE_CANDIDATE}", "${TOKEN}", 'pipeline-library')
+          }
+        }
+      }
+
+      stage('Tag Selenium Code') {
+        when {
+          expression { params.TAG_SELENIUM == true }
+        }
+        steps {
+          echo "=== Tagging frontend-notification ==="
+          build job: 'Tag_A_Repository', parameters: [string(name: 'TAG', value: "${RELEASE_CANDIDATE}"), string(name: 'SERVICE_REPO', value: 'frontend-notification')]
+          echo "=== Tagging frontend-control ==="
+          build job: 'Tag_A_Repository', parameters: [string(name: 'TAG', value: "${RELEASE_CANDIDATE}"), string(name: 'SERVICE_REPO', value: 'frontend-control')]
+          echo "=== Tagging frontend-decision ==="
+          build job: 'Tag_A_Repository', parameters: [string(name: 'TAG', value: "${RELEASE_CANDIDATE}"), string(name: 'SERVICE_REPO', value: 'frontend-decision')]
+          echo "=== Tagging frontend-bcpadmin ==="
+          build job: 'Tag_A_Repository', parameters: [string(name: 'TAG', value: "${RELEASE_CANDIDATE}"), string(name: 'SERVICE_REPO', value: 'frontend-bcpadmin')]
+          echo "=== Tagging frontend-upload ==="
+          build job: 'Tag_A_Repository', parameters: [string(name: 'TAG', value: "${RELEASE_CANDIDATE}"), string(name: 'SERVICE_REPO', value: 'frontend-upload')]
+          echo "=== Tagging frontend-checks ==="
+          build job: 'Tag_A_Repository', parameters: [string(name: 'TAG', value: "${RELEASE_CANDIDATE}"), string(name: 'SERVICE_REPO', value: 'frontend-checks')]
+          echo "=== Tagging frontend-bordernotification ==="
+          build job: 'Tag_A_Repository', parameters: [string(name: 'TAG', value: "${RELEASE_CANDIDATE}"), string(name: 'SERVICE_REPO', value: 'frontend-bordernotification')]
+        }
+      }
+
+      stage('Setting Release Version') {
+          steps {
+              script {
+                  releaseVersion = "${RELEASE_CANDIDATE}-${CHANNEL}"
+                  echo "=== Release Version: ${releaseVersion} ==="
+              }
+          }
+      }
+
+      stage('Verify ADO and Docker promotion') {
+          when {
+              expression { params.VERIFY_ADO_PACKAGE == true }
+          }
+          steps {
+              input message: "Confirm the ${RELEASE_CANDIDATE} version of Arm Templates was correctly packaged in to an ADO artifact and the Docker Promotion finished"
+          }
+      }
+
+      stage('Create Octopus Release Packages') {
+          when {
+              expression { params.CREATE_OCTOPUS_RELEASE == true }
+          }
+          steps {
+              withCredentials([string(credentialsId: 'OctopusApiKey', variable: 'octopusApiKey')]) {
+                  octopusCreateRelease('DEFRA-EUX-IMP-TRADE-SECRETS', "${octopusApiKey}", releaseVersion, 'Default')
+                  octopusCreateRelease('DEFRA-EUX-IMP-AZURE-STORAGE', "${octopusApiKey}", releaseVersion, 'Default')
+                  octopusCreateRelease('DEFRA-EUX-IMP-AZURE-SEARCH', "${octopusApiKey}",releaseVersion, 'Default')
+                  octopusCreateRelease('DEFRA-EUX-IMP-SERVICE-BUS', "${octopusApiKey}",releaseVersion, 'Default')
+                  octopusCreateRelease('DEFRA-EUX-IMP-APP-SERVICE-PLANS', "${octopusApiKey}",releaseVersion, 'Default')
+                  octopusCreateRelease('DEFRA-EUX-IMP-LOGIC-APPS', "${octopusApiKey}",releaseVersion, 'Default')
+                  octopusCreateRelease('DEFRA-EUX-IMP-LOGIC-APP-TRADE', "${octopusApiKey}",releaseVersion, 'Default')
+                  octopusCreateRelease('BLUE-GREEN-DEFRA-EUX-IMP-SQL', "${octopusApiKey}", releaseVersion, 'Default')
+                  octopusCreateRelease('BLUE-GREEN-DEFRA-EUX-IMP-DATABASE-CONFIGURATION', "${octopusApiKey}", releaseVersion, 'Default')
+                  octopusCreateRelease('BLUE-GREEN-DEFRA-EUX-IMP-APPLICATION-INSIGHTS', "${octopusApiKey}", releaseVersion, 'Default')
+                  octopusCreateRelease('BLUE-GREEN-DEFRA-EUX-IMP-SERVICE-DEPLOYMENT', "${octopusApiKey}", "${RELEASE_CANDIDATE}-${CHANNEL}-IDM-LATEST", 'IDM-LATEST')
+                  octopusCreateRelease('BLUE-GREEN-DEFRA-EUX-IMP-SERVICE-DEPLOYMENT', "${octopusApiKey}", releaseVersion, 'IDM-CURRENT')
+                  octopusCreateRelease('DEFRA-EUX-IMP-FUNCTION-APP', "${octopusApiKey}", releaseVersion, 'Default')
+                  octopusCreateRelease('DEFRA-EUX-IMP-DASHBOARDS', "${octopusApiKey}", releaseVersion, 'Default')
+                  octopusCreateRelease('BLUE-GREEN-DEFRA-EUX-IMP-ALERTS', "${octopusApiKey}", releaseVersion, 'Default')
+                  octopusCreateRelease('DEFRA-EUX-IMP-VERIFY-DEPLOYMENT', "${octopusApiKey}", releaseVersion, 'Default')
+                  octopusCreateRelease('DEFRA-EUX-IMP-REDIS', "${octopusApiKey}", releaseVersion, 'Default')
+                  octopusCreateRelease('BLUE-GREEN-DEFRA-EUX-IMP-RELEASE', "${octopusApiKey}", releaseVersion, params.CHANNEL)
+                  octopusCreateRelease('DEFRA-EUX-IMP-PRIVATE-ENDPOINTS', "${octopusApiKey}", releaseVersion, 'Default')
+              }
+          }
+      }
+
+      stage('Create Octopus Release Packages for TRAINING Environment') {
+          when {
+              expression { params.CREATE_OCTOPUS_RELEASE_TRAINING == true }
+          }
+          steps {
+              withCredentials([string(credentialsId: 'OctopusApiKey', variable: 'octopusApiKey')]) {
+                  octopusCreateRelease('DEFRA-EUX-IMP-TRADE-SECRETS', "${octopusApiKey}", "${RELEASE_CANDIDATE}-TRN", 'Training-Env')
+                  octopusCreateRelease('DEFRA-EUX-IMP-AZURE-STORAGE', "${octopusApiKey}", "${RELEASE_CANDIDATE}-TRN", 'Training-Env')
+                  octopusCreateRelease('DEFRA-EUX-IMP-AZURE-SEARCH', "${octopusApiKey}", "${RELEASE_CANDIDATE}-TRN", 'Training-Env')
+                  octopusCreateRelease('DEFRA-EUX-IMP-SERVICE-BUS', "${octopusApiKey}", "${RELEASE_CANDIDATE}-TRN", 'Training-Env')
+                  octopusCreateRelease('DEFRA-EUX-IMP-APP-SERVICE-PLANS', "${octopusApiKey}", "${RELEASE_CANDIDATE}-TRN", 'Training-Env')
+                  octopusCreateRelease('DEFRA-EUX-IMP-LOGIC-APPS', "${octopusApiKey}", "${RELEASE_CANDIDATE}-TRN", 'Training-Env')
+                  octopusCreateRelease('DEFRA-EUX-IMP-LOGIC-APP-TRADE', "${octopusApiKey}", "${RELEASE_CANDIDATE}-TRN", 'Training-Env')
+                  octopusCreateRelease('BLUE-GREEN-DEFRA-EUX-IMP-SQL', "${octopusApiKey}", "${RELEASE_CANDIDATE}-TRN", 'Training-Env')
+                  octopusCreateRelease('BLUE-GREEN-DEFRA-EUX-IMP-DATABASE-CONFIGURATION', "${octopusApiKey}", "${RELEASE_CANDIDATE}-TRN", 'Training-Env')
+                  octopusCreateRelease('BLUE-GREEN-DEFRA-EUX-IMP-APPLICATION-INSIGHTS', "${octopusApiKey}", "${RELEASE_CANDIDATE}-TRN", 'Training-Env')
+                  octopusCreateRelease('BLUE-GREEN-DEFRA-EUX-IMP-SERVICE-DEPLOYMENT', "${octopusApiKey}", "${RELEASE_CANDIDATE}-TRN", 'Training-Env')
+                  octopusCreateRelease('DEFRA-EUX-IMP-FUNCTION-APP', "${octopusApiKey}", "${RELEASE_CANDIDATE}-TRN", 'Training-Env')
+                  octopusCreateRelease('DEFRA-EUX-IMP-DASHBOARDS', "${octopusApiKey}", "${RELEASE_CANDIDATE}-TRN", 'Training-Env')
+                  octopusCreateRelease('BLUE-GREEN-DEFRA-EUX-IMP-ALERTS', "${octopusApiKey}", "${RELEASE_CANDIDATE}-TRN", 'Training-Env')
+                  octopusCreateRelease('TRAINING-DEFRA-EUX-IMP-RELEASE', "${octopusApiKey}", "${RELEASE_CANDIDATE}-TRN", 'Training-Env')
+                  octopusCreateRelease('DEFRA-EUX-IMP-PRIVATE-ENDPOINTS', "${octopusApiKey}", "${RELEASE_CANDIDATE}-TRN", 'Training-Env')
+              }
+          }
+      }
+
+      stage('Deploy Octopus Release') {
+          when {
+            expression { params.START_RELEASE == true }
+          }
+          steps {
+              withCredentials([string(credentialsId: 'OctopusApiKey', variable: 'octopusApiKey')]) {
+                  octopusDeployRelease('BLUE-GREEN-DEFRA-EUX-IMP-RELEASE', "${octopusApiKey}", 'AZR-SND', params.RELEASE_CANDIDATE, params.CHANNEL)
+              }
+          }
+      }
+
+    }
+
+    post {
+        always {
+          step([$class: 'WsCleanup'])
+        }
+    }
+}

@@ -1,0 +1,40 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "dateCreated": {
+            "value": ""
+        },
+        "envCode": {
+            "value": "SND"
+        },
+        "tradeServiceBusConnectionString": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+                },
+                "secretName": "tradeServiceBusLogicAppConnnectionString-snd"
+            }
+        },
+        "apiConnectionNameTradeASB": {
+            "value": "SNDIMPINFALA005-trade-api"
+        },
+        "sourceTopicName": {
+            "value": "notification-topic"
+        },
+        "serviceCode": {
+            "value": "IMP"
+        },
+        "logicAppName": {
+            "value": "SNDIMPINFALA005"
+        },
+        "serviceBusConfig": {
+            "value": {
+                "apiVersion": "2015-08-01",
+                "name": "servicebus-3",
+                "resourceGroup": "SNDIMPINFRGP001",
+                "sasPolicy": "RootManageSharedAccessKey"
+            }
+        }
+    }
+}

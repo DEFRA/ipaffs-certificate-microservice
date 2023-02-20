@@ -1,0 +1,145 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "bcpNameOverrides": {
+      "value": "#{bcpNameOverrides}"
+    },
+    "blueGreen": {
+      "value": "#{blueGreen | ToLower}"
+    },
+    "containerRepository": {
+      "value": "#{containerRepository}"
+    },
+    "dateCreated": {
+      "value": "#{format-DateTag}"
+    },
+    "DeploymentSubnetResourceId": {
+      "value": ""
+    },
+    "dockerRegistryPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "opsImpAzureDockerRegistryPassword"
+      }
+    },
+    "dockerRegistryServerUrl": {
+      "value": "opsimpfesacr001.azurecr.io"
+    },
+    "dockerRegistryServerUsername": {
+      "value": "OPSIMPFESACR001"
+    },
+    "dnsSuffix": {
+      "value": "#{dnsZone}"
+    },
+    "enableEuChedAssessmentSubmission" : {
+      "value": "#{enableEuChedAssessmentSubmission}"
+    },
+    "envCode": {
+      "value": "#{env | ToLower}"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "inspectionChangedNotRequiredEmailTemplate": {
+      "value": "#{inspectionChangedNotRequiredEmailTemplate}"
+    },
+    "inspectionChangedNotRequiredTextTemplate": {
+      "value": "#{inspectionChangedNotRequiredTextTemplate}"
+    },
+    "inspectionChangedRequiredEmailTemplate": {
+      "value": "#{inspectionChangedRequiredEmailTemplate}"
+    },
+    "inspectionChangedRequiredTextTemplate": {
+      "value": "#{inspectionChangedRequiredTextTemplate}"
+    },
+    "inspectionRequiredEmailTemplate": {
+      "value": "#{inspectionRequiredEmailTemplate}"
+    },
+    "inspectionRequiredTextTemplate": {
+      "value": "#{inspectionRequiredTextTemplate}"
+    },
+    "jwtAudience": {
+      "value": "#{proxyClientId}"
+    },
+    "jwtPrivateKey": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "proxyJwtPrivateKey-#{env | ToLower}"
+      }
+    },
+    "notifyQueueName": {
+      "value": "#{notifyQueueName}"
+    },
+    "proxyHost": {
+      "value": "imports-proxy-#{blueGreen | ToLower}"
+    },
+    "riskLockingBatchSize" : {
+      "value": "#{rickLockingBatchSize}"
+    },
+    "riskLockingCronSchedule" : {
+      "value": "#{riskLockingCronSchedule}"
+    },
+    "riskLockingMaxBatches" : {
+      "value": "#{riskLockingMaxBatches}"
+    },
+    "rtlDeploymentCheckSubnetResourceId": {
+      "value": "/subscriptions/fa6d4701-12be-41be-9c4d-ba3daf88ed8e/resourceGroups/OPSINFNETRGP001/providers/Microsoft.Network/virtualNetworks/OPSINFNETVNT001/subnets/OPSINFFESSUB001"
+    },
+    "serviceBusNamespaceName": {
+      "value": "#{serviceBusNamespaceName}"
+    },
+    "serviceBusNamespaceResourceGroup": {
+      "value": ""
+    },
+    "serviceCode": {
+      "value": "IMP"
+    },
+    "serviceName": {
+      "value": "risk-locking-microservice-#{env | ToLower}"
+    },
+    "servicePlanGroup": {
+      "value": "#{appPlanNameSoapService}"
+    },
+    "serviceSKU": {
+      "value": "#{riskLockingStoragSKU}"
+    },
+    "serviceStorageName": {
+      "value": "#{riskLockingStorageName}"
+    },
+    "sharedInfraResourceGroupName": {
+      "value": "#{if sharedInfraResourceGroupName}#{sharedInfraResourceGroupName}#{else}#{resourceGroupName}#{/if}"
+    },
+    "version": {
+      "value": "#{dockerTag}"
+    },
+    "WebvNetResourceGroup": {
+      "value": "#{virtualNetworkResourceGroup}"
+    },
+    "WebvNetName": {
+      "value": "#{virtualNetworkName}"
+    },
+    "WebSubnetName-reference-data-plan-1": {
+      "value": "#{referenceDataPlan1SubnetName}"
+    },
+    "WebSubnetName-reference-data-plan-2": {
+      "value": "#{referenceDataPlan2SubnetName}"
+    },
+    "WebSubnetName-low-traffic-plan-1": {
+      "value": "#{lowTrafficPlan1SubnetName}"
+    },
+    "WebSubnetName-high-traffic-plan-1": {
+      "value": "#{highTrafficPlan1SubnetName}"
+    },
+    "WebSubnetName-frontend-plan-1": {
+      "value": "#{frontendPlan1SubnetName}"
+    },
+    "WebSubnetName-soap-services-plan-1": {
+      "value": "#{soapServicePlan1SubnetName}"
+    }
+  }
+}

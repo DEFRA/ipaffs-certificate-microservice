@@ -1,0 +1,60 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "env": {
+      "value": "SND"
+    },
+    "ServiceCode": {
+      "value":"IMP"
+    },
+    "ServiceType":{
+      "value":"LOB"
+    },
+    "ServiceName":{
+       "value":"EUX Imports"
+    },
+    "Tier":{
+      "value":"Service Bus"
+    },
+    "dateCreated": {
+      "value": ""
+    },
+    "serviceBusLoggingResourceGroup": {
+      "value": "loginfsbsrgp001"
+    },
+    "serviceBusLoggingStorageAccount": {
+      "value": "logsbssndsto001"
+    },
+    "serviceBusLoggingSubscriptionId": {
+      "value": "dd79b72f-fa4d-49f3-907d-4b758a5ef2ef"
+    },
+    "serviceBusNamespaceName": {
+      "value": "SNDIMPINFSBS002-dev"
+    },
+    "serviceBusQueueNameNotification": {
+      "value": "eu_notification"
+    },
+    "serviceBusQueueNameTraces": {
+      "value": "eu_health_cert"
+    },
+    "serviceBusSku": {
+      "value": "Premium"
+    },
+    "serviceBusTradePlatformSubscriptionFilter": {
+      "value": "notification_type = 'CHEDPP' AND subscription = 'trade-platform'"
+    },
+    "serviceBusDynamicsSubscriptionFilter": {
+      "value": "notification_type = 'IMP' AND (new_status IN ('SUBMITTED', 'AMEND', 'CANCELLED'))"
+    },
+    "serviceBusDataAnalyticsSubscriptionFilter": {
+      "value": "notification_type IN ('CVEDA', 'CVEDP', 'CED', 'CHEDPP') AND subscription = 'data-analytics'"
+    },
+    "serviceBusDynamicsChedsSubscriptionFilter": {
+      "value": "notification_type = 'CVEDA' AND is_high_risk_eu_import = 'true'"
+    },
+    "serviceBusZoneRedundant": {
+      "value": "true"
+    }
+  }
+}

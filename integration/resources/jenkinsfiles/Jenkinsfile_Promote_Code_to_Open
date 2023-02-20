@@ -1,0 +1,41 @@
+@Library('pipeline-library') _
+
+pipeline {
+    agent {label 'master'}
+    options {
+        ansiColor('xterm')
+        timestamps()
+        disableConcurrentBuilds()
+    }
+    parameters {
+        string(name: 'BUILD_NUMBER_TAG', defaultValue: '127', description: 'Tag of source repository')
+        string(name: 'SOURCE_REPOSITORY', defaultValue: 'https://giteux.azure.defra.cloud/imports/certificate-microservice-test.git', description: 'Source repository')
+        string(name: 'SET_VERSION', defaultValue: 'MAJOR.MINOR.PATCH', description: 'Code visible as this version in Github')
+    }
+
+    stages {
+        stage('Get service code') {
+            steps {
+                dir('sourceRepository') {
+                    checkout([$class: 'GitSCM',
+                        branches: [[name: params.BUILD_NUMBER_TAG]],
+                        userRemoteConfigs: [[
+                        credentialsId: 'testcreds',
+                        refspec: '+refs/tags/*:refs/remotes/origin/tags/*',
+                        url: params.SOURCE_REPOSITORY]]
+                    ])
+                }
+            }
+        }
+        stage('Push code to github') {
+            steps {
+                promoteToGithub('sourceRepository', 'ipaffs-certificate-microservice', '.', 'defradigitalci', 'github.com/DEFRA/', params.SET_VERSION)
+            }
+        }
+    }
+    post {
+        always {
+            step([$class: 'WsCleanup'])
+        }
+    }
+}
