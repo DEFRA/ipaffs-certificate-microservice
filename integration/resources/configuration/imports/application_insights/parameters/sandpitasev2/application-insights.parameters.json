@@ -1,0 +1,68 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "alertEmailReceivers": {
+      "value": "s.chandran@kainos.com,s.donaghey@kainos.com,k.moore@kainos.com;Sajan,Stephen,Kelly"
+    },
+    "archiveDeleteErrorAlertEmailReceivers": {
+      "value": "asadullah.khan@kainos.com,s.donaghey@kainos.com,k.moore@kainos.com,d.brennan@kainos.com,e.fahy@kainos.com,charlesl@kainos.com,nicholas.martin@kainos.com;Asad,Stephen,Kelly,Daniel,Eugene,Charles,Nicholas"
+    },
+    "blueGreen": {
+      "value": ""
+    },
+    "ServiceCode": {
+      "value":"IMP"
+    },
+    "ServiceType":{
+      "value":"LOB"
+    },
+    "Tier":{
+      "value":"Web"
+    },
+    "dateCreated": {
+      "value": ""
+    },
+    "envCode": {
+      "value": "SND"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "rdlSyncAlertEmailReceivers": {
+      "value": ""
+    },
+    "rdsCountErrorAlertEmailReceivers": {
+      "value": "josh.craig@kainos.com,s.donaghey@kainos.com,RDSTeam@kainos.com;Josh,Stephen,RDSteam"
+    },
+    "rdsSyncErrorAlertEmailReceivers": {
+      "value": "josh.craig@kainos.com,s.donaghey@kainos.com,RDSTeam@kainos.com;Josh,Stephen,RDSteam"
+    },
+    "riskLockingErrorEmailReceivers": {
+      "value": "s.chandran@kainos.com,s.donaghey@kainos.com,k.moore@kainos.com;Sajan,Stephen,Kelly"
+    },
+    "serviceBusConfig": {
+      "value": {
+        "name": "SNDIMPINFSBS002-dev",
+        "healthCertificateQueueName": "eu_health_cert",
+        "notificationQueueName": "eu_notification",
+        "resourceGroup": "SNDIMPINFRGP001"
+      }
+    },
+    "sharedInfraResourceGroupName": {
+      "value": ""
+    },
+    "notifyErrorEmailReceivers": {
+      "value": "s.chandran@kainos.com,s.donaghey@kainos.com,k.moore@kainos.com;Sajan,Stephen,Kelly"
+    },
+    "notifyQueueName": {
+      "value": "notify_queue"
+    },
+    "autoClearanceErrorEmailReceivers": {
+      "value": "s.donaghey@kainos.com,k.moore@kainos.com,d.brennan@kainos.com,e.fahy@kainos.com,charlesl@kainos.com,nicholas.martin@kainos.com;Stephen,Kelly,Daniel,Eugene,Charles,Nicholas"
+    },
+    "riskInterfaceErrorEmailReceivers": {
+      "value": "s.donaghey@kainos.com,k.moore@kainos.com,d.brennan@kainos.com,e.fahy@kainos.com,charlesl@kainos.com,nicholas.martin@kainos.com;Stephen,Kelly,Daniel,Eugene,Charles,Nicholas"
+    }
+  }
+}

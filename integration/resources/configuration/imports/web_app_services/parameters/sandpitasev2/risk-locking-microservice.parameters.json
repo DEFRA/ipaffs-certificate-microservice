@@ -1,0 +1,145 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "bcpNameOverrides": {
+      "value": "{\"DOVERPOE\":\"Sevington - BCP\",\"EUROTUNPOE\":\"Sevington - BCP\"}"
+    },
+    "blueGreen": {
+      "value": ""
+    },
+    "containerRepository": {
+      "value": "imports-release"
+    },
+    "dateCreated": {
+      "value": ""
+    },
+    "DeploymentSubnetResourceId": {
+      "value": "/subscriptions/f1489724-a9dc-48a7-8d68-e47e21c8f9a5/resourceGroups/APSINFNETRGP001/providers/Microsoft.Network/virtualNetworks/APSINFNETVNT001/subnets/APSINFBESSUB001"
+    },
+    "dockerRegistryPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "azureDockerRegistryPassword"
+      }
+    },
+    "dockerRegistryServerUrl": {
+      "value": "sndeuxfesacr001.azurecr.io"
+    },
+    "dockerRegistryServerUsername": {
+      "value": "9f9d7738-e643-4ad3-820b-b461583302a8"
+    },
+    "dnsSuffix": {
+      "value": ".azurewebsites.net"
+    },
+    "enableEuChedAssessmentSubmission" : {
+      "value": "ON"
+    },
+    "envCode": {
+      "value": "SND"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "inspectionChangedNotRequiredEmailTemplate": {
+      "value": "b89d5955-b4da-4797-ba84-05b03d8efe1e"
+    },
+    "inspectionChangedNotRequiredTextTemplate": {
+      "value": "37938c47-01f3-4899-b2c3-8a7149bc47d6"
+    },
+    "inspectionChangedRequiredEmailTemplate": {
+      "value": "3c892fdb-e4f9-4948-bda4-0ddc364bae9a"
+    },
+    "inspectionChangedRequiredTextTemplate": {
+      "value": "0b059aa6-1840-408c-aa1b-a53aa16b815d"
+    },
+    "inspectionRequiredEmailTemplate": {
+      "value": "2ef3e2ac-3f33-45a5-bb50-2d6cac147601"
+    },
+    "inspectionRequiredTextTemplate": {
+      "value": "079e1c89-9f08-4d29-a08c-11c733249647"
+    },
+    "jwtAudience": {
+      "value": "a2617985-5645-47ec-8912-7a943b3895ba"
+    },
+    "jwtPrivateKey": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "proxyJwtPrivateKey-snd"
+      }
+    },
+    "notifyQueueName": {
+      "value": "notify_queue"
+    },
+    "proxyHost": {
+      "value": "imports-proxy-static"
+    },
+    "riskLockingBatchSize" : {
+      "value": "25"
+    },
+    "riskLockingCronSchedule" : {
+      "value": "0 3-59/5 * * * *"
+    },
+    "riskLockingMaxBatches" : {
+      "value": "5"
+    },
+    "rtlDeploymentCheckSubnetResourceId": {
+      "value": ""
+    },
+    "serviceBusNamespaceName": {
+      "value": "SNDIMPINFSBS002-dev"
+    },
+    "serviceBusNamespaceResourceGroup": {
+      "value": "SNDIMPINFRGP001"
+    },
+    "serviceCode": {
+      "value": "IMP"
+    },
+    "serviceName": {
+      "value": "risk-locking-microservice"
+    },
+    "servicePlanGroup": {
+      "value": "soap-services-plan-1"
+    },
+    "serviceSKU": {
+      "value": "Standard_GRS"
+    },
+    "serviceStorageName": {
+      "value": "sndimpinfsto008"
+    },
+    "sharedInfraResourceGroupName": {
+      "value": ""
+    },
+    "version": {
+      "value": "1.0.1"
+    },
+    "WebvNetResourceGroup": {
+      "value": "SNDINFNETRGP001"
+    },
+    "WebvNetName": {
+      "value": "SNDINFNETVNT001"
+    },
+    "WebSubnetName-reference-data-plan-1": {
+      "value": "SNDIMPWEBSUB011"
+    },
+    "WebSubnetName-reference-data-plan-2": {
+      "value": "SNDIMPWEBSUB012"
+    },
+    "WebSubnetName-low-traffic-plan-1": {
+      "value": "SNDIMPWEBSUB013"
+    },
+    "WebSubnetName-high-traffic-plan-1": {
+      "value": "SNDIMPWEBSUB014"
+    },
+    "WebSubnetName-frontend-plan-1": {
+      "value": "SNDIMPWEBSUB015"
+    },
+    "WebSubnetName-soap-services-plan-1": {
+      "value": "SNDIMPWEBSUB016"
+    }
+  }
+}

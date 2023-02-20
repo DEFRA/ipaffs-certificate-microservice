@@ -1,0 +1,739 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "blueGreen": {
+      "type": "string"
+    },
+    "containerStartTimeLimit": {
+      "type": "string"
+    },
+    "containerRepository": {
+      "type": "string"
+    },
+    "dateCreated": {
+      "type": "string"
+    },
+    "dnsSuffix": {
+      "type": "string"
+    },
+    "dockerRegistryPassword": {
+      "type": "securestring"
+    },
+    "dockerRegistryServerUrl": {
+      "type": "string"
+    },
+    "dockerRegistryServerUsername": {
+      "type": "string"
+    },
+    "economicOperatorServiceBasicAuthPassword": {
+      "type": "securestring"
+    },
+    "envCode": {
+      "type": "string"
+    },
+    "envSuffix": {
+      "type": "string"
+    },
+    "healthcheckMaxFailures": {
+      "type": "int"
+    },
+    "eventHubEnvironment": {
+      "type": "string"
+    },
+    "eventHubKeyName": {
+      "type": "string"
+    },
+    "eventHubKeyValue": {
+      "type": "string"
+    },
+    "eventHubName": {
+      "type": "string"
+    },
+    "eventHubNamespace": {
+      "type": "string"
+    },
+    "javaToolOptions": {
+      "type": "string"
+    },
+    "monitoringType": {
+      "type": "string"
+    },
+    "notificationServiceBasicAuthPassword": {
+      "type": "securestring"
+    },
+    "permissionsServiceBasicAuthPassword": {
+      "type": "securestring"
+    },
+    "proxyHost": {
+      "type": "string"
+    },
+    "serviceBasicAuthPassword": {
+      "type": "securestring"
+    },
+    "serviceCode": {
+      "type": "string"
+    },
+    "serviceName": {
+      "type": "string"
+    },
+    "servicePlanGroup": {
+      "type": "string"
+    },
+    "serviceUser": {
+      "type": "string"
+    },
+    "soapSearchServiceMaximumRecordsRetrievable": {
+      "type": "string"
+    },
+    "soapSearchServiceMaxPayloadSizeInBytes": {
+      "type": "int"
+    },
+    "soapRequestServiceBasicAuthPassword": {
+      "type": "securestring"
+    },
+    "soapSearchServiceDoverPhilisPassword": {
+      "type": "securestring"
+    },
+    "soapSearchServiceHullAndGoolePhilisPassword": {
+      "type": "securestring"
+    },
+    "soapSearchServiceRiverTeesPhilisPassword": {
+      "type": "securestring"
+    },
+    "soapSearchServiceNorthEastLincolnshirePhilisPassword": {
+      "type": "securestring"
+    },
+    "soapSearchServiceLondonBoroughOfHillingdonPassword": {
+      "type": "securestring"
+    },
+    "soapSearchServiceFelixstowePhilisPassword": {
+      "type": "securestring"
+    },
+    "soapSearchServiceFsaUserPassword": {
+      "type": "securestring"
+    },
+    "soapSearchServiceIsc1Password": {
+      "type": "securestring"
+    },
+    "soapSearchServiceIsc2Password": {
+      "type": "securestring"
+    },
+    "soapSearchServiceLhrPhilisPassword": {
+      "type": "securestring"
+    },
+    "soapSearchServiceLiverpoolPhilisPassword": {
+      "type": "securestring"
+    },
+    "soapSearchServiceLondonPhilisPassword": {
+      "type": "securestring"
+    },
+    "soapSearchServiceSouthamptonPhilisPassword": {
+      "type": "securestring"
+    },
+    "topicConfig": {
+      "type": "object"
+    },
+    "version": {
+      "type": "string"
+    },
+    "WebvNetResourceGroup": {
+      "type": "string"
+    },
+    "WebvNetName": {
+      "type": "string"
+    },
+    "WebSubnetName-reference-data-plan-1": {
+      "type": "string"
+    },
+    "WebSubnetName-reference-data-plan-2": {
+      "type": "string"
+    },
+    "WebSubnetName-low-traffic-plan-1": {
+      "type": "string"
+    },
+    "WebSubnetName-high-traffic-plan-1": {
+      "type": "string"
+    },
+    "WebSubnetName-frontend-plan-1": {
+      "type": "string"
+    },
+    "WebSubnetName-soap-services-plan-1": {
+      "type": "string"
+    },
+    "DeploymentSubnetResourceId": {
+      "type": "string"
+    },
+    "sharedInfraResourceGroupName": {
+      "type": "string"
+    },
+    "rtlDeploymentCheckSubnetResourceId": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "appInsightsName": "[concat('insights-',if(empty(parameters('sharedInfraResourceGroupName')), resourceGroup().name, parameters('sharedInfraResourceGroupName')), if(not(empty(parameters('blueGreen'))), concat('-', parameters('blueGreen')),''))]",
+    "dockerCustomImageName": "[concat(parameters('dockerRegistryServerUrl'), '/', parameters('containerRepository'), '/', 'soapsearch-microservice', ':', parameters('version'))]",
+    "envDomain": "[if(empty(parameters('blueGreen')), concat('-', parameters('envSuffix'),  parameters('dnsSuffix')), concat('-', parameters('blueGreen'), parameters('dnsSuffix')))]",
+    "topicName": "[if(empty(parameters('blueGreen')), concat('dev_alvs_topic_', parameters('envSuffix')), 'alvs_topic')]",
+    "proxyUrl": "[concat('https://', parameters('proxyHost'), parameters('dnsSuffix'))]",
+    "servicePlanName": "[if(empty(parameters('blueGreen')), concat(parameters('servicePlanGroup'), '-', parameters('envSuffix')), parameters('servicePlanGroup'))]",
+    "ipSecurityRestrictions": "[if(equals(parameters('envSuffix'), 'vnet'), union(variables('vnetIpSecurityRestrictions'), variables('commonIpSecurityRestrictions')), union(variables('commonIpSecurityRestrictions'), variables('rtlIpSecurityRestrictions')))]",
+    "vnetIpSecurityRestrictions":
+        [
+          {
+              "ipAddress": "195.89.171.5/32",
+              "action": "Allow",
+              "tag": "Default",
+              "priority": 120,
+              "name": "KainosVPN1",
+              "description": "Allow access from Kainos VPN1"
+          },
+          {
+              "ipAddress": "195.89.171.144/32",
+              "action": "Allow",
+              "tag": "Default",
+              "priority": 121,
+              "name": "KainosVPN2",
+              "description": "Allow access from Kainos VPN2"
+          },
+          {
+              "ipAddress": "62.254.63.52/32",
+              "action": "Allow",
+              "tag": "Default",
+              "priority": 122,
+              "name": "KainosVPN3",
+              "description": "Allow access from Kainos VPN3"
+          },
+          {
+            "vnetSubnetResourceId": "[if(empty(parameters('DeploymentSubnetResourceId')), resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-soap-services-plan-1')), parameters('DeploymentSubnetResourceId'))]",
+            "action": "Allow",
+            "tag": "Default",
+            "priority": 107,
+            "name": "AllowDeploymentChecks"
+          }
+        ],
+    "rtlIpSecurityRestrictions":
+        [
+            {
+                "vnetSubnetResourceId": "[parameters('rtlDeploymentCheckSubnetResourceId')]",
+                "action": "Allow",
+                "tag": "Default",
+                "priority": 109,
+                "name": "AllowRtlDeploymentChecks"
+            }
+        ],
+    "commonIpSecurityRestrictions":
+        [
+            {
+                "vnetSubnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-reference-data-plan-1'))]",
+                "action": "Allow",
+                "tag": "Default",
+                "priority": 101,
+                "name": "AllowReferenceDataPlan1"
+            },
+            {
+                "vnetSubnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-reference-data-plan-2'))]",
+                "action": "Allow",
+                "tag": "Default",
+                "priority": 102,
+                "name": "AllowReferenceDataPlan2"
+            },
+            {
+                "vnetSubnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-low-traffic-plan-1'))]",
+                "action": "Allow",
+                "tag": "Default",
+                "priority": 103,
+                "name": "AllowLowTrafficPlan1"
+            },
+            {
+                "vnetSubnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-high-traffic-plan-1'))]",
+                "action": "Allow",
+                "tag": "Default",
+                "priority": 104,
+                "name": "AllowHighTrafficPlan1"
+            },
+            {
+                "vnetSubnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-frontend-plan-1'))]",
+                "action": "Allow",
+                "tag": "Default",
+                "priority": 105,
+                "name": "AllowFrontendPlan1"
+            },
+            {
+                "vnetSubnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-soap-services-plan-1'))]",
+                "action": "Allow",
+                "tag": "Default",
+                "priority": 106,
+                "name": "AllowSoapServicesPlan1"
+            },
+            {
+                "ipAddress": "Any",
+                "action": "Deny",
+                "priority": 2147483647,
+                "name": "Deny all",
+                "description": "Deny all access"
+            }
+        ]
+    },
+  "resources": [
+    {
+      "name": "[parameters('serviceName')]",
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2020-12-01",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "Name": "[parameters('serviceName')]",
+        "ServiceCode": "[parameters('serviceCode')]",
+        "ServiceName": "[concat('EUX Imports:', parameters('serviceName'))]",
+        "ServiceType": "LOB",
+        "CreationDateTime": "[parameters('dateCreated')]",
+        "Environment": "[parameters('envCode')]",
+        "Tier": "WEB",
+        "Region": "[resourceGroup().location]"
+      },
+      "properties": {
+        "name": "[parameters('serviceName')]",
+        "serverFarmId": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', variables('servicePlanName'))]",
+        "siteConfig": {
+          "linuxFxVersion": "[concat('DOCKER|', variables('dockerCustomImageName'))]",
+          "httpLoggingEnabled": true,
+          "logsDirectorySizeLimit": 35,
+          "detailedErrorLoggingEnabled": false,
+          "publishingUsername": "[parameters('serviceName')]",
+          "appSettings": [
+            {
+              "name": "WEBSITE_VNET_ROUTE_ALL",
+              "value": "[if(empty(parameters('WebvNetResourceGroup')), '0', '1')]"
+            },
+            {
+              "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+              "value": "[reference(resourceId(if(empty(parameters('sharedInfraResourceGroupName')), resourceGroup().name, parameters('sharedInfraResourceGroupName')), 'Microsoft.Insights/components', variables('appInsightsName')), '2015-05-01').ConnectionString]"
+            },
+            {
+              "name": "AUTOMATIC_TRANSITION_ENABLED",
+              "value": "false"
+            },
+            {
+              "name": "DATE_DEPLOYED",
+              "value": "[parameters('dateCreated')]"
+            },
+            {
+              "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
+              "value": "[parameters('dockerRegistryPassword')]"
+            },
+            {
+              "name": "DOCKER_REGISTRY_SERVER_URL",
+              "value": "[parameters('dockerRegistryServerUrl')]"
+            },
+            {
+              "name": "DOCKER_REGISTRY_SERVER_USERNAME",
+              "value": "[parameters('dockerRegistryServerUsername')]"
+            },
+            {
+              "name": "ECONOMIC_OPERATOR_SERVICE_BASIC_AUTH_LOGIN",
+              "value": "[parameters('serviceUser')]"
+            },
+            {
+              "name": "ECONOMIC_OPERATOR_SERVICE_BASIC_AUTH_PASSWORD",
+              "value": "[parameters('economicOperatorServiceBasicAuthPassword')]"
+            },
+            {
+              "name": "ECONOMIC_OPERATOR_SERVICE_CONNECTION_TIMEOUT",
+              "value": "3000"
+            },
+            {
+              "name": "ECONOMIC_OPERATOR_SERVICE_HOST",
+              "value": "[concat('economicoperator-microservice', variables('envDomain'))]"
+            },
+            {
+              "name": "ECONOMIC_OPERATOR_SERVICE_PORT",
+              "value": "443"
+            },
+            {
+              "name": "ECONOMIC_OPERATOR_SERVICE_READ_TIMEOUT",
+              "value": "3000"
+            },
+            {
+              "name": "ECONOMIC_OPERATOR_SERVICE_SCHEME",
+              "value": "https"
+            },
+            {
+              "name": "ENV_DOMAIN",
+              "value": "[variables('envDomain')]"
+            },
+            {
+              "name": "EVENT_HUB_ENVIRONMENT",
+              "value": "[parameters('eventHubEnvironment')]"
+            },
+            {
+              "name": "EVENT_HUB_KEY_NAME",
+              "value": "[parameters('eventHubKeyName')]"
+            },
+            {
+              "name": "EVENT_HUB_KEY_VALUE",
+              "value": "[parameters('eventHubKeyValue')]"
+            },
+            {
+              "name": "EVENT_HUB_NAME",
+              "value": "[parameters('eventHubName')]"
+            },
+            {
+              "name": "EVENT_HUB_NAMESPACE",
+              "value": "[parameters('eventHubNamespace')]"
+            },
+            {
+              "name": "FAILURE_RATE_THRESHOLD",
+              "value": "50"
+            },
+            {
+              "name": "JAVA_TOOL_OPTIONS",
+              "value": "[parameters('javaToolOptions')]"
+            },
+            {
+              "name": "MIN_NUMBER_OF_CALLS",
+              "value": "10"
+            },
+            {
+              "name": "MONITORING_TYPE",
+              "value": "[parameters('monitoringType')]"
+            },
+            {
+              "name": "NOTIFICATION_SERVICE_HOST",
+              "value": "[concat('notification-microservice', variables('envDomain'))]"
+            },
+            {
+              "name": "NOTIFICATION_SERVICE_PASSWORD",
+              "value": "[parameters('notificationServiceBasicAuthPassword')]"
+            },
+            {
+              "name": "NOTIFICATION_SERVICE_PORT",
+              "value": "443"
+            },
+            {
+              "name": "NOTIFICATION_SERVICE_SCHEME",
+              "value": "https"
+            },
+            {
+              "name": "NOTIFICATION_SERVICE_USER",
+              "value": "[parameters('serviceUser')]"
+            },
+            {
+              "name": "PERMISSIONS_SERVICE_PASSWORD",
+              "value": "[parameters('permissionsServiceBasicAuthPassword')]"
+            },
+            {
+              "name": "PROTOCOL",
+              "value": "https"
+            },
+            {
+              "name": "PERMISSIONS_SERVICE_USERNAME",
+              "value": "[parameters('serviceUser')]"
+            },
+            {
+              "name": "PERMITTED_CALLS_WHEN_HALF_OPEN",
+              "value": "10"
+            },
+            {
+              "name": "SECURITY_JWT_AUD",
+              "value": "a2617985-5645-47ec-8912-7a943b3895ba"
+            },
+            {
+              "name": "SECURITY_JWT_ISS",
+              "value": "[variables('proxyUrl')]"
+            },
+            {
+              "name": "SECURITY_JWT_JWKS",
+              "value": "[concat(variables('proxyUrl'), '/common/discovery/keys')]"
+            },
+            {
+              "name": "SERVICE_BUS_ALVS_TOPIC_NAME",
+              "value": "[variables('topicName')]"
+            },
+            {
+              "name": "SLIDING_WINDOW_SIZE",
+              "value": "20"
+            },
+            {
+              "name": "SLOW_CALL_DURATION_THRESHOLD",
+              "value": "3000"
+            },
+            {
+              "name": "SLOW_CALL_RATE_THRESHOLD",
+              "value": "50"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_MAXIMUM_RECORDS_RETRIEVABLE",
+              "value": "[parameters('soapSearchServiceMaximumRecordsRetrievable')]"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_MAX_PAYLOAD_SIZE_IN_BYTES",
+              "value": "[parameters('soapSearchServiceMaxPayloadSizeInBytes')]"
+            },
+            {
+              "name": "SOAP_REQUEST_SERVICE_HOST",
+              "value": "[concat('soaprequest-microservice', variables('envDomain'))]"
+            },
+            {
+              "name": "SOAP_REQUEST_SERVICE_PASSWORD",
+              "value": "[parameters('soapRequestServiceBasicAuthPassword')]"
+            },
+            {
+              "name": "SOAP_REQUEST_SERVICE_PORT",
+              "value": "443"
+            },
+            {
+              "name": "SOAP_REQUEST_SERVICE_SCHEME",
+              "value": "https"
+            },
+            {
+              "name": "SOAP_REQUEST_SERVICE_USER",
+              "value": "[parameters('serviceUser')]"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_DOVER_PHILIS_BIPS",
+              "value": "GBDOV1P,GBDOV2P"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_DOVER_PHILIS_PASSWORD",
+              "value": "[parameters('soapSearchServiceDoverPhilisPassword')]"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_DOVER_PHILIS_USER_ID",
+              "value": "DOVER_PHILIS"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_HULL_AND_GOOLE_PHILIS_BIPS",
+              "value": "GBHUL1H,GBHUL1G"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_HULL_AND_GOOLE_PHILIS_PASSWORD",
+              "value": "[parameters('soapSearchServiceHullAndGoolePhilisPassword')]"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_HULL_AND_GOOLE_PHILIS_USER_ID",
+              "value": "HULL_AND_GOOLE_PHILIS"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_RIVER_TEES_PHILIS_BIPS",
+              "value": "GBTEE1P"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_RIVER_TEES_PHILIS_PASSWORD",
+              "value": "[parameters('soapSearchServiceRiverTeesPhilisPassword')]"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_RIVER_TEES_PHILIS_USER_ID",
+              "value": "RIVER_TEES_PHILIS"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_NORTH_EAST_LINCOLNSHIRE_PHILIS_BIPS",
+              "value": "GBGSY1"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_NORTH_EAST_LINCOLNSHIRE_PHILIS_PASSWORD",
+              "value": "[parameters('soapSearchServiceNorthEastLincolnshirePhilisPassword')]"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_NORTH_EAST_LINCOLNSHIRE_PHILIS_USER_ID",
+              "value": "NORTH_EAST_LINCOLNSHIRE_PHILIS"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_LONDON_BOROUGH_OF_HILLINGDON_BIPS",
+              "value": "GBLHR1P,GBLHR4P"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_LONDON_BOROUGH_OF_HILLINGDON_PASSWORD",
+              "value": "[parameters('soapSearchServiceLondonBoroughOfHillingdonPassword')]"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_LONDON_BOROUGH_OF_HILLINGDON_USER_ID",
+              "value": "LONDON_BOROUGH_OF_HILLINGDON"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_FELIXSTOWE_PHILIS_BIPS",
+              "value": "GBFXT1,GBHRW1P,GBIPS1P,GBGSY1,GBBEL4,GBHUL1H,GBHUL1G"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_FELIXSTOWE_PHILIS_PASSWORD",
+              "value": "[parameters('soapSearchServiceFelixstowePhilisPassword')]"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_FELIXSTOWE_PHILIS_USER_ID",
+              "value": "FELIXSTOWE_PHILIS"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_FSA_USER_PASSWORD",
+              "value": "[parameters('soapSearchServiceFsaUserPassword')]"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_FSA_USER_ID",
+              "value": "FSA_USER"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_ISC_1_PASSWORD",
+              "value": "[parameters('soapSearchServiceIsc1Password')]"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_ISC_1_USER_ID",
+              "value": "ISC_1"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_ISC_2_PASSWORD",
+              "value": "[parameters('soapSearchServiceIsc2Password')]"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_ISC_2_USER_ID",
+              "value": "ISC_2"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_LHR_PHILIS_BIPS",
+              "value": "GBLHR4A"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_LHR_PHILIS_PASSWORD",
+              "value": "[parameters('soapSearchServiceLhrPhilisPassword')]"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_LHR_PHILIS_USER_ID",
+              "value": "LHR_PHILIS"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_LIVERPOOL_PHILIS_BIPS",
+              "value": "GBLIV1"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_LIVERPOOL_PHILIS_PASSWORD",
+              "value": "[parameters('soapSearchServiceLiverpoolPhilisPassword')]"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_LIVERPOOL_PHILIS_USER_ID",
+              "value": "LIVERPOOL_PHILIS"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_LONDON_PHILIS_BIPS",
+              "value": "GBLGP1,GBTHP1,GBTIL1,GBLSH1"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_LONDON_PHILIS_PASSWORD",
+              "value": "[parameters('soapSearchServiceLondonPhilisPassword')]"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_LONDON_PHILIS_USER_ID",
+              "value": "LONDON_PHILIS"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_PASSWORD",
+              "value": "[parameters('serviceBasicAuthPassword')]"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_PORT",
+              "value": "8080"
+            },
+            {
+              "name": "WEBSITES_PORT",
+              "value": "8080"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_SCHEMA_VALIDATION_ENABLE",
+              "value": "0"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_SOUTHAMPTON_PHILIS_BIPS",
+              "value": "GBSOU1"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_SOUTHAMPTON_PHILIS_PASSWORD",
+              "value": "[parameters('soapSearchServiceSouthamptonPhilisPassword')]"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_SOUTHAMPTON_PHILIS_USER_ID",
+              "value": "SOUTHAMPTON_PHILIS"
+            },
+            {
+              "name": "SOAP_SEARCH_SERVICE_USER",
+              "value": "[parameters('serviceUser')]"
+            },
+            {
+              "name": "TOPIC_CONNECTION_STRING",
+              "value": "[listKeys(resourceId(parameters('topicConfig').resourceGroup, 'Microsoft.ServiceBus/namespaces/authorizationRules', parameters('topicConfig').name, parameters('topicConfig').sasPolicy), parameters('topicConfig').apiVersion).primaryConnectionString]"
+            },
+            {
+              "name": "WAIT_DURATION_IN_OPEN_STATE",
+              "value": "300000"
+            },
+            {
+              "name": "WEBSITES_CONTAINER_START_TIME_LIMIT",
+              "value": "[parameters('containerStartTimeLimit')]"
+            },
+            {
+              "name": "WEBSITE_HEALTHCHECK_MAXPINGFAILURES",
+              "value": "[parameters('healthcheckMaxFailures')]"
+            }
+          ],
+          "alwaysOn": true,
+          "ftpsState": "Disabled",
+          "healthCheckPath": "/admin/health-check"
+        },
+        "clientAffinityEnabled": false,
+        "httpsOnly": true
+      },
+      "resources": [
+        {
+          "type": "config",
+          "name": "web",
+          "condition": "[not(empty(parameters('WebvNetResourceGroup')))]",
+          "apiVersion": "2020-06-01",
+          "location": "[resourceGroup().location]",
+          "tags": {
+            "Name": "[concat(parameters('serviceName'), '/', 'web')]",
+            "ServiceCode": "[parameters('serviceCode')]",
+            "ServiceName": "[concat(parameters('serviceName'), ' Site Config')]",
+            "ServiceType": "LOB",
+            "CreationDateTime": "[parameters('dateCreated')]",
+            "Environment": "[parameters('envCode')]",
+            "Tier": "WEB",
+            "Region": "[resourceGroup().location]"
+          },
+          "scale": null,
+          "properties": {
+            "httpLoggingEnabled": true,
+            "logsDirectorySizeLimit": 35,
+            "detailedErrorLoggingEnabled": false,
+            "publishingUsername": "[parameters('serviceName')]",
+            "alwaysOn": true,
+            "ftpsState": "Disabled",
+            "healthCheckPath": "/admin/health-check",
+            "ipSecurityRestrictions": "[variables('ipSecurityRestrictions')]",
+            "scmIpSecurityRestrictions": [
+              {
+                "ipAddress": "0.0.0.0/0",
+                "action": "Deny",
+                "priority": 1000,
+                "name": "Deny all",
+                "description": "Deny all access"
+              }
+            ],
+            "scmIpSecurityRestrictionsUseMain": false
+          },
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', parameters('serviceName'))]"
+          ]
+        },
+        {
+          "type": "networkConfig",
+          "name": "VirtualNetwork",
+          "condition": "[not(empty(parameters('WebvNetResourceGroup')))]",
+          "apiVersion": "2020-12-01",
+          "properties": {
+            "subnetResourceId": "[resourceId(parameters('WebvNetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('WebvNetName'), parameters('WebSubnetName-soap-services-plan-1'))]",
+            "swiftSupported": true
+          },
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', parameters('serviceName'))]"
+          ]
+        }
+      ]
+    }
+  ]
+}

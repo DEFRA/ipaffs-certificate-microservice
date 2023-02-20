@@ -1,0 +1,68 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "alertEmailReceivers": {
+      "value": "#{alertEmailReceivers}"
+    },
+    "archiveDeleteErrorAlertEmailReceivers": {
+      "value": "#{archiveDeleteErrorAlertEmailReceivers}"
+    },
+    "blueGreen": {
+      "value": "#{blueGreen | ToLower}"
+    },
+    "ServiceCode": {
+      "value":"IMP"
+    },
+    "ServiceType":{
+      "value":"LOB"
+    },
+    "Tier":{
+      "value":"Web"
+    },
+    "dateCreated": {
+      "value": "#{format-DateTag}"
+    },
+    "envCode": {
+      "value": "#{env | ToLower}"
+    },
+    "envSuffix": {
+      "value": "#{envSuffix}"
+    },
+    "rdlSyncAlertEmailReceivers": {
+      "value": "#{rdlSyncAlertEmailReceivers}"
+    },
+    "rdsCountErrorAlertEmailReceivers": {
+      "value": "#{rdsCountErrorAlertEmailReceivers}"
+    },
+    "rdsSyncErrorAlertEmailReceivers": {
+      "value": "#{rdsSyncErrorAlertEmailReceivers}"
+    },
+    "riskLockingErrorEmailReceivers": {
+      "value": "#{riskLockingErrorEmailReceivers}"
+    },
+    "serviceBusConfig": {
+      "value": {
+        "name": "#{serviceBusNamespaceName}",
+        "healthCertificateQueueName": "eu_health_cert",
+        "notificationQueueName": "eu_notification",
+        "resourceGroup": "#{resourceGroupName}"
+      }
+    },
+    "sharedInfraResourceGroupName": {
+      "value": "#{if sharedInfraResourceGroupName}#{sharedInfraResourceGroupName}#{else}#{resourceGroupName}#{/if}"
+    },
+    "notifyErrorEmailReceivers": {
+      "value": "#{notifyErrorEmailReceivers}"
+    },
+    "notifyQueueName": {
+      "value": "#{notifyQueueName}"
+    },
+    "autoClearanceErrorEmailReceivers": {
+      "value": "#{autoClearanceErrorEmailReceivers}"
+    },
+    "riskInterfaceErrorEmailReceivers": {
+      "value": "#{riskInterfaceErrorEmailReceivers}"
+    }
+  }
+}

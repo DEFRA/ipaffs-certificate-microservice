@@ -1,0 +1,75 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "dateCreated": {
+      "value": ""
+    },
+    "envCode": {
+      "value": "SND"
+    },
+    "ServiceCode":{
+      "value":"IMP"
+    },
+    "Tier":{
+      "value":"Web"
+    },
+    "ServiceType":{
+       "value":"LOB"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "serviceCapacity": {
+      "value": "1"
+    },
+    "servicePlanGroup": {
+      "value": "services-general-2"
+    },
+    "serviceSKU": {
+      "value": "P2v3"
+    },
+    "serviceCapacityMax": {
+      "value": ""
+    },
+    "autoscaleEnabled": {
+      "value": ""
+    },
+    "scaleActionIncreaseValue": {
+      "value": "1"
+    },
+    "scaleActionIncreaseCooldown": {
+      "value": "PT5M"
+    },
+    "metricTriggerIncreaseStatistic": {
+      "value": "Average"
+    },
+    "metricTriggerIncreaseTreshold": {
+      "value": "80"
+    },
+    "metricTriggerIncreaseTimeGrain": {
+      "value": "PT1M"
+    },
+    "metricTriggerIncreaseTimeWindow": {
+      "value": "PT10M"
+    },
+    "scaleActionDecreaseValue": {
+      "value": "1"
+    },
+    "scaleActionDecreaseCooldown": {
+      "value": "PT5M"
+    },
+    "metricTriggerDecreaseStatistic": {
+      "value": "Average"
+    },
+    "metricTriggerDecreaseTreshold": {
+      "value": "30"
+    },
+    "metricTriggerDecreaseTimeGrain": {
+      "value": "PT1M"
+    },
+    "metricTriggerDecreaseTimeWindow": {
+      "value": "PT10M"
+    }
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "tradePlatformAlertEmailReceivers": {
+      "type": "array",
+      "metadata": {
+        "description": "The list of email receivers that are part of this action group."
+      },
+      "defaultValue": []
+    },
+    "tradePlatformLogicAppName": {
+      "type": "string"
+    },
+    "tradePlatformAlertActionGroupName": {
+      "type": "string"
+    },
+    "tradePlatformAlertActionGroupShortName": {
+      "type": "string"
+    },
+    "tradePlatformAlertName": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Insights/actionGroups",
+      "apiVersion": "2019-03-01",
+      "name": "[parameters('tradePlatformAlertActionGroupName')]",
+      "location": "global",
+      "properties": {
+        "groupShortName": "[parameters('tradePlatformAlertActionGroupShortName')]",
+        "enabled": true,
+        "copy": [
+          {
+            "name": "emailReceivers",
+            "count": "[length(parameters('tradePlatformAlertEmailReceivers'))]",
+            "input": {
+              "name": "[parameters('tradePlatformAlertEmailReceivers')[copyIndex('emailReceivers')].name]",
+              "emailAddress": "[parameters('tradePlatformAlertEmailReceivers')[copyIndex('emailReceivers')].emailAddress]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "microsoft.insights/metricAlerts",
+      "apiVersion": "2018-03-01",
+      "name": "[parameters('tradePlatformAlertName')]",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/actionGroups', parameters('tradePlatformAlertActionGroupName'))]"
+      ],
+      "properties": {
+        "description": "Sends out an alert message when the logic app fails to process a message",
+        "severity": 3,
+        "enabled": true,
+        "scopes": [
+          "[concat(resourceGroup().id, '/providers/Microsoft.Logic/workflows/', parameters('tradePlatformLogicAppName'))]"
+        ],
+        "evaluationFrequency": "PT5M",
+        "windowSize": "PT5M",
+        "criteria": {
+          "allOf": [
+            {
+              "threshold": 0,
+              "name": "Criterion",
+              "metricNamespace": "Microsoft.Logic/workflows",
+              "metricName": "RunsFailed",
+              "operator": "GreaterThan",
+              "timeAggregation": "Count",
+              "criterionType": "StaticThresholdCriterion"
+            }
+          ],
+          "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
+        },
+        "actions": [
+          {
+            "actionGroupId": "[concat(resourceGroup().id, '/providers/Microsoft.Insights/actiongroups/', parameters('tradePlatformAlertActionGroupName'))]"
+          }
+        ]
+      }
+    }
+  ]
+}

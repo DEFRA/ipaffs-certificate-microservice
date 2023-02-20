@@ -1,0 +1,173 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "envCode": {
+            "type": "string"
+        },
+        "dateCreated": {
+            "type": "string"
+        },
+        "logicAppName": {
+            "type": "string"
+        },
+        "sourceTopicName": {
+            "type": "string"
+        },
+        "serviceCode": {
+            "type": "string"
+        },
+        "apiConnectionNameTradeASB": {
+            "type": "string"
+        },
+        "tradeServiceBusConnectionString": {
+            "type": "securestring"
+        },
+        "serviceBusConfig": {
+            "type": "object"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[toUpper(parameters('logicAppName'))]",
+            "location": "northeurope",
+            "tags": {
+                "ServiceCode": "IMP",
+                "Name": "[toUpper(parameters('logicAppName'))]",
+                "ServiceName": "[concat('EUX Imports:')]",
+                "ServiceType": "LOB",
+                "CreationDateTime": "[parameters('dateCreated')]",
+                "Environment": "[parameters('envCode')]",
+                "Tier": "APPLICATION",
+                "Region": "[resourceGroup().location]"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/connections', parameters('apiConnectionNameTradeASB'))]"
+            ],
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "When_a_message_is_received_in_a_topic_subscription_(peek-lock)": {
+                            "recurrence": {
+                                "frequency": "Minute",
+                                "interval": 1
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['servicebus_2']['connectionId']"
+                                    }
+                                },
+                                "method": "get",
+                                "path": "/@{encodeURIComponent(encodeURIComponent('notification-topic'))}/subscriptions/@{encodeURIComponent('trade-platform')}/messages/head/peek",
+                                "queries": {
+                                    "subscriptionType": "Main"
+                                }
+                            }
+                        }
+                    },
+                    "actions": {
+                        "Complete_the_message_in_a_topic": {
+                            "runAfter": {
+                                "Send_message": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['servicebus_2']['connectionId']"
+                                    }
+                                },
+                                "method": "delete",
+                                "path": "/@{encodeURIComponent(encodeURIComponent('notification-topic'))}/subscriptions/@{encodeURIComponent('trade-platform')}/messages/complete",
+                                "queries": {
+                                    "lockToken": "@triggerBody()?['LockToken']",
+                                    "subscriptionType": "Main"
+                                }
+                            }
+                        },
+                        "Send_message": {
+                            "runAfter": {},
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": {
+                                    "ContentData": "@{triggerBody()?['ContentData']}",
+                                    "ContentType": "@triggerBody()?['ContentType']",
+                                    "CorrelationId": "@triggerBody()?['CorrelationId']",
+                                    "MessageId": "@triggerBody()?['MessageId']",
+                                    "Properties": "@triggerBody()?['Properties']",
+                                    "SessionId": "@triggerBody()?['SessionId']"
+                                },
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['servicebus_1']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/@{encodeURIComponent(encodeURIComponent('defra.trade.imports.plants.create'))}/messages"
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "servicebus_1": {
+                                "connectionId": "[concat(resourceGroup().id, '/providers/Microsoft.Web/connections/', parameters('apiConnectionNameTradeASB'))]",
+                                "connectionName": "tradeQueueConnection",
+                                "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/', 'servicebus')]"
+                            },
+                            "servicebus_2": {
+                                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('serviceBusConfig').name)]",
+                                "connectionName": "[parameters('serviceBusConfig').name]",
+                                "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/', 'servicebus')]"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "2016-06-01",
+            "name": "[parameters('apiConnectionNameTradeASB')]",
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "Name": "[parameters('apiConnectionNameTradeASB')]",
+                "ServiceCode": "[parameters('serviceCode')]",
+                "ServiceName": "[concat('EUX Imports:', parameters('apiConnectionNameTradeASB'))]",
+                "ServiceType": "LOB",
+                "CreationDateTime": "[parameters('dateCreated')]",
+                "Environment": "[parameters('envCode')]",
+                "Tier": "APPLICATION",
+                "Region": "[resourceGroup().location]"
+            },
+            "kind": "V1",
+            "properties": {
+                "displayName": "Send Permissions",
+                "customParameterValues": {},
+                "api": {
+                    "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/', 'servicebus')]"
+                },
+                "parameterValues": {
+                    "connectionString": "[parameters('tradeServiceBusConnectionString')]"
+                }
+            }
+        }
+    ]
+}

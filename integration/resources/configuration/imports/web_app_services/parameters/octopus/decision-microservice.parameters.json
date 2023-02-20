@@ -1,0 +1,174 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "blueGreen": {
+      "value": "#{blueGreen | ToLower}"
+    },
+    "containerRepository": {
+      "value": "#{containerRepository}"
+    },
+    "databaseName": {
+      "value": "decision-microservice"
+    },
+    "dateCreated": {
+      "value": "#{format-DateTag}"
+    },
+    "dbLoginTimeout": {
+      "value": "#{dbLoginTimeout}"
+    },
+    "dbSocketTimeout": {
+      "value": "#{dbSocketTimeout}"
+    },
+    "dnsCacheTtl": {
+      "value": "#{dnsCacheTtl}"
+    },
+    "dnsSuffix": {
+      "value": "#{dnsZone}"
+    },
+    "dockerRegistryPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "opsImpAzureDockerRegistryPassword"
+      }
+    },
+    "dockerRegistryServerUrl": {
+      "value": "opsimpfesacr001.azurecr.io"
+    },
+    "dockerRegistryServerUsername": {
+      "value": "OPSIMPFESACR001"
+    },
+    "envCode": {
+      "value": "#{env | ToLower}"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "healthcheckMaxFailures": {
+      "value": 5
+    },
+    "hikariDebugLevel": {
+      "value": "#{hikariDebugLevel}"
+    },
+    "hikariLeakDetectionThreshold": {
+      "value": "#{hikariLeakDetectionThreshold}"
+    },
+    "hikariConnectionTimeout": {
+      "value": "#{hikariConnectionTimeout}"
+    },
+    "hikariValidationTimeout": {
+      "value": "#{hikariValidationTimeout}"
+    },
+    "javaToolOptions": {
+      "value": "-Xmx512m"
+    },
+    "permissionsServiceBasicAuthPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "permissionsBasicAuthPassword"
+      }
+    },
+    "proxyHost": {
+      "value": "imports-proxy-#{blueGreen | ToLower}"
+    },
+    "readOnlyDatabase": {
+      "value": true
+    },
+    "serviceBasicAuthPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "decision-microserviceBasicAuthPassword"
+      }
+    },
+    "serviceCode": {
+      "value": "#{proj}"
+    },
+    "serviceDBHost": {
+      "value": "#{databaseDbHost}"
+    },
+    "serviceDBPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "decision-microserviceDatabasePassword"
+      }
+    },
+    "serviceDBPasswordAD": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "readOnlyDatabasePasswordAD-#{env | ToLower}"
+      }
+    },
+    "serviceDBPasswordNew": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "decision-microserviceDatabasePassword-#{env | ToLower}"
+      }
+    },
+    "serviceDBUsername": {
+      "value": "decisionServiceUser"
+    },
+    "serviceDBUsernameAD": {
+      "value": "SA-AZURE-IMP-SQL-READO-#{env}@Defra.onmicrosoft.com"
+    },
+    "containerStartTimeLimit": {
+      "value": "#{containerStartTimeLimit}"
+    },
+    "serviceName": {
+      "value": "decision-microservice-#{blueGreen | ToLower}-#{env | ToLower}"
+    },
+    "servicePlanGroup": {
+      "value": "#{appPlanNameReferenceData1}"
+    },
+    "serviceUser": {
+      "value": "importer"
+    },
+    "version": {
+      "value": "#{dockerTag}"
+    },
+    "WebvNetResourceGroup": {
+      "value": "#{virtualNetworkResourceGroup}"
+    },
+    "WebvNetName": {
+      "value": "#{virtualNetworkName}"
+    },
+    "WebSubnetName-reference-data-plan-1": {
+      "value": "#{referenceDataPlan1SubnetName}"
+    },
+    "WebSubnetName-reference-data-plan-2": {
+      "value": "#{referenceDataPlan2SubnetName}"
+    },
+    "WebSubnetName-low-traffic-plan-1": {
+      "value": "#{lowTrafficPlan1SubnetName}"
+    },
+    "WebSubnetName-high-traffic-plan-1": {
+      "value": "#{highTrafficPlan1SubnetName}"
+    },
+    "WebSubnetName-frontend-plan-1": {
+      "value": "#{frontendPlan1SubnetName}"
+    },
+    "WebSubnetName-soap-services-plan-1": {
+      "value": "#{soapServicePlan1SubnetName}"
+    },
+    "DeploymentSubnetResourceId": {
+      "value": ""
+    },
+    "sharedInfraResourceGroupName": {
+      "value": "#{if sharedInfraResourceGroupName}#{sharedInfraResourceGroupName}#{else}#{resourceGroupName}#{/if}"
+    },
+    "rtlDeploymentCheckSubnetResourceId": {
+      "value": "/subscriptions/fa6d4701-12be-41be-9c4d-ba3daf88ed8e/resourceGroups/OPSINFNETRGP001/providers/Microsoft.Network/virtualNetworks/OPSINFNETVNT001/subnets/OPSINFFESSUB001"
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "dateCreated": {
+      "value": "#{format-DateTag}"
+    },
+    "envCode": {
+      "value": "#{env | ToLower}"
+    },
+    "ServiceCode":{
+      "value":"IMP"
+    },
+    "Tier":{
+      "value":"Web"
+    },
+    "ServiceType":{
+       "value":"LOB"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "serviceCapacity": {
+      "value": "#{enotificationPlan1ServiceCapacity}"
+    },
+    "servicePlanGroup": {
+      "value": "#{appPlanNameEnotification}"
+    },
+    "serviceSKU": {
+      "value": "#{enotificationPlan1ServiceSKU}"
+    },
+    "serviceCapacityMax": {
+      "value": "#{if enotificationPlan1ServiceCapacityMax}#{enotificationPlan1ServiceCapacityMax}#{else}#{defaultServiceCapacityMax}#{/if}"
+    },
+    "autoscaleEnabled": {
+      "value": "#{if enotificationPlan1AutoscaleEnabled}#{enotificationPlan1AutoscaleEnabled}#{else}#{defaultAutoscaleEnabled}#{/if}"
+    },
+    "scaleActionIncreaseValue": {
+      "value": "#{if enotificationPlan1ScaleActionIncreaseValue}#{enotificationPlan1ScaleActionIncreaseValue}#{else}#{defaultScaleActionIncreaseValue}#{/if}"
+    },
+    "scaleActionIncreaseCooldown": {
+      "value": "#{if enotificationPlan1ScaleActionIncreaseCooldown}#{enotificationPlan1ScaleActionIncreaseCooldown}#{else}#{defaultScaleActionIncreaseCooldown}#{/if}"
+    },
+    "metricTriggerIncreaseStatistic": {
+      "value": "#{if enotificationPlan1MetricTriggerIncreaseStatistic}#{enotificationPlan1MetricTriggerIncreaseStatistic}#{else}#{defaultMetricTriggerIncreaseStatistic}#{/if}"
+    },
+    "metricTriggerIncreaseTreshold": {
+      "value": "#{if enotificationPlan1MetricTriggerIncreaseTreshold}#{enotificationPlan1MetricTriggerIncreaseTreshold}#{else}#{defaultMetricTriggerIncreaseTreshold}#{/if}"
+    },
+    "metricTriggerIncreaseTimeGrain": {
+      "value": "#{if enotificationPlan1MetricTriggerIncreaseTimeGrain}#{enotificationPlan1MetricTriggerIncreaseTimeGrain}#{else}#{defaultMetricTriggerIncreaseTimeGrain}#{/if}"
+    },
+    "metricTriggerIncreaseTimeWindow": {
+      "value": "#{if enotificationPlan1MetricTriggerIncreaseTimeWindow}#{enotificationPlan1MetricTriggerIncreaseTimeWindow}#{else}#{defaultMetricTriggerIncreaseTimeWindow}#{/if}"
+    },
+    "scaleActionDecreaseValue": {
+      "value": "#{if enotificationPlan1ScaleActionDecreaseValue}#{enotificationPlan1ScaleActionDecreaseValue}#{else}#{defaultScaleActionDecreaseValue}#{/if}"
+    },
+    "scaleActionDecreaseCooldown": {
+      "value": "#{if enotificationPlan1ScaleActionDecreaseCooldown}#{enotificationPlan1ScaleActionDecreaseCooldown}#{else}#{defaultScaleActionDecreaseCooldown}#{/if}"
+    },
+    "metricTriggerDecreaseStatistic": {
+      "value": "#{if enotificationPlan1MetricTriggerDecreaseStatistic}#{enotificationPlan1MetricTriggerDecreaseStatistic}#{else}#{defaultMetricTriggerDecreaseStatistic}#{/if}"
+    },
+    "metricTriggerDecreaseTreshold": {
+      "value": "#{if enotificationPlan1MetricTriggerDecreaseTreshold}#{enotificationPlan1MetricTriggerDecreaseTreshold}#{else}#{defaultMetricTriggerDecreaseTreshold}#{/if}"
+    },
+    "metricTriggerDecreaseTimeGrain": {
+      "value": "#{if enotificationPlan1MetricTriggerDecreaseTimeGrain}#{enotificationPlan1MetricTriggerDecreaseTimeGrain}#{else}#{defaultMetricTriggerDecreaseTimeGrain}#{/if}"
+    },
+    "metricTriggerDecreaseTimeWindow": {
+      "value": "#{if enotificationPlan1MetricTriggerDecreaseTimeWindow}#{enotificationPlan1MetricTriggerDecreaseTimeWindow}#{else}#{defaultMetricTriggerDecreaseTimeWindow}#{/if}"
+    }
+  }
+}

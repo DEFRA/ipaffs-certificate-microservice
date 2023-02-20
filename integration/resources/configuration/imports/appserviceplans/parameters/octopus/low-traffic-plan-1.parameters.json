@@ -1,0 +1,75 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "dateCreated": {
+      "value": "#{format-DateTag}"
+    },
+    "envCode": {
+      "value": "#{env | ToLower}"
+    },
+    "ServiceCode":{
+      "value":"IMP"
+    },
+    "Tier":{
+      "value":"Web"
+    },
+    "ServiceType":{
+       "value":"LOB"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "serviceCapacity": {
+      "value": "#{lowTrafficPlan1ServiceCapacity}"
+    },
+    "servicePlanGroup": {
+      "value": "#{appPlanNameLowTraffic}"
+    },
+    "serviceSKU": {
+      "value": "#{lowTrafficPlan1ServiceSKU}"
+    },
+    "serviceCapacityMax": {
+      "value": "#{if lowTrafficPlan1ServiceCapacityMax}#{lowTrafficPlan1ServiceCapacityMax}#{else}#{defaultServiceCapacityMax}#{/if}"
+    },
+    "autoscaleEnabled": {
+      "value": "#{if lowTrafficPlan1AutoscaleEnabled}#{lowTrafficPlan1AutoscaleEnabled}#{else}#{defaultAutoscaleEnabled}#{/if}"
+    },
+    "scaleActionIncreaseValue": {
+      "value": "#{if lowTrafficPlan1ScaleActionIncreaseValue}#{lowTrafficPlan1ScaleActionIncreaseValue}#{else}#{defaultScaleActionIncreaseValue}#{/if}"
+    },
+    "scaleActionIncreaseCooldown": {
+      "value": "#{if lowTrafficPlan1ScaleActionIncreaseCooldown}#{lowTrafficPlan1ScaleActionIncreaseCooldown}#{else}#{defaultScaleActionIncreaseCooldown}#{/if}"
+    },
+    "metricTriggerIncreaseStatistic": {
+      "value": "#{if lowTrafficPlan1MetricTriggerIncreaseStatistic}#{lowTrafficPlan1MetricTriggerIncreaseStatistic}#{else}#{defaultMetricTriggerIncreaseStatistic}#{/if}"
+    },
+    "metricTriggerIncreaseTreshold": {
+      "value": "#{if lowTrafficPlan1MetricTriggerIncreaseTreshold }#{lowTrafficPlan1MetricTriggerIncreaseTreshold }#{else}#{defaultMetricTriggerIncreaseTreshold }#{/if}"
+    },
+    "metricTriggerIncreaseTimeGrain": {
+      "value": "#{if lowTrafficPlan1MetricTriggerIncreaseTimeGrain}#{lowTrafficPlan1MetricTriggerIncreaseTimeGrain}#{else}#{defaultMetricTriggerIncreaseTimeGrain}#{/if}"
+    },
+    "metricTriggerIncreaseTimeWindow": {
+      "value": "#{if lowTrafficPlan1MetricTriggerIncreaseTimeWindow}#{lowTrafficPlan1MetricTriggerIncreaseTimeWindow}#{else}#{defaultMetricTriggerIncreaseTimeWindow}#{/if}"
+    },
+    "scaleActionDecreaseValue": {
+      "value": "#{if lowTrafficPlan1ScaleActionDecreaseValue}#{lowTrafficPlan1ScaleActionDecreaseValue}#{else}#{defaultScaleActionDecreaseValue}#{/if}"
+    },
+    "scaleActionDecreaseCooldown": {
+      "value": "#{if lowTrafficPlan1ScaleActionDecreaseCooldown}#{lowTrafficPlan1ScaleActionDecreaseCooldown}#{else}#{defaultScaleActionDecreaseCooldown}#{/if}"
+    },
+    "metricTriggerDecreaseStatistic": {
+      "value": "#{if lowTrafficPlan1MetricTriggerDecreaseStatistic}#{lowTrafficPlan1MetricTriggerDecreaseStatistic}#{else}#{defaultMetricTriggerDecreaseStatistic}#{/if}"
+    },
+    "metricTriggerDecreaseTreshold": {
+      "value": "#{if lowTrafficPlan1MetricTriggerDecreaseTreshold }#{lowTrafficPlan1MetricTriggerDecreaseTreshold }#{else}#{defaultMetricTriggerDecreaseTreshold }#{/if}"
+    },
+    "metricTriggerDecreaseTimeGrain": {
+      "value": "#{if lowTrafficPlan1MetricTriggerDecreaseTimeGrain}#{lowTrafficPlan1MetricTriggerDecreaseTimeGrain}#{else}#{defaultMetricTriggerDecreaseTimeGrain}#{/if}"
+    },
+    "metricTriggerDecreaseTimeWindow": {
+      "value": "#{if lowTrafficPlan1MetricTriggerDecreaseTimeWindow}#{lowTrafficPlan1MetricTriggerDecreaseTimeWindow}#{else}#{defaultMetricTriggerDecreaseTimeWindow}#{/if}"
+    }
+  }
+}

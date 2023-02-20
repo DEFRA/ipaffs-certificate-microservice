@@ -1,0 +1,41 @@
+@Library('pipeline-library') _
+
+pipeline {
+    agent {label 'master'}
+    options {
+        ansiColor('xterm')
+        timestamps()
+        disableConcurrentBuilds()
+    }
+
+    stages {
+      stage('Promote Docker Image') {
+        steps {
+            build job: 'Promote_Docker_Image', parameters: [string(name: 'SERVICE_NAME', value: 'integration-platform-database'), string(name: 'CURRENT_SUBSCRIPTION', value: 'Sandpit'), string(name: 'CURRENT_VERSION', value: 'latest'), booleanParam(name: 'IS_DATABASE_CONTAINER', value: true), string(name: 'TARGET_SUBSCRIPTION', value: 'octopus'), string(name: 'TARGET_VERSION', value: "${BUILD_NUMBER}")]
+        }
+      }
+
+      stage('Create Octopus Release Packages') {
+          steps {
+              withCredentials([string(credentialsId: 'OctopusApiKey', variable: 'octopusApiKey')]) {
+                  octopusCreateRelease('DEFRA-EUX-IMP-INTEGRATION-PLATFORM', "${octopusApiKey}", "${BUILD_NUMBER}", 'Default')
+              }
+          }
+      }
+
+      stage('Deploy Octopus Release') {
+          steps {
+              withCredentials([string(credentialsId: 'OctopusApiKey', variable: 'octopusApiKey')]) {
+                  octopusDeployRelease('DEFRA-EUX-IMP-INTEGRATION-PLATFORM', "${octopusApiKey}", 'AZR-SND', "${BUILD_NUMBER}", 'Default')
+              }
+          }
+      }
+
+    }
+        
+    post {
+        always {
+          step([$class: 'WsCleanup'])
+        }
+    }
+}

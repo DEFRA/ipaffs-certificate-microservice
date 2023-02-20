@@ -1,0 +1,17 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "env": {
+            "value": "tst"
+        },
+        "keyVault": {
+            "value": {
+                "name": "SECIMPTSTKVT001",
+                "resourceGroup": "SECIMPINFRGP001",
+                "subscriptionId": "b04fc5a2-4f88-4869-a284-30f418edf4eb"
+            }
+        }
+    }
+}
+  

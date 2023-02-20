@@ -1,0 +1,230 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "allowedIPAFFSCountries": {
+      "value": "ALL"
+    },
+    "archivePeriodChedpp": {
+      "value": "18 months"
+    },
+    "archivePeriodOtherChed": {
+      "value": "6 months"
+    },
+    "bcpNameOverrides": {
+      "value": "{\"DOVERPOE\":\"Sevington - BCP\",\"EUROTUNPOE\":\"Sevington - BCP\"}"
+    },
+    "blueGreen": {
+      "value": ""
+    },
+    "containerRepository": {
+      "value": "imports-release"
+    },
+    "countriesCacheTimeout": {
+      "value": "86400"
+    },
+    "dateCreated": {
+      "value": ""
+    },
+    "dnsSuffix": {
+      "value": ".azurewebsites.net"
+    },
+    "dockerRegistryPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "azureDockerRegistryPassword"
+      }
+    },
+    "dockerRegistryServerUrl": {
+      "value": "sndeuxfesacr001.azurecr.io"
+    },
+    "containerStartTimeLimit": {
+      "value": "230"
+    },
+    "dockerRegistryServerUsername": {
+      "value": "9f9d7738-e643-4ad3-820b-b461583302a8"
+    },
+    "enableCHEDADocImprovements": {
+      "value": "ON"
+    },
+    "enableCHEDPP": {
+      "value": "true"
+    },
+    "enableChedppAdditionalMeansOfTransport": {
+      "value": "false"
+    },
+    "enableChedppRiskAssessmentOnSubmission": {
+      "value": "true"
+    },
+    "chedppPiecesQuantityType": {
+      "value": "true"
+    },
+    "enableCloning": {
+      "value": "true"
+    },
+    "enableEPhytoCloning": {
+      "value": "true"
+    },
+    "enableLiveAnimalCloning": {
+      "value": "true"
+    },
+    "enableChedpCloningEuCountries": {
+      "value": "true"
+    },
+    "enableChedppOptionalContainerNumber": {
+      "value": "true"
+    },
+    "enableChedppOptionalSealNumber": {
+      "value": "true"
+    },
+    "enableDatePicker": {
+      "value": "ON"
+    },
+    "enableDelegationOfAuthority": {
+      "value": "ON"
+    },
+    "enableEnhancedLowRiskJourney": {
+      "value": "ON"
+    },
+    "enableEuImportsHighRiskJourney": {
+      "value": "ON"
+    },
+    "enableEuImportsHighRiskJourneyCheda": {
+      "value": "ON"
+    },
+    "enableEuChedAssessmentSubmission": {
+      "value": "ON"
+    },
+    "enableGenusSpeciesSearch": {
+      "value": "ON"
+    },
+    "enableNotificationArchive": {
+      "value": "ON"
+    },
+    "enableMultiDocumentUpload": {
+      "value": "ON"
+    },
+    "enablePostEuxSupport": {
+      "value": "ON 2021/01/01 00:00:00"
+    },
+    "envCode": {
+      "value": "SND"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "healthcheckMaxFailures": {
+      "value": 5
+    },
+    "feedbackSurveyLink": {
+      "value": "https://www.smartsurvey.co.uk/s/7YJV5/"
+    },
+    "googleTagManagerID": {
+      "value": "GTM-NHS2VQP"
+    },
+    "hexEncryptionKey": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "hexEncryptionKey"
+      }
+    },
+    "nodeOptions": {
+      "value": "--max-http-header-size=12000"
+    },
+    "permissionsServiceBasicAuthPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "permissionsBasicAuthPassword"
+      }
+    },
+    "proxyHost": {
+      "value": "imports-proxy"
+    },
+    "serviceCode": {
+      "value": "IMP"
+    },
+    "serviceName": {
+      "value": "frontend-notification"
+    },
+    "servicePlanGroup": {
+      "value": "services-general"
+    },
+    "serviceUser": {
+      "value": "importer"
+    },
+    "version": {
+      "value": "1.0"
+    },
+    "WebvNetResourceGroup": {
+      "value": ""
+    },
+    "WebvNetName": {
+      "value": ""
+    },
+    "WebSubnetName-reference-data-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-reference-data-plan-2": {
+      "value": ""
+    },
+    "WebSubnetName-low-traffic-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-high-traffic-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-frontend-plan-1": {
+      "value": ""
+    },
+    "WebSubnetName-soap-services-plan-1": {
+      "value": ""
+    },
+    "DeploymentSubnetResourceId": {
+      "value": ""
+    },
+    "sharedInfraResourceGroupName": {
+      "value": ""
+    },
+    "rtlDeploymentCheckSubnetResourceId": {
+      "value": "/subscriptions/fa6d4701-12be-41be-9c4d-ba3daf88ed8e/resourceGroups/OPSINFNETRGP001/providers/Microsoft.Network/virtualNetworks/OPSINFNETVNT001/subnets/OPSINFFESSUB001"
+    },
+    "redisHost": {
+      "value": "SNDIMPREC001.redis.cache.windows.net"
+    },
+    "redisPort": {
+      "value": 6379
+    },
+    "redisPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "redisPassword"
+      }
+    },
+    "enableChedppCsvBulkUpload": {
+      "value": "true"
+    },
+    "enableLowRiskArticle72": {
+      "value": "true"
+    },
+    "maxCommodityLines": {
+      "value": 500
+    },
+    "chedppTempPodRemovalUtcDate": {
+      "value": "2022/05/14T23:00:00Z"
+    },
+    "chedppArticle72TransitionDateTime": {
+      "value": "2024-07-01T00:00:00+01:00"
+    },
+    "chedppEuHarmonisationTransitionDateTime": {
+      "value": "2022-01-01T00:00:00+00:00"
+    }
+  }
+}

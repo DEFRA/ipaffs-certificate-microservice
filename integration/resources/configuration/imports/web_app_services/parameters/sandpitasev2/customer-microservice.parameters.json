@@ -1,0 +1,171 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "b2cIdentityServiceID": {
+      "value": "8b5214ee-62b6-e811-a954-000d3a29b5de"
+    },
+    "blueGreen": {
+      "value": ""
+    },
+    "cacheDelegationFixedRate": {
+      "value": "120000"
+    },
+    "cacheDelegationRefreshDelay": {
+      "value": "1800000"
+    },
+    "containerRepository": {
+      "value": "imports-release"
+    },
+    "customerDynamicsOrgAdminRole": {
+      "value": "a3217e78-dd9b-e811-a94f-000d3a3a8543"
+    },
+    "customerService": {
+      "value": "https://defra-custmstr-eue-dev.api.crm4.dynamics.com"
+    },
+    "customerDynamicsResourceUrl": {
+      "value": "https://defra-custmstr-eue-dev.api.crm4.dynamics.com"
+    },
+    "customerServiceAuthUrl": {
+      "value": "https://login.microsoftonline.com/6f504113-6b64-43f2-ade9-242e05780007/oauth2/token"
+    },
+    "dateCreated": {
+      "value": ""
+    },
+    "dnsSuffix": {
+      "value": ".azurewebsites.net"
+    },
+    "dockerRegistryPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "azureDockerRegistryPassword"
+      }
+    },
+    "dockerRegistryServerUrl": {
+      "value": "sndeuxfesacr001.azurecr.io"
+    },
+    "dockerRegistryServerUsername": {
+      "value": "9f9d7738-e643-4ad3-820b-b461583302a8"
+    },
+    "envCode": {
+      "value": "SND"
+    },
+    "containerStartTimeLimit": {
+      "value": "230"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "healthcheckMaxFailures": {
+      "value": 5
+    },
+    "javaToolOptions": {
+      "value": "-Xmx512m"
+    },
+    "permissionsServiceBasicAuthPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "permissionsBasicAuthPassword"
+      }
+    },
+    "proxyHost": {
+      "value": "imports-proxy-static"
+    },
+    "serviceBasicAuthPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "customer-microserviceBasicAuthPassword"
+      }
+    },
+    "customer-dynamics-client-id-secret-pairs": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "customer-dynamics-client-id-secret-pairs-snd"
+      }
+    },
+    "serviceCode": {
+      "value": "IMP"
+    },
+    "serviceName": {
+      "value": "customer-microservice"
+    },
+    "servicePlanGroup": {
+      "value": "high-traffic-plan-1"
+    },
+    "serviceUser": {
+      "value": "importer"
+    },
+    "tradePlatformAuthUrl": {
+      "value": "https://login.microsoftonline.com/c9d74090-b4e6-4b04-981d-e6757a160812/oauth2/v2.0/token"
+    },
+    "tradePlatformClientId": {
+      "value": "b23b073e-1f9c-4b93-9ac2-a99e55cdc2b4"
+    },
+    "tradePlatformClientSecret": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "trade-platform-client-secret-snd"
+      }
+    },
+    "tradePlatformDelegationUrl": {
+      "value": "https://snd-internal-gateway.trade.azure.defra.cloud/trade-delegated-authority/v1/Permission/8b5214ee-62b6-e811-a954-000d3a29b5de/Permissions/Organisations"
+    },
+    "tradePlatformScope": {
+      "value": "api://snd-futuretrade-int/.default"
+    },
+    "tradePlatformSubscriptionKey": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "trade-platform-subscription-key-snd"
+      }
+    },
+    "version": {
+      "value": "1.0"
+    },
+    "WebvNetResourceGroup": {
+      "value": "SNDINFNETRGP001"
+    },
+    "WebvNetName": {
+      "value": "SNDINFNETVNT001"
+    },
+    "WebSubnetName-reference-data-plan-1": {
+      "value": "SNDIMPWEBSUB011"
+    },
+    "WebSubnetName-reference-data-plan-2": {
+      "value": "SNDIMPWEBSUB012"
+    },
+    "WebSubnetName-low-traffic-plan-1": {
+      "value": "SNDIMPWEBSUB013"
+    },
+    "WebSubnetName-high-traffic-plan-1": {
+      "value": "SNDIMPWEBSUB014"
+    },
+    "WebSubnetName-frontend-plan-1": {
+      "value": "SNDIMPWEBSUB015"
+    },
+    "WebSubnetName-soap-services-plan-1": {
+      "value": "SNDIMPWEBSUB016"
+    },
+    "DeploymentSubnetResourceId": {
+      "value": "/subscriptions/f1489724-a9dc-48a7-8d68-e47e21c8f9a5/resourceGroups/APSINFNETRGP001/providers/Microsoft.Network/virtualNetworks/APSINFNETVNT001/subnets/APSINFBESSUB001"
+    },
+    "rtlDeploymentCheckSubnetResourceId": {
+      "value": ""
+    },
+    "sharedInfraResourceGroupName": {
+      "value": ""
+    }
+  }
+}

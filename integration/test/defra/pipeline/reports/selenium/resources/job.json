@@ -1,0 +1,159 @@
+{
+  "_class" : "org.jenkinsci.plugins.workflow.job.WorkflowJob",
+  "actions" : [
+    {
+
+    },
+    {
+
+    },
+    {
+
+    },
+    {
+
+    },
+    {
+
+    },
+    {
+
+    },
+    {
+
+    },
+    {
+
+    },
+    {
+      "_class" : "hudson.plugins.cobertura.CoberturaProjectAction"
+    },
+    {
+
+    },
+    {
+
+    },
+    {
+
+    },
+    {
+
+    },
+    {
+      "_class" : "com.cloudbees.plugins.credentials.ViewCredentialsAction"
+    }
+  ],
+  "description" : null,
+  "displayName" : "master",
+  "displayNameOrNull" : null,
+  "fullDisplayName" : "My Microservice » master",
+  "fullName" : "my-project/master",
+  "name" : "master",
+  "url" : "https://jenkins.url/job/my-project/job/master/",
+  "buildable" : true,
+  "builds" : [
+    {
+      "_class" : "org.jenkinsci.plugins.workflow.job.WorkflowRun",
+      "number" : 136,
+      "url" : "https://jenkins.url/job/my-project/job/master/136/"
+    },
+    {
+      "_class" : "org.jenkinsci.plugins.workflow.job.WorkflowRun",
+      "number" : 135,
+      "url" : "https://jenkins.url/job/my-project/job/master/135/"
+    },
+    {
+      "_class" : "org.jenkinsci.plugins.workflow.job.WorkflowRun",
+      "number" : 134,
+      "url" : "https://jenkins.url/job/my-project/job/master/134/"
+    }
+  ],
+  "color" : "blue",
+  "firstBuild" : {
+    "_class" : "org.jenkinsci.plugins.workflow.job.WorkflowRun",
+    "number" : 101,
+    "url" : "https://jenkins.url/job/my-project/job/master/101/"
+  },
+  "healthReport" : [
+    {
+      "description" : "Test Result: 0 tests failing out of a total of 561 tests.",
+      "iconClassName" : "icon-health-80plus",
+      "iconUrl" : "health-80plus.png",
+      "score" : 100
+    },
+    {
+      "description" : "Build stability: No recent builds failed.",
+      "iconClassName" : "icon-health-80plus",
+      "iconUrl" : "health-80plus.png",
+      "score" : 100
+    }
+  ],
+  "inQueue" : false,
+  "keepDependencies" : false,
+  "lastBuild" : {
+    "_class" : "org.jenkinsci.plugins.workflow.job.WorkflowRun",
+    "number" : 136,
+    "url" : "https://jenkins.url/job/my-project/job/master/136/"
+  },
+  "lastCompletedBuild" : {
+    "_class" : "org.jenkinsci.plugins.workflow.job.WorkflowRun",
+    "number" : 136,
+    "url" : "https://jenkins.url/job/my-project/job/master/136/"
+  },
+  "lastFailedBuild" : {
+    "_class" : "org.jenkinsci.plugins.workflow.job.WorkflowRun",
+    "number" : 121,
+    "url" : "https://jenkins.url/job/my-project/job/master/121/"
+  },
+  "lastStableBuild" : {
+    "_class" : "org.jenkinsci.plugins.workflow.job.WorkflowRun",
+    "number" : 136,
+    "url" : "https://jenkins.url/job/my-project/job/master/136/"
+  },
+  "lastSuccessfulBuild" : {
+    "_class" : "org.jenkinsci.plugins.workflow.job.WorkflowRun",
+    "number" : 136,
+    "url" : "https://jenkins.url/job/my-project/job/master/136/"
+  },
+  "lastUnstableBuild" : null,
+  "lastUnsuccessfulBuild" : {
+    "_class" : "org.jenkinsci.plugins.workflow.job.WorkflowRun",
+    "number" : 121,
+    "url" : "https://jenkins.url/job/my-project/job/master/121/"
+  },
+  "nextBuildNumber" : 137,
+  "property" : [
+    {
+      "_class" : "hudson.model.ParametersDefinitionProperty",
+      "parameterDefinitions" : [
+        {
+          "_class" : "hudson.model.BooleanParameterDefinition",
+          "defaultParameterValue" : {
+            "_class" : "hudson.model.BooleanParameterValue",
+            "name" : "RESERVE_ENVIRONMENT",
+            "value" : false
+          },
+          "description" : "Do you want to reserve azure environment?",
+          "name" : "RESERVE_ENVIRONMENT",
+          "type" : "BooleanParameterDefinition"
+        }
+      ]
+    },
+    {
+      "_class" : "org.jenkinsci.plugins.workflow.job.properties.DisableConcurrentBuildsJobProperty"
+    },
+    {
+      "_class" : "com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty"
+    },
+    {
+      "_class" : "org.jenkinsci.plugins.workflow.multibranch.BranchJobProperty",
+      "branch" : {
+
+      }
+    }
+  ],
+  "queueItem" : null,
+  "concurrentBuild" : false,
+  "resumeBlocked" : false
+}

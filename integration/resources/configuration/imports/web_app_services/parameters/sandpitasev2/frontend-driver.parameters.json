@@ -1,0 +1,89 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "blueGreen": {
+      "value": ""
+    },
+    "containerRepository": {
+      "value": "imports-release"
+    },
+    "containerStartTimeLimit": {
+      "value": "230"
+    },
+    "dateCreated": {
+      "value": ""
+    },
+    "dnsSuffix": {
+      "value": ".azurewebsites.net"
+    },
+    "dockerRegistryPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b04fc5a2-4f88-4869-a284-30f418edf4eb/resourceGroups/SECIMPINFRGP001/providers/Microsoft.KeyVault/vaults/SECIMPINFKVT001"
+        },
+        "secretName": "azureDockerRegistryPassword"
+      }
+    },
+    "dockerRegistryServerUrl": {
+      "value": "sndeuxfesacr001.azurecr.io"
+    },
+    "dockerRegistryServerUsername": {
+      "value": "9f9d7738-e643-4ad3-820b-b461583302a8"
+    },
+    "envCode": {
+      "value": "SND"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "healthCheckMaxFailures": {
+      "value": 5
+    },
+    "nodeOptions": {
+      "value": "--max-http-header-size=12000"
+    },
+    "serviceCode": {
+      "value": "IMP"
+    },
+    "serviceName": {
+      "value": "frontend-driver"
+    },
+    "servicePlanGroup": {
+      "value": "frontend-plan-2"
+    },
+    "version": {
+      "value": "1.0"
+    },
+    "WebvNetResourceGroup": {
+      "value": "SNDINFNETRGP001"
+    },
+    "WebvNetName": {
+      "value": "SNDINFNETVNT001"
+    },  
+    "WebSubnetName-frontend-plan-2": {
+      "value": "SNDIMPWEBSUB017"
+    },
+    "rtlDeploymentCheckSubnetResourceId": {
+      "value": ""
+    },
+    "DeploymentSubnetResourceId": {
+      "value": "/subscriptions/f1489724-a9dc-48a7-8d68-e47e21c8f9a5/resourceGroups/APSINFNETRGP001/providers/Microsoft.Network/virtualNetworks/APSINFNETVNT001/subnets/APSINFBESSUB001"
+    },
+    "sharedInfraResourceGroupName": {
+      "value": ""
+    },
+    "SEC_SUB_ID": {
+      "value": "b04fc5a2-4f88-4869-a284-30f418edf4eb"
+    },
+    "AgwVnetResourceGroupName": {
+      "value": "SECINFNETRGP001"
+    },
+    "AgwVnetName": {
+      "value": "SECINFNETVNT001"
+    },
+    "FrontendDriverAgwSubnetName": {
+      "value": "SECIMPSNDSUB005"
+    }
+  }
+}

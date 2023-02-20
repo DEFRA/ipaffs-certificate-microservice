@@ -1,0 +1,100 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "auditingResourceGroup": {
+      "type": "string"
+    },
+    "auditingStorageAccountName": {
+      "type": "string"
+    },
+    "auditingSubscriptionId": {
+      "type": "string"
+    },
+    "dateCreated": {
+      "type": "string"
+    },
+    "envCode": {
+      "type": "string"
+    },
+    "serviceCode": {
+      "type": "string"
+    },
+    "serviceHostingMode": {
+      "type": "string"
+    },
+    "serviceName": {
+      "type": "string"
+    },
+    "servicePartitionCount": {
+      "type": "int"
+    },
+    "serviceReplicaCount": {
+      "allowedValues": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        12
+      ],
+      "type": "int"
+    },
+    "serviceSKU": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Search/searchServices",
+      "name": "[parameters('serviceName')]",
+      "apiVersion": "2015-08-19",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "Name": "[parameters('serviceName')]",
+        "ServiceCode": "[parameters('serviceCode')]",
+        "ServiceName": "[parameters('serviceName')]",
+        "ServiceType": "LOB",
+        "CreationDateTime": "[parameters('dateCreated')]",
+        "Environment": "[parameters('envCode')]",
+        "Tier": "APPLICATION",
+        "Region": "[resourceGroup().location]"
+      },
+      "sku": {
+        "name": "[parameters('serviceSKU')]"
+      },
+      "resources": [
+        {
+          "type": "providers/diagnosticSettings",
+          "name": "[concat('Microsoft.Insights/', parameters('serviceName'), 'SendToStorage')]",
+          "apiVersion": "2017-05-01-preview",
+          "Location": "[resourceGroup().location]",
+          "properties": {
+            "storageAccountId": "[resourceId(parameters('auditingSubscriptionId'),parameters('auditingResourceGroup'),'Microsoft.Storage/storageAccounts/', parameters('auditingStorageAccountName'))]",
+            "metrics": [
+              {
+                "category": "AllMetrics",
+                "enabled": true,
+                "retentionPolicy": {
+                  "days": 90,
+                  "enabled": true
+                },
+                "timeGrain": null
+              }
+            ],
+            "logs": [
+            ]
+          },
+          "dependsOn": [
+            "[resourceId('Microsoft.Search/searchServices', parameters('serviceName'))]"
+          ]
+        }
+      ],
+      "properties": {
+        "replicaCount": "[parameters('serviceReplicaCount')]",
+        "partitionCount": "[parameters('servicePartitionCount')]",
+        "hostingMode": "[toLower(parameters('serviceHostingMode'))]"
+      }
+    }
+  ]
+}

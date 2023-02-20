@@ -1,0 +1,39 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "auditingResourceGroup": {
+      "value": "#{auditingResourceGroup}"
+    },
+    "auditingStorageAccountName": {
+      "value": "#{auditingStorageAccountName}"
+    },
+    "auditingSubscriptionId": {
+      "value": "#{auditingSubscriptionId}"
+    },
+    "dateCreated": {
+      "value": "#{format-DateTag}"
+    },
+    "envCode": {
+      "value": "#{env | ToLower}"
+    },
+    "serviceCode": {
+      "value": "#{proj}"
+    },
+    "serviceHostingMode": {
+      "value": "default"
+    },
+    "serviceName": {
+      "value": "#{azureSearchServiceName}"
+    },
+    "servicePartitionCount": {
+      "value": #{azureSearchServicePartitionCount}
+    },
+    "serviceReplicaCount": {
+      "value": #{azureSearchServiceReplicaCount}
+    },
+    "serviceSKU": {
+      "value": "#{azureSearchServiceSku}"
+    }
+  }
+}

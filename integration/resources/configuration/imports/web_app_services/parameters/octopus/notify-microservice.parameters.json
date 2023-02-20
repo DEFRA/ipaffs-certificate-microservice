@@ -1,0 +1,138 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "blueGreen": {
+      "value": "#{blueGreen | ToLower}"
+    },
+    "containerRepository": {
+      "value": "#{containerRepository}"
+    },
+    "dateCreated": {
+      "value": "#{format-DateTag}"
+    },
+    "dockerRegistryPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "opsImpAzureDockerRegistryPassword"
+      }
+    },
+    "dockerRegistryServerUrl": {
+      "value": "opsimpfesacr001.azurecr.io"
+    },
+    "dockerRegistryServerUsername": {
+      "value": "OPSIMPFESACR001"
+    },
+    "dnsSuffix": {
+      "value": "#{dnsZone}"
+    },
+    "envCode": {
+      "value": "#{env | ToLower}"
+    },
+    "envSuffix": {
+      "value": ""
+    },
+    "serviceCode": {
+      "value": "IMP"
+    },
+    "serviceName": {
+      "value": "notify-microservice-#{env | ToLower}"
+    },
+    "servicePlanGroup": {
+      "value": "#{appPlanNameLowTraffic}"
+    },
+    "serviceStorageName": {
+      "value": "#{notifyStorageName}"
+    },
+    "serviceSKU": {
+      "value": "#{notifyStoragSKU}"
+    },
+    "version": {
+      "value": "#{dockerTag}"
+    },
+    "WebvNetResourceGroup": {
+      "value": "#{virtualNetworkResourceGroup}"
+    },
+    "WebvNetName": {
+      "value": "#{virtualNetworkName}"
+    },
+    "WebSubnetName-reference-data-plan-1": {
+      "value": "#{referenceDataPlan1SubnetName}"
+    },
+    "WebSubnetName-reference-data-plan-2": {
+      "value": "#{referenceDataPlan2SubnetName}"
+    },
+    "WebSubnetName-low-traffic-plan-1": {
+      "value": "#{lowTrafficPlan1SubnetName}"
+    },
+    "WebSubnetName-high-traffic-plan-1": {
+      "value": "#{highTrafficPlan1SubnetName}"
+    },
+    "WebSubnetName-frontend-plan-1": {
+      "value": "#{frontendPlan1SubnetName}"
+    },
+    "WebSubnetName-soap-services-plan-1": {
+      "value": "#{soapServicePlan1SubnetName}"
+    },
+    "DeploymentSubnetResourceId": {
+      "value": ""
+    },
+    "sharedInfraResourceGroupName": {
+      "value": "#{if sharedInfraResourceGroupName}#{sharedInfraResourceGroupName}#{else}#{resourceGroupName}#{/if}"
+    },
+    "rtlDeploymentCheckSubnetResourceId": {
+      "value": "/subscriptions/fa6d4701-12be-41be-9c4d-ba3daf88ed8e/resourceGroups/OPSINFNETRGP001/providers/Microsoft.Network/virtualNetworks/OPSINFNETVNT001/subnets/OPSINFFESSUB001"
+    },
+    "notifyQueueName": {
+      "value": "#{notifyQueueName}"
+    },
+    "serviceBusNamespaceName": {
+      "value": "#{serviceBusNamespaceName}"
+    },
+    "serviceBusNamespaceResourceGroup": {
+      "value": ""
+    },
+    "enableEmailNotification": {
+      "value": "#{enableEmailNotification}"
+    },
+    "enableTextNotification": {
+      "value": "#{enableTextNotification}"
+    },
+    "tradePlatformAuthUrl": {
+      "value": "#{tradePlatformAuthUrl}"
+    },
+    "tradePlatformNotifyUrl": {
+      "value": "#{tradePlatformNotifyUrl}"
+    },
+    "tradePlatformClientId": {
+      "value": "#{tradePlatformClientId}"
+    },
+    "tradePlatformClientSecret": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "trade-platform-client-secret-#{env | ToLower}"
+      }
+    },
+    "tradePlatformScope": {
+      "value": "#{tradePlatformScope}"
+    },
+    "tradePlatformSystemName": {
+      "value": "#{tradePlatformSystemName}"
+    },
+    "tradePlatformSystemUniqueId": {
+      "value": "#{tradePlatformSystemUniqueId}"
+    },
+    "tradePlatformSubscriptionKey": {
+      "reference": {
+        "keyVault": {
+          "id": "#{keyVaultId}"
+        },
+        "secretName": "trade-platform-subscription-key-#{env | ToLower}"
+      }
+    }
+  }
+}

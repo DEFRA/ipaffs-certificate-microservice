@@ -1,0 +1,57 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "auditingResourceGroup": {
+            "value": "loginfsbsrgp001"
+        },
+        "auditingStorageAccountName": {
+            "value": "logsbssndsto001"
+        },
+        "auditingSubscriptionId": {
+            "value": "dd79b72f-fa4d-49f3-907d-4b758a5ef2ef"
+        },
+        "dateCreated": {
+            "value": ""
+        },
+        "envCode": {
+            "value": "SND"
+        },
+        "serviceCode": {
+            "value": "IMP"
+        },
+        "redisCacheName": {
+            "value": "SNDIMPRDS001"
+        },
+        "redisCacheSkuCapacity": {
+            "value": 0
+        },
+        "redisCacheCapacitySkuFamily": {
+            "value": "C"
+        },
+        "redisCacheCapacitySkuName": {
+            "value": "Basic"
+        },
+        "redisVirtualNetworkResourceGroupName": {
+            "value": ""
+        },
+        "redisVirtualNetworkName": {
+            "value": ""
+        },
+        "redisSubnetName": {
+            "value": ""
+        },
+        "redisFirewallSettings": {
+            "value": {
+              "FrontendSubnetStartIP": "",
+              "FrontendSubnetEndIP": ""
+            }
+        },
+        "redisFirewallSettings2": {
+            "value": {
+              "FrontendSubnetStartIP": "",
+              "FrontendSubnetEndIP": ""
+            }
+        }
+    }
+}
