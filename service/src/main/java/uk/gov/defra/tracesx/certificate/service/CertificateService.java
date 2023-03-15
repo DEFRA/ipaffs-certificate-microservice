@@ -1,14 +1,13 @@
 package uk.gov.defra.tracesx.certificate.service;
 
+import java.net.URI;
+import java.util.function.Supplier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.defra.tracesx.certificate.model.Certificate;
 import uk.gov.defra.tracesx.certificate.utils.CertificatePdfGenerator;
 import uk.gov.defra.tracesx.certificate.utils.ReferenceNumberGenerator;
 import uk.gov.defra.tracesx.certificate.utils.UriParser;
-
-import java.net.URI;
-import java.util.function.Supplier;
 
 @Service
 public class CertificateService {

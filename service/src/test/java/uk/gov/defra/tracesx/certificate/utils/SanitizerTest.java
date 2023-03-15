@@ -1,13 +1,12 @@
 package uk.gov.defra.tracesx.certificate.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import org.apache.commons.io.FileUtils;
-import org.junit.Test;
-import uk.gov.defra.tracesx.certificate.utils.Sanitizer;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import org.apache.commons.io.FileUtils;
+import org.junit.Test;
 
 public class SanitizerTest {
 

@@ -3,18 +3,18 @@ package uk.gov.defra.tracesx.certificate.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.util.function.Supplier;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.defra.tracesx.certificate.model.Certificate;
-import uk.gov.defra.tracesx.certificate.utils.ReferenceNumberGenerator;
 import uk.gov.defra.tracesx.certificate.utils.CertificatePdfGenerator;
+import uk.gov.defra.tracesx.certificate.utils.ReferenceNumberGenerator;
 import uk.gov.defra.tracesx.certificate.utils.UriParser;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.util.function.Supplier;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CertificateServiceTest {

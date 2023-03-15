@@ -1,8 +1,7 @@
 package uk.gov.defra.tracesx.certificate.utils;
 
-import org.springframework.stereotype.Component;
-
 import java.net.URI;
+import org.springframework.stereotype.Component;
 
 @Component
 public class UriParser {

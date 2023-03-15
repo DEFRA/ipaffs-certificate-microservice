@@ -1,6 +1,7 @@
 package uk.gov.defra.tracesx.certificate.utils;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.junit.Test;
 import uk.gov.defra.tracesx.certificate.utils.exception.InvalidHtmlException;
 

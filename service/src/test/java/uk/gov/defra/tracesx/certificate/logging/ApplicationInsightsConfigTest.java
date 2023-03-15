@@ -1,11 +1,13 @@
 package uk.gov.defra.tracesx.certificate.logging;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
-import static org.assertj.core.api.Assertions.assertThat;
+
+import javax.servlet.Filter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -14,9 +16,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
-
-
-import javax.servlet.Filter;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ApplicationInsightsConfigTest {
