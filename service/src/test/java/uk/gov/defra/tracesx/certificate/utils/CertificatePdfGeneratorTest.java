@@ -3,6 +3,9 @@ package uk.gov.defra.tracesx.certificate.utils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.File;
+import java.net.URI;
+import java.util.Locale;
 import org.apache.commons.io.FileUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.jupiter.api.Test;
@@ -12,10 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.defra.tracesx.certificate.utils.exception.InvalidHtmlException;
 import uk.gov.defra.tracesx.certificate.utils.exception.PdfGenerationException;
-
-import java.io.File;
-import java.net.URI;
-import java.util.Locale;
 
 @ExtendWith(MockitoExtension.class)
 class CertificatePdfGeneratorTest {

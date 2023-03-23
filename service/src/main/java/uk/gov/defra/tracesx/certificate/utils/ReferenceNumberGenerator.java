@@ -1,12 +1,11 @@
 package uk.gov.defra.tracesx.certificate.utils;
 
+import java.util.Objects;
+import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.defra.tracesx.certificate.utils.exception.InvalidReferenceNumberException;
-
-import java.util.Objects;
-import java.util.regex.Pattern;
 
 public class ReferenceNumberGenerator {
 

@@ -2,6 +2,9 @@ package uk.gov.defra.tracesx.certificate.resource;
 
 import static uk.gov.defra.tracesx.certificate.utils.LoggerHelper.replaceNewLines;
 
+import java.io.IOException;
+import java.net.URI;
+import javax.xml.parsers.ParserConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +23,6 @@ import uk.gov.defra.tracesx.certificate.service.CertificateService;
 import uk.gov.defra.tracesx.certificate.utils.HtmlValidator;
 import uk.gov.defra.tracesx.certificate.utils.ReferenceNumberGenerator;
 import uk.gov.defra.tracesx.certificate.utils.Sanitizer;
-
-import java.io.IOException;
-import java.net.URI;
-import javax.xml.parsers.ParserConfigurationException;
 
 @RestController
 @RequestMapping("/certificate")

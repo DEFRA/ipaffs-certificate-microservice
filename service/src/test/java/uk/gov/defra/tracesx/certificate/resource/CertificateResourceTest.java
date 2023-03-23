@@ -6,6 +6,10 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.net.URI;
+import java.util.Random;
+import java.util.function.Supplier;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -15,10 +19,6 @@ import org.springframework.http.ResponseEntity;
 import uk.gov.defra.tracesx.certificate.model.Certificate;
 import uk.gov.defra.tracesx.certificate.service.CertificateService;
 import uk.gov.defra.tracesx.certificate.utils.ReferenceNumberGenerator;
-
-import java.net.URI;
-import java.util.Random;
-import java.util.function.Supplier;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CertificateResourceTest {
