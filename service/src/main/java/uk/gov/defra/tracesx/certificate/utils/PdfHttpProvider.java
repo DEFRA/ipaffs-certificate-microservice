@@ -2,6 +2,12 @@ package uk.gov.defra.tracesx.certificate.utils;
 
 import com.openhtmltopdf.extend.FSStream;
 import com.openhtmltopdf.extend.FSStreamFactory;
+import java.io.ByteArrayInputStream;
+import java.io.CharArrayReader;
+import java.io.InputStream;
+import java.io.Reader;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,13 +21,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.defra.tracesx.certificate.exceptions.InvalidTokenException;
 import uk.gov.defra.tracesx.certificate.exceptions.UnsupportedHostException;
-
-import java.io.ByteArrayInputStream;
-import java.io.CharArrayReader;
-import java.io.InputStream;
-import java.io.Reader;
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
 
 @Component
 public class PdfHttpProvider implements FSStreamFactory {

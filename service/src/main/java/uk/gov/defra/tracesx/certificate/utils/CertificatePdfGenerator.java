@@ -5,6 +5,9 @@ import static org.springframework.util.Assert.notNull;
 import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder;
 import com.openhtmltopdf.pdfboxout.PdfBoxRenderer;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+import java.io.ByteArrayOutputStream;
+import java.net.URI;
+import java.util.Locale;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.slf4j.Logger;
@@ -14,10 +17,6 @@ import org.springframework.stereotype.Component;
 import org.xml.sax.SAXParseException;
 import uk.gov.defra.tracesx.certificate.utils.exception.InvalidHtmlException;
 import uk.gov.defra.tracesx.certificate.utils.exception.PdfGenerationException;
-
-import java.io.ByteArrayOutputStream;
-import java.net.URI;
-import java.util.Locale;
 
 @Component("pdfGenerator")
 public class CertificatePdfGenerator {

@@ -1,10 +1,9 @@
 package uk.gov.defra.tracesx.certificate.utils;
 
 import com.openhtmltopdf.extend.FSSupplier;
-import uk.gov.defra.tracesx.certificate.utils.exception.FontNotFoundException;
-
 import java.io.IOException;
 import java.io.InputStream;
+import uk.gov.defra.tracesx.certificate.utils.exception.FontNotFoundException;
 
 public class FontFile {
 

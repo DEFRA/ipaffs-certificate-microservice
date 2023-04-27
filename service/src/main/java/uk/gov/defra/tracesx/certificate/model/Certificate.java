@@ -1,11 +1,10 @@
 package uk.gov.defra.tracesx.certificate.model;
 
+import java.util.Arrays;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import uk.gov.defra.tracesx.certificate.utils.ReferenceNumberGenerator;
-
-import java.util.Arrays;
-import java.util.Objects;
 
 @Getter
 @Setter

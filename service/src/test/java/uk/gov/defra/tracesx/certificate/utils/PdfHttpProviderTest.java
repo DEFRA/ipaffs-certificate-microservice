@@ -8,6 +8,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import com.openhtmltopdf.extend.FSStream;
+import java.io.ByteArrayInputStream;
+import java.io.CharArrayReader;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -22,9 +24,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.defra.tracesx.certificate.exceptions.InvalidTokenException;
 import uk.gov.defra.tracesx.certificate.exceptions.UnsupportedHostException;
-
-import java.io.ByteArrayInputStream;
-import java.io.CharArrayReader;
 
 public class PdfHttpProviderTest {
 

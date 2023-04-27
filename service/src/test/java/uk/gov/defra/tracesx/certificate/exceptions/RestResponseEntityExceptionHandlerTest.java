@@ -9,6 +9,8 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.Appender;
+import java.util.ArrayList;
+import java.util.List;
 import org.everit.json.schema.ValidationException;
 import org.junit.After;
 import org.junit.Before;
@@ -22,9 +24,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.WebRequest;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @RunWith(MockitoJUnitRunner.class)

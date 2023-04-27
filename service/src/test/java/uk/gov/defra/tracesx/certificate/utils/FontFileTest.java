@@ -2,11 +2,11 @@ package uk.gov.defra.tracesx.certificate.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.openhtmltopdf.extend.FSSupplier;
+import java.io.InputStream;
 import org.junit.jupiter.api.Test;
 import uk.gov.defra.tracesx.certificate.utils.exception.FontNotFoundException;
-
-import java.io.InputStream;
 
 public class FontFileTest {
 

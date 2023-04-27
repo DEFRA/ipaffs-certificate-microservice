@@ -1,6 +1,9 @@
 package uk.gov.defra.tracesx.certificate.exceptions;
 
 import com.github.fge.jsonpatch.JsonPatchException;
+import java.io.IOException;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 import org.everit.json.schema.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +14,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import java.io.IOException;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
