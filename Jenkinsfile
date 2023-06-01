@@ -1,4 +1,4 @@
-@Library('pipeline-library@feature/IMTA-13398-keyvault-managed-identity-1') _
+@Library('pipeline-library@feature/IMTA-13398-keyvault-managed-identity-all') _
 
 javaPipeline {
     SERVICE_NAME = "certificate-microservice"
