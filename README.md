@@ -18,7 +18,7 @@ It is used as a pre-push hook and will scan any local commits being pushed
 
 ### Pre-push hook setup
 1. Install [truffleHog](https://github.com/trufflesecurity/truffleHog)
-    - `pip3 install --trusted-host pypi.org --trusted-host files.pythonhosted.org truffleHog` (might require sudo privileges)
+    - 'brew install trufflesecurity/trufflehog/trufflehog'
 2. Set DEFRA_WORKSPACE env var (`export DEFRA_WORKSPACE=/path/to/workspace`)
 3. Run `mvn install` to configure hooks
 
