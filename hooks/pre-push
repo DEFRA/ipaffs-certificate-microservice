@@ -10,7 +10,7 @@ truffleHog --help > /dev/null || { echo -e "${FAILED_MESSAGE} truffleHog is not 
 [ -z "$DEFRA_WORKSPACE" ] && echo -e "${FAILED_MESSAGE} Please set DEFRA_WORKSPACE env var to your Defra workspace" && exit 1;
 
 echo "${LOG_PREFIX} RUNNING truffleHog to test for leaked secrets."
-truffleHog --regex --since_commit "$(git rev-parse origin/HEAD)" --branch "$(git rev-parse --abbrev-ref HEAD)" file://"${DEFRA_WORKSPACE}"/${REPO_NAME}
+truffleHog git --fail --regex --since_commit "$(git rev-parse origin/HEAD)" --branch "$(git rev-parse --abbrev-ref HEAD)" file://"${DEFRA_WORKSPACE}"/${REPO_NAME}
 exit_code=$?
 
 if [[ $exit_code -ne 0 ]]; then
