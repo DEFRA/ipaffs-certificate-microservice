@@ -10,18 +10,18 @@ import static org.mockito.Mockito.when;
 import java.net.URI;
 import java.util.Random;
 import java.util.function.Supplier;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import uk.gov.defra.tracesx.certificate.model.Certificate;
 import uk.gov.defra.tracesx.certificate.service.CertificateService;
 import uk.gov.defra.tracesx.certificate.utils.ReferenceNumberGenerator;
 
-@RunWith(MockitoJUnitRunner.class)
-public class CertificateResourceTest {
+@ExtendWith(MockitoExtension.class)
+class CertificateResourceTest {
 
   private static final ReferenceNumberGenerator REFERENCE = new ReferenceNumberGenerator("CHEDD.GB.2018.1010007");
   private static final String URL = "http://somewebsite.com/certificate/001";
@@ -34,7 +34,7 @@ public class CertificateResourceTest {
   private Certificate certificate = new Certificate(REFERENCE, expectedBinaryData);
 
   @Test
-  public void shouldCreateCertificateWithHtmlContent() throws Exception {
+  void shouldCreateCertificateWithHtmlContent() throws Exception {
     givenValidResource();
     when(certificateService.getPdf(eq(REFERENCE), any(Supplier.class), eq(URI))).thenReturn(certificate);
 

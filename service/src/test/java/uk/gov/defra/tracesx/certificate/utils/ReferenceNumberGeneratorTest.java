@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.defra.tracesx.certificate.utils.exception.InvalidReferenceNumberException;
 
 public class ReferenceNumberGeneratorTest {

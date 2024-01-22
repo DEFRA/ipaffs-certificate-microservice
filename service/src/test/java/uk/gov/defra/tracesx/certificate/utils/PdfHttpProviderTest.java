@@ -10,8 +10,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import com.openhtmltopdf.extend.FSStream;
 import java.io.ByteArrayInputStream;
 import java.io.CharArrayReader;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -42,7 +42,7 @@ public class PdfHttpProviderTest {
 
   private PdfHttpProvider httpProvider;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     initMocks(this);
     httpProvider = new PdfHttpProvider(restTemplate);

@@ -7,17 +7,17 @@ import static org.mockito.Mockito.when;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.function.Supplier;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.defra.tracesx.certificate.model.Certificate;
 import uk.gov.defra.tracesx.certificate.utils.CertificatePdfGenerator;
 import uk.gov.defra.tracesx.certificate.utils.ReferenceNumberGenerator;
 import uk.gov.defra.tracesx.certificate.utils.UriParser;
 
-@RunWith(MockitoJUnitRunner.class)
-public class CertificateServiceTest {
+@ExtendWith(MockitoExtension.class)
+class CertificateServiceTest {
 
   private static final ReferenceNumberGenerator REFERENCE = ReferenceNumberGenerator.valueOf("CHEDP.GB.2018.1234567");
   private static final URI CERT_LOCATION = java.net.URI.create("http://ins.gov/certificate/001");
@@ -33,7 +33,7 @@ public class CertificateServiceTest {
   private byte[] pdfBytes = new byte[200];
 
   @Test
-  public void shouldCreateCertificateWithHtmlContent() throws UnsupportedEncodingException {
+  void shouldCreateCertificateWithHtmlContent() throws UnsupportedEncodingException {
     givenService();
     when(pdfGenerator.createPdf(CERT_HTML_CONTENT, BASE_URI)).thenReturn(pdfBytes);
     final Certificate pdf = certificateService.getPdf(REFERENCE, stringSupplier, CERT_LOCATION);

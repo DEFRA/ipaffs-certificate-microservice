@@ -4,31 +4,29 @@ import static ch.qos.logback.classic.Level.INFO;
 import static ch.qos.logback.classic.Level.WARN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.Appender;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.LoggerFactory;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ConversationLoggingFilterTest {
+@ExtendWith(MockitoExtension.class)
+class ConversationLoggingFilterTest {
 
   private static final String CONVERSATION_ID_HEADER_NAME = "INS-ConversationId";
-  private static final String CONVERSATION_ID = "ConversationId";
 
   @Mock
   private HttpServletRequest request;
@@ -49,19 +47,18 @@ public class ConversationLoggingFilterTest {
 
   private final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 
-  @Before
+  @BeforeEach
   public void setup() {
-    when(request.getHeader(CONVERSATION_ID_HEADER_NAME)).thenReturn(CONVERSATION_ID);
     logger.addAppender(mockAppender);
   }
 
-  @After
+  @AfterEach
   public void teardown() {
     logger.detachAppender(mockAppender);
   }
 
   @Test
-  public void initializingFilterMessageIsLogged() {
+  void initializingFilterMessageIsLogged() {
     conversationLoggingFilter.init(filterConfig);
 
     verify(mockAppender).doAppend(captorLoggingEvent.capture());
@@ -71,7 +68,7 @@ public class ConversationLoggingFilterTest {
   }
 
   @Test
-  public void filterChecksHeaderAndContinuesChain() throws Exception {
+  void filterChecksHeaderAndContinuesChain() throws Exception {
     conversationLoggingFilter.doFilter(request, response, filterChain);
 
     verify(request).getHeader(CONVERSATION_ID_HEADER_NAME);
@@ -79,7 +76,7 @@ public class ConversationLoggingFilterTest {
   }
 
   @Test
-  public void destroyingFilterMessageIsLogged() {
+  void destroyingFilterMessageIsLogged() {
     conversationLoggingFilter.destroy();
 
     verify(mockAppender).doAppend(captorLoggingEvent.capture());
