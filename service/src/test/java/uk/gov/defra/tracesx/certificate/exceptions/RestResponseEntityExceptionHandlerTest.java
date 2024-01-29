@@ -12,21 +12,21 @@ import ch.qos.logback.core.Appender;
 import java.util.ArrayList;
 import java.util.List;
 import org.everit.json.schema.ValidationException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.WebRequest;
 
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class RestResponseEntityExceptionHandlerTest {
 
   @Mock
@@ -36,20 +36,20 @@ public class RestResponseEntityExceptionHandlerTest {
   @Captor
   private ArgumentCaptor<LoggingEvent> captorLoggingEvent;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
     logger.addAppender(mockAppender);
   }
 
-  @After
+  @AfterEach
   public void teardown() {
     Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
     logger.detachAppender(mockAppender);
   }
 
   @Test
-  public void logsNotFoundException() {
+  void logsNotFoundException() {
     //Given
     RestResponseEntityExceptionHandler exceptionHandler = new RestResponseEntityExceptionHandler();
     Exception ex = new NotFoundException();
@@ -67,7 +67,7 @@ public class RestResponseEntityExceptionHandlerTest {
   }
 
   @Test
-  public void notFoundExceptionReturnsCorrectHttpResponse() {
+  void notFoundExceptionReturnsCorrectHttpResponse() {
     //Given
     RestResponseEntityExceptionHandler exceptionHandler = new RestResponseEntityExceptionHandler();
     Exception ex = new Exception();
@@ -81,7 +81,7 @@ public class RestResponseEntityExceptionHandlerTest {
   }
 
   @Test
-  public void logsNotImplementedException() {
+  void logsNotImplementedException() {
     //Given
     RestResponseEntityExceptionHandler exceptionHandler = new RestResponseEntityExceptionHandler();
     Exception ex = new NotImplementedException("Not Implemented");
@@ -98,7 +98,7 @@ public class RestResponseEntityExceptionHandlerTest {
 
 
   @Test
-  public void handleNotImplementedReturnsCorrectHttpResponse() {
+  void handleNotImplementedReturnsCorrectHttpResponse() {
     //Given
     RestResponseEntityExceptionHandler exceptionHandler = new RestResponseEntityExceptionHandler();
     Exception ex = new Exception();
@@ -113,7 +113,7 @@ public class RestResponseEntityExceptionHandlerTest {
   }
 
   @Test
-  public void logsBadJson() {
+  void logsBadJson() {
     //Given
     RestResponseEntityExceptionHandler exceptionHandler = new RestResponseEntityExceptionHandler();
     Exception ex = new Exception();
@@ -129,7 +129,7 @@ public class RestResponseEntityExceptionHandlerTest {
   }
 
   @Test
-  public void handleBadJsonReturnsCorrectHttpResponse() {
+  void handleBadJsonReturnsCorrectHttpResponse() {
     //Given
     RestResponseEntityExceptionHandler exceptionHandler = new RestResponseEntityExceptionHandler();
     Exception ex = new Exception();
@@ -143,7 +143,7 @@ public class RestResponseEntityExceptionHandlerTest {
   }
 
   @Test
-  public void logsNestedSchemaValidationFailure() {
+  void logsNestedSchemaValidationFailure() {
     //Given
     RestResponseEntityExceptionHandler exceptionHandler = new RestResponseEntityExceptionHandler();
     ValidationException exception = mock(ValidationException.class);
@@ -164,7 +164,7 @@ public class RestResponseEntityExceptionHandlerTest {
   }
 
   @Test
-  public void logsSchemaValidationFailure() {
+  void logsSchemaValidationFailure() {
     //Given
     RestResponseEntityExceptionHandler exceptionHandler = new RestResponseEntityExceptionHandler();
     ValidationException exception = mock(ValidationException.class);
@@ -184,7 +184,7 @@ public class RestResponseEntityExceptionHandlerTest {
   }
 
   @Test
-  public void handleInvalidSchemaCorrectHttpResponse() {
+  void handleInvalidSchemaCorrectHttpResponse() {
     //Given
     RestResponseEntityExceptionHandler exceptionHandler = new RestResponseEntityExceptionHandler();
     ValidationException exception = mock(ValidationException.class);
