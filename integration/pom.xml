@@ -9,7 +9,7 @@
   <parent>
     <groupId>uk.gov.defra.tracesx</groupId>
     <artifactId>integration-test-parent</artifactId>
-    <version>3.0.8</version>
+    <version>4.0.0</version>
   </parent>
 
   <properties>

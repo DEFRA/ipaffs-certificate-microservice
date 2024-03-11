@@ -1,294 +1,99 @@
 package uk.gov.defra.tracesx.certificate.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Named.named;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.stream.Stream;
 import org.apache.commons.io.FileUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-public class SanitizerTest {
+class SanitizerTest {
 
-  @Test
-  public void shouldRemoveScript() {
-    validate("<p>hello</p><script>console.log('hello');</script>", "<p>hello</p>");
+  @ParameterizedTest(name = "{0}")
+  @MethodSource("htmlProvider")
+  void shouldValidateAllowedHtml(String html, String expected) {
+    validate(html, expected);
   }
 
-  @Test
-  public void shouldAllowClassNames() {
-    validate("<p class='any'>hello</p>", "<p class=\"any\">hello</p>");
-  }
-
-  @Test
-  public void shouldAllowTableElements() {
-    validate("<table class='any'></table>", "<table class=\"any\"></table>");
-  }
-
-  @Test
-  public void shouldAllowMain() {
-    validate("<main class='any'>x</main>", "<main class=\"any\">x</main>");
-  }
-
-  @Test
-  public void shouldAllowBody() {
-    validateUnchanged("<body>x</body>");
-  }
-
-  @Test
-  public void shouldAllowImgTags() {
-    validateUnchanged("<img src=\"/public/logo.png\" class=\"header-logo\" />");
-  }
-
-  @Test
-  public void shouldAllowLanguageAttributeInHtml() {
-    String html = ""
-            + "<html lang=\"en\">"
-            + "<head>"
-            + "<link href=\"/public/stylesheets/certificate.css\" rel=\"stylesheet\" />"
-            + "</head>"
-            + "</html>";
+  @ParameterizedTest(name = "{0}")
+  @MethodSource("allowedHtmlProvider")
+  void shouldValidateUnchangedHtml(String html) {
     validateUnchanged(html);
   }
 
-  @Test
-  public void shouldAllowColspanOnRows() {
-    String html = ""
-        + "<table>"
-        + "<tbody>"
-        + "<tr>"
-        + "<th colspan=\"2\">y</th>"
-        + "</tr>"
-        + "</tbody>"
-        + "</table>";
-    validateUnchanged(html);
-  }
-
-  @Test
-  public void shouldAllowHtmlAndHeadElement() {
-    String html = ""
-        + "<html>"
-        + "<head>"
-        + "</head>"
-        + "</html>";
-    validateUnchanged(html);
-  }
-
-  @Test
-  public void shouldAllowLinkToStyleSheet() {
-    String html = ""
-        + "<html>"
-        + "<head>"
-        + "<link href=\"/public/stylesheets/certificate.css\" rel=\"stylesheet\" />"
-        + "</head>"
-        + "</html>";
-    validateUnchanged(html);
-  }
-
-  @Test
-  public void shouldAllowH1H2H3Tags() {
-    String html = ""
-        + "<html>"
-        + "<head>"
-        + "</head>"
-        + "<body>"
-        + "<h1>Test H1</h1>"
-        + "<h2>Test H2</h2>"
-        + "<h3>Test H3</h3>"
-        + "</body>"
-        + "</html>";
-
-    String expected = ""
-        + "<html>"
-        + "<head>"
-        + "</head>"
-        + "<body>"
-        + "<h1>Test H1</h1>"
-        + "<h2>Test H2</h2>"
-        + "<h3>Test H3</h3>"
-        + "</body>"
-        + "</html>";
-
+  @ParameterizedTest(name = "{0}")
+  @MethodSource("changedHtmlProvider")
+  void shouldValidateParticularHtmlChange(String html, String expected) {
     validate(html, expected);
   }
 
-  @Test
-  public void shouldAllowDivs() {
-    String html = ""
-        + "<html>"
-        + "<head>"
-        + "</head>"
-        + "<body>"
-        + "<div><p>Test Div</p></div>"
-        + "</body>"
-        + "</html>";
-
-    String expected = ""
-        + "<html>"
-        + "<head>"
-        + "</head>"
-        + "<body>"
-        + "<div><p>Test Div</p></div>"
-        + "</body>"
-        + "</html>";
-
-    validate(html, expected);
+  static Stream<Arguments> htmlProvider() {
+    return Stream.of(
+        arguments(named("shouldAllowClassNames", "<p class='any'>hello</p>"),
+            "<p class=\"any\">hello</p>"),
+        arguments(named("shouldAllowTableElements", "<table class='any'></table>"),
+            "<table class=\"any\"></table>"),
+        arguments(named("shouldAllowMain", "<main class='any'>x</main>"),
+            "<main class=\"any\">x</main>"));
   }
 
-
-  @Test
-  public void shouldRemoveScriptTags() {
-    String html = ""
-        + "<html>"
-        + "<head>"
-        + "<script>alert('bad')</script>"
-        + "</head>"
-        + "</html>";
-
-    String expected = ""
-        + "<html>"
-        + "<head>"
-        + "</head>"
-        + "</html>";
-
-    validate(html, expected);
+  static Stream<Arguments> allowedHtmlProvider() {
+    return Stream.of(
+        arguments("shouldAllowLinkToStyleSheet",
+            "<html><head><link href=\"/public/stylesheets/certificate.css\" rel=\"stylesheet\" /></head></html>"),
+        arguments("shouldAllowHtmlAndHeadElement",
+            "<html><head></head></html>"),
+        arguments("shouldAllowColspanOnRows",
+            "<table><tbody><tr><th colspan=\"2\">y</th></tr></tbody></table>"),
+        arguments("shouldAllowLanguageAttributeInHtml",
+            "<html lang=\"en\"><head><link href=\"/public/stylesheets/certificate.css\" rel=\"stylesheet\" /></head></html>"),
+        arguments("shouldAllowImgTags",
+            "<img src=\"/public/logo.png\" class=\"header-logo\" />"),
+        arguments("shouldAllowBody",
+            "<body>x</body>")
+    );
   }
 
-  @Test
-  public void shouldRemoveOnMouseOver() {
-    String html = ""
-        + "<html>"
-        + "<body>"
-        + "<div onmouseover=\"myOverFunction()\">"
-        + "</body>"
-        + "</html>";
-
-    String expected = ""
-        + "<html>"
-        + "<body>"
-        + "<div></div>"
-        + "</body>"
-        + "</html>";
-
-    validate(html, expected);
+  static Stream<Arguments> changedHtmlProvider() {
+    return Stream.of(
+        arguments(
+            named("shouldRemoveScript", "<p>hello</p><script>console.log('hello');</script>"),
+            "<p>hello</p>"),
+        arguments(named("shouldAllowH1H2H3Tags",
+                "<html><head></head><body><h1>Test H1</h1><h2>Test H2</h2><h3>Test H3</h3></body></html>"),
+            "<html><head></head><body><h1>Test H1</h1><h2>Test H2</h2><h3>Test H3</h3></body></html>"),
+        arguments(named("shouldAllowDivs",
+                "<html><head></head><body><div><p>Test Div</p></div></body></html>"),
+            "<html><head></head><body><div><p>Test Div</p></div></body></html>"),
+        arguments(named("shouldRemoveScriptTags",
+                "<html><head><script>alert('bad')</script></head></html>"),
+            "<html><head></head></html>"),
+        arguments(named("shouldRemoveOnMouseOver", "<html><body><div onmouseover=\"myOverFunction()\"></body></html>"),
+            "<html><body><div></div></body></html>"),
+        arguments(named("shouldRemoveIframe", "<html><body><iframe src=\"javascript:alert('XSS');\"></iframe></body></html>"),
+            "<html><body></body></html>"),
+        arguments(named("shouldRemoveIframeEventBased", "<html><body><iframe src=# onmouseover=\"alert(document.cookie)\"></iframe></body></html>"),
+            "<html><body></body></html>"),
+        arguments(named("shouldRemoveJavscriptFromTable", "<html><body><table background=\"javascript:alert('XSS')\"></body></html>"),
+            "<html><body><table></table></body></html>"),
+        arguments(named("shouldRemoveJavscriptFromTableData", "<html><body><tables><td background=\"javascript:alert('XSS')\"></body></html>"),
+            "<html><body><table><tbody><tr><td></td></tr></tbody></table></body></html>"),
+        arguments(named("shouldEscapeJavscriptFromImgSrc", "<html><body><img src= onmouseover=\"alert('xxs')\"></body></html>"),
+            "<html><body><img src=\"onmouseover&#61;\" /></body></html>"),
+        arguments(named("shouldEscapeJavscriptFromImgWrappedInAnchor", "<html><body><a href=\"page.html\"><img src= onmouseover=\"alert('xxs')\"></a></body></html>"),
+            "<html><body><img src=\"onmouseover&#61;\" /></body></html>")
+    );
   }
 
   @Test
-  public void shouldRemoveIframe() {
-    String html = ""
-        + "<html>"
-        + "<body>"
-        + "<iframe src=\"javascript:alert('XSS');\"></iframe>"
-        + "</body>"
-        + "</html>";
-
-    String expected = ""
-        + "<html>"
-        + "<body>"
-        + "</body>"
-        + "</html>";
-
-    validate(html, expected);
-  }
-
-  @Test
-  public void shouldRemoveIframeEventBased() {
-    String html = ""
-        + "<html>"
-        + "<body>"
-        + "<iframe src=# onmouseover=\"alert(document.cookie)\"></iframe>"
-        + "</body>"
-        + "</html>";
-
-    String expected = ""
-        + "<html>"
-        + "<body>"
-        + "</body>"
-        + "</html>";
-
-    validate(html, expected);
-  }
-
-  @Test
-  public void shouldRemoveJavscriptFromTable() {
-    String html = ""
-        + "<html>"
-        + "<body>"
-        + "<table background=\"javascript:alert('XSS')\">"
-        + "</body>"
-        + "</html>";
-
-    String expected = ""
-        + "<html>"
-        + "<body>"
-        + "<table></table>"
-        + "</body>"
-        + "</html>";
-
-    validate(html, expected);
-  }
-
-  @Test
-  public void shouldRemoveJavscriptFromTableData() {
-    String html = ""
-        + "<html>"
-        + "<body>"
-        + "<tables><td background=\"javascript:alert('XSS')\">"
-        + "</body>"
-        + "</html>";
-
-    String expected = ""
-        + "<html>"
-        + "<body>"
-        + "<table>"
-        + "<tbody><tr><td></td></tr></tbody>"
-        + "</table>"
-        + "</body>"
-        + "</html>";
-
-    validate(html, expected);
-  }
-
-  @Test
-  public void shouldEscapeJavscriptFromImgSrc() {
-    String html = ""
-        + "<html>"
-        + "<body>"
-        + "<img src= onmouseover=\"alert('xxs')\">"
-        + "</body>"
-        + "</html>";
-
-    String expected = ""
-        + "<html>"
-        + "<body>"
-        + "<img src=\"onmouseover&#61;\" />"
-        + "</body>"
-        + "</html>";
-
-    validate(html, expected);
-  }
-
-  @Test
-  public void shouldEscapeJavscriptFromImgWrappedInAnchor() {
-    String html = ""
-        + "<html>"
-        + "<body>"
-        + "<a href=\"page.html\"><img src= onmouseover=\"alert('xxs')\"></a>"
-        + "</body>"
-        + "</html>";
-
-    String expected = ""
-        + "<html>"
-        + "<body>"
-        + "<img src=\"onmouseover&#61;\" />"
-        + "</body>"
-        + "</html>";
-
-    validate(html, expected);
-  }
-
-  @Test
-  public void shouldRemoveJavascriptFromCertificateHtml() throws IOException {
+  void shouldRemoveJavascriptFromCertificateHtml() throws IOException {
     String unsafeHtml = getHtmlContentFromFile("certificateWithScript.html");
     assertThat(unsafeHtml).contains("<script>alert('test');</script>");
     String safeHtml = Sanitizer.sanitize(unsafeHtml);
@@ -296,7 +101,7 @@ public class SanitizerTest {
   }
 
   @Test
-  public void shouldRemoveJavascriptFromTableInCertificateHtml() throws IOException {
+  void shouldRemoveJavascriptFromTableInCertificateHtml() throws IOException {
     String unsafeHtml = getHtmlContentFromFile("certificateWithTableScript.html");
     assertThat(unsafeHtml).contains("background=\"javascript:alert('XSS')");
     String safeHtml = Sanitizer.sanitize(unsafeHtml);
