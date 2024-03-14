@@ -1,5 +1,8 @@
-ARG BASE_VERSION=jre-17
-FROM sndeuxfesacr001.azurecr.io/$BASE_VERSION AS base
+ARG IMAGE_ACR
+ARG IMAGE_REPOSITORY
+ARG IMAGE_TAG
+
+FROM $IMAGE_ACR/$IMAGE_REPOSITORY:$IMAGE_TAG AS base
 
 USER root
 
@@ -9,6 +12,9 @@ WORKDIR /usr/src/certificate-service
 COPY target/TracesX_Certificate.jar /usr/src/certificate-service/
 COPY lib/applicationinsights-agent.jar /usr/src/certificate-service/
 COPY lib/applicationinsights.json /usr/src/certificate-service/
+
+RUN chown jreuser /usr/src/certificate-service
+USER jreuser
 
 EXPOSE 8080
 
