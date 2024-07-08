@@ -4,11 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.stream.Stream;
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -46,18 +47,23 @@ class SanitizerTest {
 
   static Stream<Arguments> allowedHtmlProvider() {
     return Stream.of(
-        arguments("shouldAllowLinkToStyleSheet",
-            "<html><head><link href=\"/public/stylesheets/certificate.css\" rel=\"stylesheet\" /></head></html>"),
-        arguments("shouldAllowHtmlAndHeadElement",
-            "<html><head></head></html>"),
-        arguments("shouldAllowColspanOnRows",
-            "<table><tbody><tr><th colspan=\"2\">y</th></tr></tbody></table>"),
-        arguments("shouldAllowLanguageAttributeInHtml",
-            "<html lang=\"en\"><head><link href=\"/public/stylesheets/certificate.css\" rel=\"stylesheet\" /></head></html>"),
-        arguments("shouldAllowImgTags",
-            "<img src=\"/public/logo.png\" class=\"header-logo\" />"),
-        arguments("shouldAllowBody",
-            "<body>x</body>")
+        arguments(named(
+            "shouldAllowLinkToStyleSheet",
+            "<html><head><link href=\"/public/stylesheets/certificate.css\" rel=\"stylesheet\" /></head></html>"
+        )),
+        arguments(named("shouldAllowHtmlAndHeadElement", "<html><head></head></html>")),
+        arguments(named(
+            "shouldAllowColspanOnRows",
+            "<table><tbody><tr><th colspan=\"2\">y</th></tr></tbody></table>"
+        )),
+        arguments(named(
+            "shouldAllowLanguageAttributeInHtml",
+            "<html lang=\"en\"><head><link href=\"/public/stylesheets/certificate.css\" rel=\"stylesheet\" /></head></html>"
+        )),
+        arguments(named(
+            "shouldAllowImgTags", "<img src=\"/public/logo.png\" class=\"header-logo\" />"
+        )),
+        arguments(named("shouldAllowBody", "<body>x</body>"))
     );
   }
 
@@ -75,19 +81,26 @@ class SanitizerTest {
         arguments(named("shouldRemoveScriptTags",
                 "<html><head><script>alert('bad')</script></head></html>"),
             "<html><head></head></html>"),
-        arguments(named("shouldRemoveOnMouseOver", "<html><body><div onmouseover=\"myOverFunction()\"></body></html>"),
+        arguments(named("shouldRemoveOnMouseOver",
+                "<html><body><div onmouseover=\"myOverFunction()\"></body></html>"),
             "<html><body><div></div></body></html>"),
-        arguments(named("shouldRemoveIframe", "<html><body><iframe src=\"javascript:alert('XSS');\"></iframe></body></html>"),
+        arguments(named("shouldRemoveIframe",
+                "<html><body><iframe src=\"javascript:alert('XSS');\"></iframe></body></html>"),
             "<html><body></body></html>"),
-        arguments(named("shouldRemoveIframeEventBased", "<html><body><iframe src=# onmouseover=\"alert(document.cookie)\"></iframe></body></html>"),
+        arguments(named("shouldRemoveIframeEventBased",
+                "<html><body><iframe src=# onmouseover=\"alert(document.cookie)\"></iframe></body></html>"),
             "<html><body></body></html>"),
-        arguments(named("shouldRemoveJavscriptFromTable", "<html><body><table background=\"javascript:alert('XSS')\"></body></html>"),
+        arguments(named("shouldRemoveJavscriptFromTable",
+                "<html><body><table background=\"javascript:alert('XSS')\"></body></html>"),
             "<html><body><table></table></body></html>"),
-        arguments(named("shouldRemoveJavscriptFromTableData", "<html><body><tables><td background=\"javascript:alert('XSS')\"></body></html>"),
+        arguments(named("shouldRemoveJavscriptFromTableData",
+                "<html><body><tables><td background=\"javascript:alert('XSS')\"></body></html>"),
             "<html><body><table><tbody><tr><td></td></tr></tbody></table></body></html>"),
-        arguments(named("shouldEscapeJavscriptFromImgSrc", "<html><body><img src= onmouseover=\"alert('xxs')\"></body></html>"),
+        arguments(named("shouldEscapeJavscriptFromImgSrc",
+                "<html><body><img src= onmouseover=\"alert('xxs')\"></body></html>"),
             "<html><body><img src=\"onmouseover&#61;\" /></body></html>"),
-        arguments(named("shouldEscapeJavscriptFromImgWrappedInAnchor", "<html><body><a href=\"page.html\"><img src= onmouseover=\"alert('xxs')\"></a></body></html>"),
+        arguments(named("shouldEscapeJavscriptFromImgWrappedInAnchor",
+                "<html><body><a href=\"page.html\"><img src= onmouseover=\"alert('xxs')\"></a></body></html>"),
             "<html><body><img src=\"onmouseover&#61;\" /></body></html>")
     );
   }
@@ -109,9 +122,10 @@ class SanitizerTest {
   }
 
   private String getHtmlContentFromFile(String htmlContent) throws IOException {
-    URL fileUrl = Sanitizer.class.getClassLoader().getResource(htmlContent);
-    File file = new File(fileUrl.getFile());
-    return FileUtils.readFileToString(file, "UTF-8");
+    try (InputStream in = Thread.currentThread().getContextClassLoader()
+        .getResourceAsStream(htmlContent)) {
+      return IOUtils.toString(Objects.requireNonNull(in), StandardCharsets.UTF_8);
+    }
   }
 
   private void validateUnchanged(String html) {
