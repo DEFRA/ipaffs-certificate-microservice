@@ -54,3 +54,6 @@ frontendNotification:
 service:
   security:
     token-feature-switch: false
+logging:
+  pattern:
+    correlation: "[ConversationId:%X{ConversationId:-}] "
