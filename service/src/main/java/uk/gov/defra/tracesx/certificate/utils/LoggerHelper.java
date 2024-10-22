@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 public final class LoggerHelper {
 
-  private static final String CARRIAGE_RETURN_REGEX = "[\n|\r|\t]";
+  private static final String CARRIAGE_RETURN_REGEX = "[\\n\\r\\t]";
 
   private LoggerHelper() {
   }
