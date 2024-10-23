@@ -9,7 +9,7 @@ The Certificate service API is written using the Spring Boot framework and has b
 
 In order to run the service you will need the following dependencies
 
-- JDK v11
+- JDK v17
 - Maven v3
 
 ## Secret scanning
@@ -69,7 +69,6 @@ The following properties are used by the application (see required values in the
 
 ```
 SERVICE_PORT
-PERMISSIONS_SERVICE_PASSWORD
 PROTOCOL
 SECURITY_JWT_JWKS
 SECURITY_JWT_ISS
@@ -111,7 +110,6 @@ You should only need to do this for the first time you pull the base image. In c
 ### Environment variables 
 ```
 export SERVICE_PORT=6060
-export PERMISSIONS_SERVICE_PASSWORD=${SERVICE_PASSWORD}
 export PROTOCOL=https
 export SECURITY_JWT_JWKS
 export SECURITY_JWT_ISS
