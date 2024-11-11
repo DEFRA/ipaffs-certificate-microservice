@@ -4,6 +4,12 @@
 
 This project is a standalone maven project for running automated integration tests.
 
+## Pre-requisites
+
+- JDK v17
+- Maven v3
+- [Lombok Plugin](https://plugins.jetbrains.com/plugin/6317-lombok-plugin) (only required for development)
+
 ## How To Run
 
 Before running the tests start up the service as per the root README
