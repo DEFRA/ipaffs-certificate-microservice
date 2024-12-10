@@ -40,8 +40,6 @@ spring:
 permissions:
   service:
     url: ${PROTOCOL}://permissions${ENV_DOMAIN}
-    user: importer
-    password: ${PERMISSIONS_SERVICE_PASSWORD}
     connectionTimeout: 3000
     readTimeout: 3000
   security:
@@ -54,3 +52,6 @@ frontendNotification:
 service:
   security:
     token-feature-switch: false
+logging:
+  pattern:
+    correlation: "[ConversationId:%X{ConversationId:-}] "
