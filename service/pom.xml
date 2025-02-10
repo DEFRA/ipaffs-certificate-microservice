@@ -12,8 +12,8 @@
 
   <parent>
     <groupId>uk.gov.defra.tracesx</groupId>
-    <artifactId>spring-boot-parent</artifactId>
-    <version>4.0.47</version>
+    <artifactId>TracesX-SpringBoot-Common-Parent</artifactId>
+    <version>4.0.6</version>
   </parent>
 
   <properties>
@@ -51,6 +51,14 @@
     <dependency>
       <groupId>uk.gov.defra.tracesx</groupId>
       <artifactId>TracesX-SpringBoot-Common-Health</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>uk.gov.defra.tracesx</groupId>
+      <artifactId>TracesX-SpringBoot-Common-Logging</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>uk.gov.defra.tracesx</groupId>
+      <artifactId>TracesX-SpringBoot-Common-Security</artifactId>
     </dependency>
     <dependency>
       <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
