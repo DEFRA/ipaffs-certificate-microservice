@@ -1,0 +1,18 @@
+FROM ibm-semeru-runtimes:open-17-jre-noble
+
+ENV JAVA_OPTS="-Xtune:virtualized -Xshareclasses -XX:+ClassRelationshipVerifier"
+
+USER root
+
+RUN mkdir -p /usr/src/certificate-service
+WORKDIR /usr/src/certificate-service
+
+COPY target/TracesX_Certificate.jar /usr/src/certificate-service/
+
+RUN useradd jreuser
+RUN chown jreuser /usr/src/certificate-service
+USER jreuser
+
+EXPOSE 8000
+
+CMD ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5020", "-jar", "TracesX_Certificate.jar", "--spring.profiles.active=k8s"]

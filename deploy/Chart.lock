@@ -1,0 +1,6 @@
+dependencies:
+- name: webapp
+  repository: git+https://github.com/DEFRA/ipaffs-infra.git@/helm-charts/webapp?ref=main
+  version: 0.1.0
+digest: sha256:bf593d97554b12535ac103537485be7981699107b40c9db4041da1ff49c62c13
+generated: "2025-05-27T14:43:45.952165969+01:00"

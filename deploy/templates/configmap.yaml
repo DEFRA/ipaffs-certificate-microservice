@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    {{- include "deploy.labels" . | nindent 4 }}
+data:
+  SECURITY_JWT_AUD: "a2617985-5645-47ec-8912-7a943b3895ba"
+  SECURITY_JWT_ISS: "api://defra-trade-imports-proxy"
+  SECURITY_JWT_JWKS: "http://imports-proxy/common/discovery/keys"
+  FRONTEND_NOTIFICATION_SERVICE_SCHEME: "http"
+  FRONTEND_NOTIFICATION_SERVICE_HOST: "notification-frontend"
+  FRONTEND_NOTIFICATION_SERVICE_PORT: "8000"

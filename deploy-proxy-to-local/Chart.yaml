@@ -1,0 +1,9 @@
+apiVersion: v2
+name: certificate-service-proxy
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: proxy-to-local
+    version: "0.1.0"
+    repository: "git+https://github.com/DEFRA/ipaffs-infra.git@/helm-charts/proxy-to-local?ref=main"

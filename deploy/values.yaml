@@ -1,0 +1,4 @@
+webapp:
+  ingress:
+    hosts:
+      - certificate-service
