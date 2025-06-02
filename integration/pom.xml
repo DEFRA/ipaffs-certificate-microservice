@@ -59,8 +59,10 @@
     <dependency>
       <groupId>uk.gov.defra.tracesx</groupId>
       <artifactId>TracesX-SpringBoot-Common-Health-Tests</artifactId>
+      <version>4.0.13</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
