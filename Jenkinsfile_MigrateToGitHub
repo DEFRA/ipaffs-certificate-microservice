@@ -1,7 +1,7 @@
 @Library('pipeline-library') _
 
 githubMigrationPipeline {
-    GITHUB_REPO = 'DEFRA/ipaffs-certificate-microservice
+    GITHUB_REPO = 'DEFRA/ipaffs-certificate-microservice'
     GITLAB_PROJECT = 'imports/certificate-microservice'
     MIGRATE_PULL_REQUEST = false
     LOG_LEVEL = 'INFO'
