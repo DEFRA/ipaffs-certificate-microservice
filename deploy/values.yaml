@@ -1,4 +1,5 @@
 webapp:
+  name: certificate-service
   ingress:
     hosts:
       - certificate-service
