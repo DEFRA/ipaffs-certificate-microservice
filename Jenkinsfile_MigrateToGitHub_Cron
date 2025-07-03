@@ -4,5 +4,5 @@ githubMigrationPipeline {
     GITHUB_REPO = 'DEFRA/ipaffs-certificate-microservice'
     GITLAB_PROJECT = 'imports/certificate-microservice'
     MIGRATE_PULL_REQUEST = true
-    LOG_LEVEL = 'INFO'
+    LOG_LEVEL = 'DEBUG'
 }
