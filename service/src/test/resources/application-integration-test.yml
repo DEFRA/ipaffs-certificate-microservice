@@ -1,0 +1,25 @@
+info:
+  app:
+    version: 1.0
+
+spring:
+  security:
+    user:
+      name: integration
+      password: integration
+
+audit:
+  create: false
+  read: false
+  update: false
+  delete: false
+
+monitoring:
+  type: log
+  event-hub:
+    environment: dev
+
+frontendNotification:
+  service:
+    scheme: http
+    host: localhost

@@ -1,0 +1,69 @@
+{
+  "interactiveLogin": true,
+  "httpServer": "NettyWrapper",
+  "tokenCallbacks": [
+    {
+      "issuerId": "default",
+      "tokenExpiry": 120,
+      "requestMappings": [
+        {
+          "requestParam": "client_id",
+          "match": "inspector",
+          "claims": {
+            "roles": ["Inspector"],
+            "sub": "userid",
+            "aud": [
+              "integration-test"
+            ],
+            "customer_id": "767ceb6a-2144-e911-aaaa-000d3a29b5de"
+          }
+        },
+        {
+          "requestParam": "client_id",
+          "match": "notifier",
+          "claims": {
+            "given_name": "Bob",
+            "family_name": "Builder",
+            "roles": ["Inspector"],
+            "sub": "userid",
+            "aud": [
+              "integration-test"
+            ],
+            "customer_id": "767ceb6a-2144-e911-a96c-000d3a29b5de",
+            "customer_organisation_id": "767ceb6a-2144-e911-bbbb-000d3a29b5de"
+          }
+        },
+        {
+          "requestParam": "client_id",
+          "match": "carolClark",
+          "claims": {
+            "given_name": "Carol",
+            "family_name": "Clark",
+            "roles": ["Inspector"],
+            "sub": "userid",
+            "aud": [
+              "integration-test"
+            ],
+            "customer_id": "4850c6e5-cb72-eb11-a812-000d3a23baf0",
+            "customer_organisation_id": "7350c6e5-cb72-eb11-a812-000d3a23baf0"
+          }
+        },
+        {
+          "requestParam": "client_id",
+          "match": "AnaAdams",
+          "claims": {
+            "given_name": "Ana",
+            "family_name": "Adams",
+            "roles": ["Inspector"],
+            "sub": "userid",
+            "aud": [
+              "integration-test"
+            ],
+            "customer_id": "75905b62-ca72-eb11-a812-000d3a22983f",
+            "customer_organisation_id": "8c905b62-ca72-eb11-a812-000d3a22983f"
+          }
+        }
+      ]
+    }
+  ]
+}
