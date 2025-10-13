@@ -7,7 +7,7 @@ javaPipeline {
     ENVIRONMENT = "Sandpit"
     SELENIUM_JOBS = ["frontend-notification"]
     SELENIUM_BRANCH = "master"
-    JAVA_VERSION = '17'
+    JAVA_VERSION = "21"
     SKIP_PERFORMANCE = "true"
     SKIP_SELENIUM = "true"
 }

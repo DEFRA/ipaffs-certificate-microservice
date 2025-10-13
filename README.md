@@ -9,7 +9,7 @@ The Certificate service API is written using the Spring Boot framework and has b
 
 In order to run the service you will need the following dependencies
 
-- JDK v17
+- JDK v21
 - Maven v3
 
 ## Secret scanning

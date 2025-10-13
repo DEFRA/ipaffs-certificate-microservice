@@ -1,5 +1,6 @@
 #!/bin/sh
 source /dev/stdin
+sdk env
 $( awk '/^TEST_OPENID/ {print "export", $1}' ./.env )
 
 mvn test -f integration/pom.xml \
