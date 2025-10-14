@@ -37,6 +37,9 @@ spring:
       - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
       - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+  threads:
+    virtual:
+      enabled: true
 permissions:
   service:
     url: ${PROTOCOL}://permissions${ENV_DOMAIN}

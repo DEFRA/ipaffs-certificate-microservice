@@ -13,10 +13,11 @@
   <parent>
     <groupId>uk.gov.defra.tracesx</groupId>
     <artifactId>TracesX-SpringBoot-Common-Parent</artifactId>
-    <version>4.0.13</version>
+    <version>4.0.17</version>
   </parent>
 
   <properties>
+    <java.version>21</java.version>
     <openhtml.version>1.0.9</openhtml.version>
     <owasp-java-html-sanitizer.version>20211018.2</owasp-java-html-sanitizer.version>
     <commons-io.version>2.19.0</commons-io.version>
