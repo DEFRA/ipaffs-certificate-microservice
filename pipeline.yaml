@@ -1,0 +1,46 @@
+trigger:
+  branches:
+    include:
+      - '*'
+
+pr:
+  branches:
+    exclude:
+      - '*'
+
+pool:
+  name: 'DEFRA-COMMON-UBUNTU-SSV5'
+
+resources:
+  repositories:
+    - repository: ipaffs-infra
+      type: github
+      endpoint: DEFRA
+      name: DEFRA/ipaffs-infra
+      ref: refs/heads/main
+
+parameters:
+  - name: environmentName
+    displayName: Environment
+    type: string
+    values:
+      - DEV
+      - TST
+      - PRE
+      - PRD
+    default: DEV
+
+variables:
+  - group: "${{ parameters.environmentName }}"
+  - name: serviceName
+    value: certificate-service
+  - name: dockerFile
+    value: Dockerfile.k8s
+
+stages:
+  - template: /pipelines/templates/java-template.yaml@ipaffs-infra
+    parameters:
+      environmentName: "${{ parameters.environmentName }}"
+      serviceName: "${{ variables.serviceName }}"
+      dockerFile: "${{ variables.dockerFile }}"
+      migrations: false
