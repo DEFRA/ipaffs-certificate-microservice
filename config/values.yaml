@@ -1,0 +1,15 @@
+service: certificate-service
+
+container:
+  replicas: 1
+
+
+livenessProbe: {}
+
+azure:
+  adalBridge: true
+
+database:
+  enabled: false
+  migrations:
+    enabled: false
