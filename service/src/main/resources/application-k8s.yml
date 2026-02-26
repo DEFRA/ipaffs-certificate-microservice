@@ -29,7 +29,7 @@ spring:
     allow-bean-definition-overriding: true
   security:
     jwt:
-      jwks: ${JWT_WELL_KNOWNS}
+      jwks: ${JWT_JWKS}
       iss: ${JWT_CERT_ISSUER}
       aud: ${JWT_AUDIENCE}
     autoconfigure:
