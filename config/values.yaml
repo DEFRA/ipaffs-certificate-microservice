@@ -7,7 +7,6 @@ container:
 livenessProbe: {}
 
 azure:
-  adalBridge: true
 
 database:
   enabled: false
