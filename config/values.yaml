@@ -6,7 +6,6 @@ container:
 
 livenessProbe: {}
 
-azure:
 
 database:
   enabled: false
