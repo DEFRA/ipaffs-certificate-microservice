@@ -3,10 +3,6 @@ service: certificate-service
 container:
   replicas: 1
 
-
-livenessProbe: {}
-
-
 database:
   enabled: false
   migrations:
