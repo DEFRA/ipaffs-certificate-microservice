@@ -1,4 +1,8 @@
-FROM defradigital/java:jre-21 AS base
+ARG IMAGE_ACR=docker.io
+ARG IMAGE_REPOSITORY=defradigital/java
+ARG IMAGE_TAG=jre-21
+
+FROM ${IMAGE_ACR}/${IMAGE_REPOSITORY}:${IMAGE_TAG} AS base
 
 USER root
 
