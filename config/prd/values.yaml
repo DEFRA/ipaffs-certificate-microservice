@@ -1,3 +1,6 @@
+container:
+  replicas: 3
+
 config:
   SPRING_PROFILES_ACTIVE: "k8s"
   FRONTEND_NOTIFICATION_SERVICE_HOST: "notification-frontend"
