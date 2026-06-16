@@ -9,10 +9,10 @@ config:
 resources:
   requests:
     cpu: 250m
-    memory: 700Mi
+    memory: 2Gi
   limits:
     cpu: 2
-    memory: 700Mi
+    memory: 2Gi
 
 database:
   enabled: false
