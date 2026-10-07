@@ -31,8 +31,8 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.client.RestClient;
-import org.testcontainers.containers.MockServerContainer;
 import org.testcontainers.lifecycle.Startables;
+import org.testcontainers.mockserver.MockServerContainer;
 import uk.gov.defra.tracesx.common.permissions.PermissionsCache;
 
 @Slf4j
