@@ -1,27 +1,26 @@
 service: certificate-service
-
 container:
   replicas: 1
-
 readinessProbe:
   httpGet:
     path: /admin/health-check
     port: 8000
   initialDelaySeconds: 10
   periodSeconds: 5
-
 config:
   JDK_JAVA_OPTIONS: "-XX:MaxRAMPercentage=60.0"
-
+  FRONTEND_NOTIFICATION_SERVICE_HOST: "notification-frontend"
+  FRONTEND_NOTIFICATION_SERVICE_PASSWORD: ""
+  FRONTEND_NOTIFICATION_SERVICE_PORT: "80"
+  FRONTEND_NOTIFICATION_SERVICE_SCHEME: "http"
+  FRONTEND_NOTIFICATION_SERVICE_USERNAME: ""
 resources:
   requests:
     cpu: 250m
     memory: 2Gi
   limits:
     memory: 2Gi
-
 database:
   enabled: false
   migrations:
-
     enabled: false
