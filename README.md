@@ -58,7 +58,9 @@ The coverage report can then be viewed by opening the `target/site/jacoco/index.
 
 ### Integration Tests
 
-See Readme in integration directory
+Integration tests (`*IT` classes) use Testcontainers, so Docker must be running. From the service directory, run unit and integration tests with:
+
+    mvn verify
 
 ## How To Debug
 
