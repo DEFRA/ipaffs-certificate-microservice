@@ -31,6 +31,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.client.RestClient;
+import org.testcontainers.containers.Network;
 import org.testcontainers.lifecycle.Startables;
 import org.testcontainers.mockserver.MockServerContainer;
 import uk.gov.defra.tracesx.common.permissions.PermissionsCache;
@@ -58,10 +59,20 @@ abstract class IntegrationBase {
           "frontendNotification"
       );
 
-  static final OAuthMockServerContainer OAUTH_CONTAINER = new OAuthMockServerContainer();
+  static final Network NETWORK = Network.newNetwork();
+
+  // Network aliases let containers on NETWORK (e.g. the service image in ImageSmokeIT) reach these
+  static final String OAUTH_ALIAS = "oauth";
+  static final String MOCK_SERVER_ALIAS = "mockserver";
+
+  static final OAuthMockServerContainer OAUTH_CONTAINER = new OAuthMockServerContainer()
+      .withNetwork(NETWORK)
+      .withNetworkAliases(OAUTH_ALIAS);
   static final MockServerContainer MOCK_SERVER_CONTAINER =
       new MockServerContainer(parse("mockserver/mockserver")
-          .withTag("mockserver-" + MockServerClient.class.getPackage().getImplementationVersion()));
+          .withTag("mockserver-" + MockServerClient.class.getPackage().getImplementationVersion()))
+          .withNetwork(NETWORK)
+          .withNetworkAliases(MOCK_SERVER_ALIAS);
 
   static {
     HttpsURLConnection.setDefaultSSLSocketFactory(
