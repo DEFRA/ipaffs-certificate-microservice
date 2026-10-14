@@ -1,0 +1,5 @@
+# Only send the files the Dockerfile copies
+*
+!target/application.jar
+!target/agent-libs/
+!lib/

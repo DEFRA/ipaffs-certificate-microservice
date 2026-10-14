@@ -124,7 +124,7 @@
 
   <build>
     <!-- Keep filename static to avoid updating the Dockerfile -->
-    <finalName>TracesX_Certificate</finalName>
+    <finalName>application</finalName>
     <plugins>
 
       <plugin>
