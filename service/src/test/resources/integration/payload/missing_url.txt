@@ -1,0 +1,5 @@
+400
+Content-Type: application/problem+json
+Content-Disposition: inline;filename=f.txt
+
+{"type":"about:blank","title":"Bad Request","status":400,"detail":"Required parameter 'url' is not present.","instance":"/certificate/CHEDA.GB.2018.1234567"}

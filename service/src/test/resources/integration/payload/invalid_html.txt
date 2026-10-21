@@ -1,0 +1,5 @@
+400
+Content-Type: application/json
+Content-Disposition: inline;filename=f.txt
+
+{"timestamp":"<timestamp>","status":400,"error":"Bad Request","path":"/certificate/CHEDA.GB.2018.1234567"}
