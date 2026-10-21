@@ -4,7 +4,6 @@ import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 import static org.testcontainers.utility.DockerImageName.parse;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +33,7 @@ import org.springframework.web.client.RestClient;
 import org.testcontainers.containers.Network;
 import org.testcontainers.lifecycle.Startables;
 import org.testcontainers.mockserver.MockServerContainer;
+import tools.jackson.databind.JsonNode;
 import uk.gov.defra.tracesx.common.permissions.PermissionsCache;
 
 @Slf4j
@@ -155,7 +155,7 @@ abstract class IntegrationBase {
     return Optional.of(
             response.getBody())
         .map(body -> body.get("access_token"))
-        .map(JsonNode::asText)
+        .map(JsonNode::asString)
         .orElseThrow();
   }
 

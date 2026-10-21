@@ -1,7 +1,7 @@
 package uk.gov.defra.tracesx.certificate.exceptions;
 
-import com.github.fge.jsonpatch.JsonPatchException;
 import java.io.IOException;
+import java.net.URI;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import org.everit.json.schema.ValidationException;
@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -35,7 +37,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     return handleExceptionInternal(ex, "", new HttpHeaders(), HttpStatus.NOT_FOUND, request);
   }
 
-  @ExceptionHandler(value = {JsonPatchException.class, IOException.class})
+  @ExceptionHandler(value = {IOException.class})
   protected ResponseEntity<Object> handleBadJson(Exception ex, WebRequest request) {
     EXCEPTION_LOGGER.info("Invalid Json");
     return handleExceptionInternal(ex, "", new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
@@ -50,6 +52,16 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         new HttpHeaders(),
         HttpStatus.BAD_REQUEST,
         request);
+  }
+
+  // Spring 7 leaves the type unset, so it would be left out of the body; Spring 6 always sent it
+  @Override
+  protected ResponseEntity<Object> createResponseEntity(
+      Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
+    if (body instanceof ProblemDetail problemDetail && problemDetail.getType() == null) {
+      problemDetail.setType(URI.create("about:blank"));
+    }
+    return super.createResponseEntity(body, headers, statusCode, request);
   }
 
   private String getSchemaErrors(ValidationException exception) {
