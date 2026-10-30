@@ -44,7 +44,7 @@ spring:
       enabled: true
 permissions:
   service:
-    url: http://permissions-service
+    url: http://referencedata
     connectionTimeout: 3000
     readTimeout: 3000
   security:
